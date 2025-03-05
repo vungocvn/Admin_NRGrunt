@@ -1,0 +1,288 @@
+.container {
+  background-color: azure;
+  max-width: 1000px;
+  /* Giảm chiều ngang */
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.content {
+  padding: 20px;
+  border-radius: 8px;
+  // box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.content-sub {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.content-sub .one h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.content-sub .two {
+  background-color: #007bff;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.content-sub .two:hover {
+  background-color: #0056b3;
+}
+
+.content-form,
+.content-form-1 {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.content-form h2,
+.content-form-1 h2 {
+  margin-top: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.form-sub,
+.form-1 {
+  margin-bottom: 15px;
+}
+
+.form-sub label,
+.form-1 label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+.form-sub input {
+  width: 98%;
+  padding: 8px;
+  outline: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-1 input {
+  padding: 8px;
+  border: none;
+  outline: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+
+}
+
+.form-1 select {
+  margin-left: 20px;
+  width: 15%;
+}
+
+.update {
+  display: flex;
+  gap: 10px;
+}
+
+.update .btn-update,
+.update .btn-cancel,
+.btn,
+.btn-2 {
+  background-color: #007bff;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-2 {
+  margin-left: 20px;
+}
+
+.update .btn-update:hover,
+.btn:hover {
+  background-color: #0056b3;
+}
+
+.update .btn-cancel,
+.btn-2 {
+  background-color: #dc3545;
+}
+
+.update .btn-cancel:hover,
+.btn-2:hover {
+  background-color: #c82333;
+}
+
+.search-list {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+
+.search-name {
+  input {
+    padding: 10px;
+    width: 200px;
+    border-radius: 4px;
+    border: 1px solid;
+    outline: none;
+  }
+}
+
+.search-quantity {
+  select {
+    width: 200px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid gray;
+    outline: none;
+  }
+}
+
+.quantity-select {
+  select {
+    width: 200px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid gray;
+    outline: none;
+    margin-right: 10px;
+  }
+}
+
+.search-quantity-one {
+  display: flex;
+
+  select {
+    width: 200px;
+  }
+
+  .search-quantity {
+    background-color: #007bff;
+    color: #fff;
+    width: 30px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+
+  .load {
+    margin-left: 15px;
+    background-color: orange;
+    color: #fff;
+    width: 30px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.content-table th,
+.content-table td {
+  padding: 8px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.content-table th {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.content-table td {
+  background-color: #fff;
+}
+
+.content-table .btn-update,
+.content-table .btn-delete {
+  background-color: #007bff;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.content-table .btn-update:hover {
+  background-color: #0056b3;
+}
+
+.content-table .btn-delete {
+  background-color: #dc3545;
+  margin-left: 10px;
+}
+
+.content-table .btn-delete:hover {
+  background-color: #c82333;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #f4f4f4;
+}
+
+.action-icons {
+  display: flex;
+  gap: 5px;
+}
+// pagination
+.pagination {
+  display: flex;
+  list-style: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination-item.pagination-active .pagination-link {
+  background-color: #01ab78;
+  color: #fff;
+}
+
+.pagination-active .pagination-link:hover {
+  background-color: var(--hover-color);
+}
+
+.pagination-item {
+  margin: 0 12px;
+}
+
+.pagination-item .pagination-link {
+  display: block;
+  text-decoration: none;
+  font-weight: 300;
+  font-size: 1.4rem;
+  color: #939393;
+  min-width: 40px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 2px;
+}
+
+.home-product-pagination {
+  margin-top: 28px;
+}

@@ -9,7 +9,39 @@ export default function Admin() {
     const [openView, setOpen] = useState(true);
     const [isEdit, setIsEdit] = useState(false);
     const router = useRouter();
+    const [selectCategory, setSelectCategory] = useState(null);
+    const [lstProduct, setLstProduct] = useState<any>([])
+    const [lstCategory, setLstCategory] = useState<any>([])
+    
+    function getAllProduct({id_category,sortOder,sort_col}:{id_category?: number,sortOder?:string,sort_col?:string}) {
+        setLstProduct([])
+        axios.get("http://127.0.0.1:8000/api/products", { params: { page: 1, page_size: 100, id_category: id_category,sort_order:sortOder,sort_col } })
+            .then((res) => {
+                if (res.data.status === 200) {
+                    setLstProduct(res.data.data.items)
+                } else {
+                    alert("Sign up error, please try again!")
+                }
+            })
+            .catch((error) => {
+                alert("Sign up error, please try again!")
+            });
+    }
+    function getAllCategory() {
 
+        axios.get("http://127.0.0.1:8000/api/categories")
+            .then((res) => {
+                if (res.data.status === 200) {
+                    console.log(res.data.data)
+                    setLstCategory(res.data.data)
+                } else {
+                    alert("Sign up error, please try again!")
+                }
+            })
+            .catch((error) => {
+                console.error("Error in sign up", error);
+            });
+    }
     const dfData = {
         name: "",
         price: 0,
@@ -53,6 +85,7 @@ export default function Admin() {
             .then((res) => {
                 alert(res.data.message);
                 fetchDataProduct();
+                // router.push('/shop.tsx')
             }).catch((error) => {
                 alert(error.response.data.error);
             })
@@ -99,6 +132,8 @@ export default function Admin() {
     }
 
     useEffect(() => {
+        getAllProduct({})
+        getAllCategory()
         fetchCategory()
         fetchDataProduct()
         axios.post("http://127.0.0.1:8000/api/auth/check-auth",
@@ -139,10 +174,6 @@ export default function Admin() {
                                 <label >Name Product</label>
                                 <input type="text" placeholder="Enter name" onChange={(e) => setEditdata({ ...editData, name: e.target.value })} value={editData.name} />
                             </div>
-                            {/* <div className="form-sub">
-                                <label >Name Product</label>
-                                <input type="text" placeholder="Enter name" onChange={(e) => setEditdata({ ...editData, name: e.target.value })} value={editData.name} />
-                            </div> */}
                             <div className="form-sub">
                                 <label >Price</label>
                                 <input type="text" placeholder="Enter price" onChange={(e) => setEditdata({ ...editData, price: Number(e.target.value) })} value={editData.price} />
@@ -322,33 +353,32 @@ export default function Admin() {
                     </table>
                 </div>
                 <div className="pagination">
-                      <ul className="pagination home-product-pagination">
-                <li className="pagination-item">
-                    <a href="" className="pagination-link">
-                        <i className="pagination-icon fa-solid fa-angle-left"></i>
-                    </a>
-                </li>
-                <li className="pagination-item pagination-active">
-                    <a href="" className="pagination-link">1 </a>
-                </li>
-                <li className="pagination-item">
-                    <a href="" className="pagination-link">2 </a>
-                </li>
-                <li className="pagination-item">
-                    <a href="" className="pagination-link">3 </a>
-                </li>
-                <li className="pagination-item">
-                    <a href="" className="pagination-link">4 </a>
-                </li>
-                <li className="pagination-item">
-                    <a href="" className="pagination-link">5 </a>
-                </li> 
-                <li className="pagination-item">
-                    <a href="" className="pagination-link">
-                        <i className="pagination-icon fa-solid fa-angle-right"></i>
-                    </a>
-                </li>
-            </ul>
+                    <ul className="pagination home-product-pagination">
+                        <li className="pagination-item">
+                            <a href="" className="pagination-link">
+                                <i className="pagination-icon fa-solid fa-angle-left"></i>
+                            </a>
+                        </li>
+                        <li className="pagination-item pagination-active">
+                            <a href="" className="pagination-link" onClick={() => {
+                                    getAllProduct({})
+                                    setSelectCategory(null)
+                                }}>
+                                 {selectCategory == null ? 1 : 1}
+                                </a>
+                        </li>
+                        {lstCategory.map((item: any) => {
+                                    return (
+                                        <span className="menu-li" onClick={() => {
+                                            getAllProduct({ id_category: item.id })
+                                            setSelectCategory(item.id)
+                                        }}>
+
+                                            {selectCategory == item.id ? <p className="menu-a">{item.name}</p> : <p className="menu">{item.name}</p>}
+                                        </span>
+                                    )
+                                })}
+                    </ul>
                 </div>
             </div>
         </>

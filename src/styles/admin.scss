@@ -1,5 +1,5 @@
 .container {
-  background-color: azure;
+  // background-color: azure;
   max-width: 1000px;
   /* Giảm chiều ngang */
   margin: 0 auto;
@@ -258,12 +258,12 @@ th {
 }
 
 .pagination-item.pagination-active .pagination-link {
-  background-color: #01ab78;
+  background-color: #007bff;
   color: #fff;
 }
 
 .pagination-active .pagination-link:hover {
-  background-color: var(--hover-color);
+  background-color: #0056b3;
 }
 
 .pagination-item {

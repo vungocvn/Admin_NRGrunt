@@ -20,13 +20,18 @@ export default function Login() {
     const handleLogin = () => {
        axios.post("http://127.0.0.1:8000/api/auth/login", login)
             .then((res) => {
-                if (res.data.status === 200 && (res.data.data.role === "Admin" || res.data.data.role === "CEO")) {
+                if (res.data.status === 200) {
                     const access_token: string = res.data.data.access_token
                     Cookies.set('token_cua_Ngoc', access_token, { expires: 1 })
-                    alert("login thành công")
-                    setTimeout(() => {
-                        router.push('/profile')
-                    }, 2000)
+                    if(res.data.data.role === "CEO"){
+                        router.push('/manager')
+                        return alert('login success')
+                    }
+                    if(res.data.data.role === "Admin"){
+                        router.push('/admin')
+                        return alert('login success')
+                    } 
+                    return alert('not permission')
                 }
                 else if (res.data.status === 403) {
                     alert(res.data.message)
@@ -62,12 +67,15 @@ export default function Login() {
         })
             .then((res) => {
                 if (res.data.data) {
-                    if (res.data.data.role === "Admin" || res.data.data.role === "CEO") {
-                        router.push('/profile')
-                        alert('you are ready login')
-                    } else {
-                        alert("bạn ko đủ quyền vào đây ! cook đi cook đi")
+                    if(res.data.data.role === "CEO"){
+                        router.push('/manage')
+                        return alert('you are CEO')
                     }
+                    if(res.data.data.role === "Admin"){
+                        router.push('/admin')
+                        return alert('you are Admin')
+                    } 
+                    return alert("not permission")
                 } else {
                     alert("vui lòng đăng nhập")
                 }

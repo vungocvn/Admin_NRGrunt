@@ -58,7 +58,7 @@ export default function Register() {
     return (
         <>
             <div className="register-from">
-                <h2>Create</h2>
+                <h2>Create an Account</h2>
                 <div className="register-form-sub">
                     <label><i className="fa-solid fa-user"></i> Name</label>
                     <input 

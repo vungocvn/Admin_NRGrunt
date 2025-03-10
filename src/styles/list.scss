@@ -1,0 +1,70 @@
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-size: 24px;
+}
+
+.categoryList {
+  margin-bottom: 20px;
+}
+
+.categoryList ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.categoryList li {
+  background-color: #f9f9f9;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.categoryList button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.formSection {
+  margin-top: 20px;
+}
+
+.formSection input {
+  padding: 10px;
+  width: 250px;
+  margin-right: 10px;
+}
+
+.formSection button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.formSection button:hover {
+  background-color: #45a049;
+}
+.cover{
+  display: flex;
+  justify-content: end;
+}
+.two button{
+  background-color: red;
+}

@@ -22,9 +22,6 @@ export default function AdminOrders() {
 
   return (
     <div className="container">
-      <div className="header">
-        <h1>Quản lý Đơn hàng</h1>
-      </div>
       <div className="orderList">
         <h3>Danh sách Đơn hàng</h3>
         <table className="table">

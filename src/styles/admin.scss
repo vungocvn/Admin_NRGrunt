@@ -262,7 +262,7 @@ th {
       gap: 10px; // Thêm khoảng cách giữa input và button search
 
       input {
-        width: 300px;
+        width: 350px;
           padding: 0 8px;
           font-size: 14px;
           border: 1px solid #ccc;
@@ -279,14 +279,14 @@ th {
 
       .search-quantity {
         margin-top: 18px;
-          height: 40px;  // Đảm bảo nút search có cùng chiều cao với ô input
+          height: 40px; 
           width: 40px;
           display: flex;
           justify-content: center;
           align-items: center;
           background-color: #007bff;
           border: none;
-          border-radius: 5px;
+          border-radius: 4px;
           cursor: pointer;
           transition: background-color 0.3s;
 

@@ -305,7 +305,7 @@ th {
   gap: 10px;
 }
 .search-list .search-name input {
-  width: 300px;
+  width: 350px;
   padding: 0 8px;
   font-size: 14px;
   border: 1px solid #ccc;
@@ -327,7 +327,7 @@ th {
   align-items: center;
   background-color: #007bff;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
 }

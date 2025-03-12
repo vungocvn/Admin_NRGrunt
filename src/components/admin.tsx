@@ -60,6 +60,7 @@ export default function Admin() {
             });
     }
     const dfData = {
+        image: "",
         name: "",
         price: 0,
         quantity: 0,
@@ -208,6 +209,10 @@ export default function Admin() {
                         <div className="content-form-1">
                             <h2>Edit Product</h2>
                             <div className="form-sub">
+                                <label>Image Product</label>
+                                <input type="file" onChange={(e) => setEditdata({ ...editData, image: e.target.files[0] })} />
+                            </div>
+                            <div className="form-sub">
                                 <label >Name Product</label>
                                 <input type="text" placeholder="Enter name" onChange={(e) => setEditdata({ ...editData, name: e.target.value })} value={editData.name} />
                             </div>
@@ -257,6 +262,10 @@ export default function Admin() {
                     {
                         openView && (<div className="content-form">
                             <h2>Manager Product</h2>
+                            <div className="form-sub">
+                                <label>Image Product</label>
+                                <input type="file" onChange={(e) => setInsert({ ...dataInsert, image: e.target.files[0] })} />
+                            </div>
                             <div className="form-sub">
                                 <label >Name Product</label>
                                 <input type="text" placeholder="Enter name" onChange={(e) => setInsert({ ...dataInsert, name: e.target.value })} value={dataInsert.name} />
@@ -328,14 +337,15 @@ export default function Admin() {
                     <table cellPadding="0" cellSpacing="0">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Status</th>
-                                <th>Price</th>
                                 <th>Image</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Category</th>
                                 <th>Quantity</th>
                                 <th>Origin</th>
                                 <th>Discount</th>
                                 <th>Description</th>
+                                <th>Status</th>
                                 <th>Action</th>
                                 <th>Action</th>
                             </tr>
@@ -343,15 +353,16 @@ export default function Admin() {
                         <tbody>
                             {lstProduct.length > 0 && lstProduct?.map((item: any) => (
                                 <tr key={item.id}>
-
+                                    <td><img src={item.image} alt="" width={120} /></td>
                                     <td>{item.name}</td>
-                                    <td>{item.status ? "Open" : "Hide"}</td>
                                     <td>{item.price}</td>
-                                    <td></td>
+                                    <td>{item.categories}</td>
                                     <td>{item.quantity}</td>
                                     <td>{item.origin}</td>
                                     <td>{item.discount}</td>
                                     <td>{item.description}</td>
+                                    <td>{item.status ? "Open" : "Hide"}</td>
+                                   
                                     <td>
                                         <button type="button" className="btn-update" onClick={() => handleEditData(item.id)}>
                                             <i className="fa-solid fa-pen-to-square"></i>

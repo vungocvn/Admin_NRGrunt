@@ -12,20 +12,37 @@ export default function Admin() {
     const [selectCategory, setSelectCategory] = useState(null);
     const [lstProduct, setLstProduct] = useState<any>([])
     const [lstCategory, setLstCategory] = useState<any>([])
+    const [total,setTotal] = useState({
+        total_item:0,
+        total_page:1,
+        page_size:5,
+        page_index:1
+
+    })
     
-    function getAllProduct({id_category,sortOder,sort_col}:{id_category?: number,sortOder?:string,sort_col?:string}) {
-        setLstProduct([])
-        axios.get("http://127.0.0.1:8000/api/products", { params: { page: 1, page_size: 100, id_category: id_category,sort_order:sortOder,sort_col } })
-            .then((res) => {
-                if (res.data.status === 200) {
-                    setLstProduct(res.data.data.items)
-                } else {
-                    alert("Sign up error, please try again!")
-                }
-            })
-            .catch((error) => {
-                alert("Sign up error, please try again!")
-            });
+    function getAllProduct({ id_category, sortOder, sort_col, pageIndex }: { id_category?: number; sortOder?: string; sort_col?: string; pageIndex?: number }) {
+        setLstProduct([]);
+        try {
+            axios
+                .get("http://127.0.0.1:8000/api/products", { params: { page: pageIndex || total.page_index, page_size: total.page_size, id_category: id_category, sort_order: sortOder, sort_col } })
+                .then((res) => {
+                    if (res.data.status === 200) {
+                       setTotal({ ...total, page_index: pageIndex || total.page_index, total_page: res.data.data.total_pages, total_item: res.data.data.total_items });
+                        setLstProduct(res.data.data.items);
+                    } else {
+                        alert("Sign up error, please try again!");
+                    }
+                   
+                })
+                .catch((error) => {
+                    alert("Sign up error, please try again!");
+                });
+        } catch (e) {
+            console.log(e);
+        } finally {
+         
+        }
+
     }
     function getAllCategory() {
 
@@ -64,10 +81,10 @@ export default function Admin() {
     const [dataCategory, setDataCategory] = useState<any>([])
 
     const token: string = Cookies.get('token_cua_Ngoc') || "";
-    const fetchDataProduct = async () => {
-        const productsRes = await axios.get("http://127.0.0.1:8000/api/products");
-        setDataProduct(productsRes.data.data.items);
-    }
+    // const fetchDataProduct = async () => {
+    //     const productsRes = await axios.get("http://127.0.0.1:8000/api/products");
+    //     setDataProduct(productsRes.data.data.items);
+    // }
 
     const fetchCategory = async () => {
         const categoryRes = await axios.get("http://127.0.0.1:8000/api/categories");
@@ -84,7 +101,8 @@ export default function Admin() {
         )
             .then((res) => {
                 alert(res.data.message);
-                fetchDataProduct();
+                getAllProduct({})
+                // fetchDataProduct();
                 // router.push('/shop.tsx')
             }).catch((error) => {
                 alert(error.response.data.error);
@@ -101,7 +119,7 @@ export default function Admin() {
             )
                 .then((res) => {
                     alert(res.data.message);
-                    fetchDataProduct();
+                    getAllProduct({})
                 }).catch((error) => {
                     alert(error.response.data.error);
                 })
@@ -125,7 +143,7 @@ export default function Admin() {
         )
             .then((res) => {
                 alert(res.data.message);
-                fetchDataProduct();
+                getAllProduct({})
             }).catch((error) => {
                 alert(error.response.data.error);
             })
@@ -135,7 +153,6 @@ export default function Admin() {
         getAllProduct({})
         getAllCategory()
         fetchCategory()
-        fetchDataProduct()
         axios.post("http://127.0.0.1:8000/api/auth/check-auth",
             {},
             {
@@ -155,6 +172,26 @@ export default function Admin() {
     const handleEdit = (item: any) => {
         setIsEdit(true);
         setEditdata(item);
+    }
+   const onNextPage=() => {
+        if (total.page_index < total.total_page) {
+           
+            const newPageIndex = total.page_index + 1;
+           setTotal({ ...total, page_index: newPageIndex });
+            setTimeout(() => {
+                getAllProduct({ id_category: selectCategory ?? undefined, pageIndex: newPageIndex });
+            }, 300);
+        }
+    }
+   const onPrevPage=() => {
+        if (total.page_index  > 1) {
+         
+            const newPageIndex = total.page_index  - 1;
+            setTotal({ ...total, page_index : newPageIndex });
+            setTimeout(() => {
+                getAllProduct({ id_category: selectCategory ?? undefined, pageIndex: newPageIndex });
+            }, 300);
+        }
     }
     return (
         <>
@@ -196,7 +233,7 @@ export default function Admin() {
                             </div>
                             <div className="form-sub">
                                 <label >Description</label>
-                                <input type="text" placeholder="" onChange={(e) => setEditdata({ ...editData, description: e.target.value })} checked={editData.description} />
+                                <input type="text" placeholder="" onChange={(e) => setEditdata({ ...editData, description: e.target.value })} value={editData.description} />
                             </div>
                             <div className="form-1">
                                 <label >Category</label>
@@ -274,37 +311,17 @@ export default function Admin() {
                 <div className="search-list">
                     <div className="search-name">
                         <input type="text" placeholder="Tìm kiếm danh sách theo tên" />
-                    </div>
-                    <div className="search-quantity">
-                        <select>
-                            <option>10</option>
-                            <option>20</option>
-                            <option>50</option>
-                            <option>100</option>
-                            <option>200</option>
-                        </select>
-                    </div>
-                    <div className="search-quantity-one">
-                        <div className="quantity-select">
-                            <select>
-                                <option>Sữa rửa mặt</option>
-                                <option>Son môi</option>
-                                <option>Kem dưỡng</option>
-                                <option>Serum</option>
-                                <option>Dầu dưỡng tóc</option>
-                            </select>
-                        </div>
                         <button className="search-quantity">
                             <i className="fa-solid fa-magnifying-glass"></i>
                         </button>
 
-
-                        <button className="load">
-                            <i className="fas fa-sync"></i>
-                        </button>
-
-
                     </div>
+
+            <div className="pagination">
+                <button onClick={onPrevPage}><i className="pagination-one fa-solid fa-angle-left"></i></button>
+                <span>{total.page_index + '/' + total.total_page }</span>
+                <button onClick={onNextPage}><i className="pagination-one fa-solid fa-angle-right"></i></button>
+            </div>
 
                 </div>
                 <div className="content-table">
@@ -320,31 +337,35 @@ export default function Admin() {
                                 <th>Discount</th>
                                 <th>Description</th>
                                 <th>Action</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {dataProduct.length > 0 && dataProduct?.map((item: any) => (
+                            {lstProduct.length > 0 && lstProduct?.map((item: any) => (
                                 <tr key={item.id}>
 
                                     <td>{item.name}</td>
                                     <td>{item.status ? "Open" : "Hide"}</td>
                                     <td>{item.price}</td>
                                     <td></td>
-                                    <td>10</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>{item.quantity}</td>
+                                    <td>{item.origin}</td>
+                                    <td>{item.discount}</td>
+                                    <td>{item.description}</td>
                                     <td>
                                         <button type="button" className="btn-update" onClick={() => handleEditData(item.id)}>
                                             <i className="fa-solid fa-pen-to-square"></i>
                                         </button>
-                                        <button type="button" className="btn-delete" onClick={() => deleteProduct(item.id)}>
+                                        
+                                    </td>
+                                    <td>
+                                       <button type="button" className="btn-delete" onClick={() => deleteProduct(item.id)}>
                                             <i className="fa-solid fa-delete-left"></i>
                                         </button>
                                     </td>
                                 </tr>
                             ))}
-                            {!dataProduct && (
+                            {!lstProduct && (
                                 <tr>
                                     <td>No product</td>
                                 </tr>
@@ -352,34 +373,7 @@ export default function Admin() {
                         </tbody>
                     </table>
                 </div>
-                <div className="pagination">
-                    <ul className="pagination home-product-pagination">
-                        <li className="pagination-item">
-                            <a href="" className="pagination-link">
-                                <i className="pagination-icon fa-solid fa-angle-left"></i>
-                            </a>
-                        </li>
-                        <li className="pagination-item pagination-active">
-                            <a href="" className="pagination-link" onClick={() => {
-                                    getAllProduct({})
-                                    setSelectCategory(null)
-                                }}>
-                                 {selectCategory == null ? 1 : 1}
-                                </a>
-                        </li>
-                        {lstCategory.map((item: any) => {
-                                    return (
-                                        <span className="menu-li" onClick={() => {
-                                            getAllProduct({ id_category: item.id })
-                                            setSelectCategory(item.id)
-                                        }}>
-
-                                            {selectCategory == item.id ? <p className="menu-a">{item.name}</p> : <p className="menu">{item.name}</p>}
-                                        </span>
-                                    )
-                                })}
-                    </ul>
-                </div>
+             
             </div>
         </>
     )

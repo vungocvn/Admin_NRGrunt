@@ -53,7 +53,6 @@
 
 .container {
   max-width: 1000px;
-  /* Giảm chiều ngang */
   margin: 0 auto;
   padding: 20px;
 }
@@ -177,7 +176,7 @@
 
 .search-list {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-bottom: 10px;
 }
 
@@ -189,12 +188,11 @@
   outline: none;
 }
 
-.search-quantity select {
-  width: 200px;
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid gray;
-  outline: none;
+.search-quantity {
+  background-color: #007bff;
+  height: 38px;
+  height: 38px;
+  margin-left: 10px;
 }
 
 .quantity-select select {
@@ -205,14 +203,7 @@
   outline: none;
   margin-right: 10px;
 }
-
-.search-quantity-one {
-  display: flex;
-}
-.search-quantity-one select {
-  width: 200px;
-}
-.search-quantity-one .search-quantity {
+.quantity-select .search-quantity {
   background-color: #007bff;
   color: #fff;
   width: 30px;
@@ -220,7 +211,7 @@
   display: flex;
   justify-content: center;
 }
-.search-quantity-one .load {
+.quantity-select .load {
   margin-left: 15px;
   background-color: orange;
   color: #fff;
@@ -233,8 +224,9 @@
 .content-table th,
 .content-table td {
   padding: 8px;
+  font-size: 14px;
   border: 1px solid #ccc;
-  text-align: center;
+  text-align: left;
 }
 
 .content-table th {
@@ -244,30 +236,6 @@
 
 .content-table td {
   background-color: #fff;
-}
-
-.content-table .btn-update,
-.content-table .btn-delete {
-  background-color: #007bff;
-  color: #fff;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.content-table .btn-update:hover {
-  background-color: #0056b3;
-}
-
-.content-table .btn-delete {
-  background-color: #dc3545;
-  margin-left: 10px;
-}
-
-.content-table .btn-delete:hover {
-  background-color: #c82333;
 }
 
 table {
@@ -286,46 +254,123 @@ th {
   background-color: #f4f4f4;
 }
 
-.action-icons {
-  display: flex;
-  gap: 5px;
-}
-
-.pagination {
-  display: flex;
-  list-style: none;
-  align-items: center;
+.content-table .btn-update,
+.content-table .btn-delete {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: inline-flex;
   justify-content: center;
+  align-items: center;
 }
 
-.pagination-item.pagination-active .pagination-link {
+.content-table .btn-update {
   background-color: #007bff;
   color: #fff;
 }
 
-.pagination-active .pagination-link:hover {
+.content-table .btn-update:hover {
   background-color: #0056b3;
 }
 
-.pagination-item {
-  margin: 0 12px;
+.content-table .btn-delete {
+  background-color: #dc3545;
+  color: #fff;
+  margin-left: 10px;
 }
 
-.pagination-item .pagination-link {
-  display: block;
-  text-decoration: none;
-  font-weight: 300;
-  font-size: 1.4rem;
-  color: #939393;
-  min-width: 40px;
-  height: 30px;
-  line-height: 30px;
-  text-align: center;
-  border-radius: 2px;
+.content-table .btn-delete:hover {
+  background-color: #c82333;
 }
 
-.home-product-pagination {
-  margin-top: 28px;
+.action-icons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.search-list .search-name {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+.search-list .search-name input {
+  width: 300px;
+  padding: 0 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  background-color: #fafafa;
+  height: 40px;
+}
+.search-list .search-name input::placeholder {
+  color: #888;
+  font-size: 14px;
+}
+.search-list .search-name .search-quantity {
+  margin-top: 18px;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.search-list .search-name .search-quantity:hover {
+  background-color: rgb(0, 98.4, 204);
+}
+.search-list .search-name .search-quantity i {
+  color: #fff;
+  font-size: 18px;
+}
+.search-list .pagination {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.search-list .pagination button {
+  margin-top: 12px;
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+.search-list .pagination button:hover {
+  background-color: #e0e0e0;
+  transform: scale(1.05);
+}
+.search-list .pagination button:focus {
+  outline: none;
+}
+.search-list .pagination button i {
+  color: #333;
+  font-size: 16px;
+}
+.search-list .pagination button.pagination-one {
+  padding: 8px 16px;
+}
+.search-list .pagination span {
+  font-size: 16px;
+  margin: 0 10px;
+  color: #333;
 }
 
 .container-pro {

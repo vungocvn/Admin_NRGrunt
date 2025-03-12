@@ -19,7 +19,6 @@ export default function AdminOrders() {
   const deleteOrder = (id) => {
     setOrders(orders.filter(order => order.id !== id));
   };
-
   return (
     <div className="container">
       <div className="orderList">

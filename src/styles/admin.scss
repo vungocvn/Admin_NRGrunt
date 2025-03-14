@@ -1,5 +1,5 @@
 .container {
-  max-width: 1000px;
+  max-width: 100%; /* Đảm bảo container có thể mở rộng toàn bộ chiều rộng */
   margin: 0 auto;
   padding: 20px;
 }
@@ -24,7 +24,7 @@
 }
 
 .content-sub .two {
-  background-color: #007bff;
+  background-color:#4CAF50;
   color: #fff;
   padding: 8px 16px;
   border-radius: 4px;
@@ -33,7 +33,8 @@
 }
 
 .content-sub .two:hover {
-  background-color: #0056b3;
+  background-color:  #329b36;
+  ;
 }
 
 .content-form,
@@ -78,7 +79,6 @@
   outline: none;
   border: 1px solid #ccc;
   border-radius: 4px;
-
 }
 
 .form-1 select {
@@ -145,6 +145,7 @@
   height: 38px;
   margin-left: 10px;
 }
+
 .quantity-select {
   select {
     width: 200px;
@@ -154,7 +155,6 @@
     outline: none;
     margin-right: 10px;
   }
-
 
   .search-quantity {
     background-color: #007bff;
@@ -176,77 +176,119 @@
   }
 }
 
-.content-table th,
-.content-table td {
-  padding: 8px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  text-align: left;
-}
-
-.content-table th {
-  background-color: #007bff;
-  color: #fff;
-}
-
-.content-table td {
-  background-color: #fff;
-}
-
-table {
+.content-table {
   width: 100%;
-  border-collapse: collapse;
-}
+  margin-top: 20px;
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px; /* Giảm kích thước chữ cho vừa với không gian */
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    table-layout: auto; /* Để bảng tự điều chỉnh chiều rộng các cột */
 
-th,
-td {
-  padding: 10px;
-  text-align: left;
-  border: 1px solid #ddd;
-}
+    thead {
+      background-color: #4CAF50;
+      color: white;
 
-th {
-  background-color: #f4f4f4;
-}
+      th {
+        padding: 12px;
+        text-align: center;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
 
-.content-table .btn-update,
-.content-table .btn-delete {
-  padding: 5px 10px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  display: inline-flex; // Đảm bảo các nút nằm trên cùng một dòng
-  justify-content: center;
-  align-items: center;
-}
+        &:hover {
+          background-color: #45a049;
+        }
+      }
+    }
 
-.content-table .btn-update {
-  background-color: #007bff;
-  color: #fff;
-}
+    tbody {
+      tr {
+        transition: background 0.3s ease;
 
-.content-table .btn-update:hover {
-  background-color: #0056b3;
-}
+        &:nth-child(even) {
+          background-color: #f8f8f8;
+        }
 
-.content-table .btn-delete {
-  background-color: #dc3545;
-  color: #fff;
-  margin-left: 10px;  // Khoảng cách giữa nút Edit và Delete
-}
+        &:hover {
+          background-color: #f1f1f1;
+        }
 
-.content-table .btn-delete:hover {
-  background-color: #c82333;
-}
+        td {
+          padding: 12px;
+          text-align: center;
+          border-bottom: 1px solid #ddd;
+          transition: background 0.3s ease;
 
-.action-icons {
-  display: flex;
-  gap: 10px; // Khoảng cách giữa nút Edit và Delete
-  justify-content: center;
-  align-items: center;
-}
+          /* Điều chỉnh text không bị tràn */
+          max-width: 150px; /* Giới hạn độ rộng của các ô */
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
 
+          img {
+            max-width: 100px; /* Giới hạn kích thước ảnh */
+            border-radius: 5px;
+            object-fit: cover;
+          }
+
+          button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+
+            &.edit {
+              background-color: #007bff;
+              color: white;
+
+              &:hover {
+                background-color: #0056b3;
+              }
+            }
+
+            &.delete {
+              background-color: #e74c3c;
+              color: white;
+
+              &:hover {
+                background-color: #c0392b;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /* Tắt thanh cuộn ngang */
+  overflow-x: visible; /* Không sử dụng thanh cuộn ngang */
+  @media (max-width: 768px) {
+    table {
+      font-size: 12px; /* Giảm kích thước chữ cho màn hình nhỏ */
+    }
+
+    th, td {
+      padding: 8px;
+    }
+
+    td {
+      display: block;
+      text-align: left;
+      white-space: normal; /* Cho phép nội dung ô bẻ dòng */
+    }
+  }
+}
 
 // pagination
 .search-list {
@@ -256,90 +298,140 @@ th {
   margin-bottom: 20px;
 
   .search-name {
+    display: flex;
+    justify-content: flex-start;  // Căn chỉnh ô input và nút tìm kiếm sang bên trái
+    align-items: center;
+    gap: 10px; // Thêm khoảng cách giữa input và button search
+
+    input {
+      width: 350px;
+      padding: 0 8px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+      background-color: #fafafa;
+      height: 40px; // Đảm bảo chiều cao của ô input cố định
+
+      &::placeholder {
+        color: #888;
+        font-size: 14px;
+      }
+    }
+
+    .search-quantity {
+      margin-top: 18px;
+      height: 40px; 
+      width: 40px;
       display: flex;
-      justify-content: flex-start;  // Căn chỉnh ô input và nút tìm kiếm sang bên trái
+      justify-content: center;
       align-items: center;
-      gap: 10px; // Thêm khoảng cách giữa input và button search
+      background-color: #007bff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
 
-      input {
-        width: 350px;
-          padding: 0 8px;
-          font-size: 14px;
-          border: 1px solid #ccc;
-          border-radius: 5px;
-          outline: none;
-          background-color: #fafafa;
-          height: 40px; // Đảm bảo chiều cao của ô input cố định
-
-          &::placeholder {
-              color: #888;
-              font-size: 14px;
-          }
+      &:hover {
+        background-color: darken(#007bff, 10%);
       }
 
-      .search-quantity {
-        margin-top: 18px;
-          height: 40px; 
-          width: 40px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background-color: #007bff;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-          transition: background-color 0.3s;
-
-          &:hover {
-              background-color: darken(#007bff, 10%);
-          }
-
-          i {
-              color: #fff;
-              font-size: 18px;
-          }
+      i {
+        color: #fff;
+        font-size: 18px;
       }
+    }
   }
 
   .pagination {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 
-      button {
-        margin-top: 12px;
-          padding: 8px 12px;
-          font-size: 16px;
-          border: 1px solid #ddd;
-          background-color: #f1f1f1;
-          border-radius: 5px;
-          cursor: pointer;
-          transition: background-color 0.3s, transform 0.3s;
+    button {
+      margin-top: 12px;
+      padding: 8px 12px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      background-color: #f1f1f1;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
 
-          &:hover {
-              background-color: #e0e0e0;
-              transform: scale(1.05);  // Tạo hiệu ứng hover phóng to nhẹ
-          }
-
-          &:focus {
-              outline: none;
-          }
-
-          i {
-              color: #333;
-              font-size: 16px;
-          }
-
-          &.pagination-one {
-              padding: 8px 16px;
-          }
+      &:hover {
+        background-color: #e0e0e0;
+        transform: scale(1.05);  // Tạo hiệu ứng hover phóng to nhẹ
       }
 
-      span {
-          font-size: 16px;
-          margin: 0 10px;
-          color: #333;
+      &:focus {
+        outline: none;
       }
+
+      i {
+        color: #333;
+        font-size: 16px;
+      }
+
+      &.pagination-one {
+        padding: 8px 16px;
+      }
+    }
+
+    span {
+      font-size: 16px;
+      margin: 0 10px;
+      color: #333;
+    }
   }
 }
 
+.reload-button {
+  margin-top: 20px;
+  text-align: right; /* Căn chỉnh nút reload sang bên phải */
+}
+
+.btn-reload {
+  padding: 10px 20px;
+  background-color:#4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-reload:hover {
+  background-color:#4CAF50;
+}
+
+/* Pagination Controls */
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 10px;
+
+  button {
+    padding: 8px 16px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    
+    &:hover {
+      background-color: #e0e0e0;
+      transform: scale(1.05);
+    }
+
+    &:disabled {
+      background-color: #ddd;
+      cursor: not-allowed;
+    }
+
+    &.active {
+      background-color: #4CAF50;
+      color: white;
+    }
+  }
+}

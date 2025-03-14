@@ -1,391 +1,232 @@
 'use client'
-import axios from "axios"
-import { create } from "domain";
+import axios from "axios";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import Cookies from 'js-cookie';
+import EditProductForm from './editProduct';
 
 export default function Admin() {
-    const [openView, setOpen] = useState(true);
-    const [isEdit, setIsEdit] = useState(false);
-    const router = useRouter();
-    const [selectCategory, setSelectCategory] = useState(null);
-    const [lstProduct, setLstProduct] = useState<any>([])
-    const [lstCategory, setLstCategory] = useState<any>([])
-    const [total,setTotal] = useState({
-        total_item:0,
-        total_page:1,
-        page_size:5,
-        page_index:1
+  const [openModal, setOpenModal] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [editData, setEditdata] = useState<any>({
+    image: "",
+    name: "",
+    price: 0,
+    quantity: 0,
+    description: "",
+    origin: "",
+    discount: 0,
+    status: false,
+    category_id: 1,
+  });
+  const [lstProduct, setLstProduct] = useState<any>([]);
+  const [dataCategory, setDataCategory] = useState<any>([]);
+  const [total, setTotal] = useState({ total_item: 0, total_page: 1, page_size: 5, page_index: 1 });
 
-    })
-    
-    function getAllProduct({ id_category, sortOder, sort_col, pageIndex }: { id_category?: number; sortOder?: string; sort_col?: string; pageIndex?: number }) {
-        setLstProduct([]);
-        try {
-            axios
-                .get("http://127.0.0.1:8000/api/products", { params: { page: pageIndex || total.page_index, page_size: total.page_size, id_category: id_category, sort_order: sortOder, sort_col } })
-                .then((res) => {
-                    if (res.data.status === 200) {
-                       setTotal({ ...total, page_index: pageIndex || total.page_index, total_page: res.data.data.total_pages, total_item: res.data.data.total_items });
-                        setLstProduct(res.data.data.items);
-                    } else {
-                        alert("Sign up error, please try again!");
-                    }
-                   
-                })
-                .catch((error) => {
-                    alert("Sign up error, please try again!");
-                });
-        } catch (e) {
-            console.log(e);
-        } finally {
-         
+  const token = Cookies.get('token_cua_Ngoc') || "";
+  const router = useRouter();
+
+  // Lấy danh sách sản phẩm
+  const getAllProduct = ({ id_category, sortOder, sort_col, pageIndex, pageSize }: any) => {
+    setLstProduct([]);
+    axios
+      .get("http://127.0.0.1:8000/api/products", {
+        params: { id_category, sort_col, sort_order: sortOder, page_index: pageIndex, page_size: pageSize }
+      })
+      .then((res) => {
+        if (res.data.status === 200) {
+          setTotal({ ...total, page_index: pageIndex || total.page_index, total_page: res.data.data.total_pages, total_item: res.data.data.total_items });
+          setLstProduct(res.data.data.items);
+        } else {
+          alert("Error fetching products");
         }
+      }).catch((error) => {
+        alert("Error fetching products");
+      });
+  };
 
-    }
-    function getAllCategory() {
-
-        axios.get("http://127.0.0.1:8000/api/categories")
-            .then((res) => {
-                if (res.data.status === 200) {
-                    console.log(res.data.data)
-                    setLstCategory(res.data.data)
-                } else {
-                    alert("Sign up error, please try again!")
-                }
-            })
-            .catch((error) => {
-                console.error("Error in sign up", error);
-            });
-    }
-    const dfData = {
-        image: "",
-        name: "",
-        price: 0,
-        quantity: 0,
-        description: "",
-        origin: "",
-        discount: 0,
-        status: false,
-        category_id: 1,
-    }
-
-    const [editData, setEditdata] = useState(dfData);
-
-    const cancelProcess = () => {
-        setIsEdit(false);
-        setEditdata(dfData);
-    }
-    const [dataInsert, setInsert] = useState(dfData);
-    const [dataProduct, setDataProduct] = useState([])
-    const [dataCategory, setDataCategory] = useState<any>([])
-
-    const token: string = Cookies.get('token_cua_Ngoc') || "";
-    // const fetchDataProduct = async () => {
-    //     const productsRes = await axios.get("http://127.0.0.1:8000/api/products");
-    //     setDataProduct(productsRes.data.data.items);
-    // }
-
-    const fetchCategory = async () => {
-        const categoryRes = await axios.get("http://127.0.0.1:8000/api/categories");
-        setDataCategory(categoryRes.data.data);
-    }
-
-    const createProduct = () => {
-        axios.post("http://127.0.0.1:8000/api/products", dataInsert
-            , {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }
-        )
-            .then((res) => {
-                alert(res.data.message);
-                getAllProduct({})
-                // fetchDataProduct();
-                // router.push('/shop.tsx')
-            }).catch((error) => {
-                alert(error.response.data.error);
-            })
-    }
-    const deleteProduct = (id: number) => {
-        if (window.confirm("")) {
-            axios.delete(`http://127.0.0.1:8000/api/products/${id}`
-                , {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                }
-            )
-                .then((res) => {
-                    alert(res.data.message);
-                    getAllProduct({})
-                }).catch((error) => {
-                    alert(error.response.data.error);
-                })
+  // Lấy danh sách danh mục
+  const getAllCategory = () => {
+    axios.get("http://127.0.0.1:8000/api/categories")
+      .then((res) => {
+        if (res.data.status === 200) {
+          setDataCategory(res.data.data);
+        } else {
+          alert("Error fetching categories");
         }
-    }
-    const handleEditData = (id: number) => {
-        axios.get(`http://127.0.0.1:8000/api/products/${id}`)
-            .then((res) => {
-                setEditdata(res.data.data);
-                setIsEdit(true);
-            })
+      }).catch((error) => {
+        console.error("Error fetching categories", error);
+      });
+  };
 
-    }
-    const updateProduct = () => {
-        axios.put(`http://127.0.0.1:8000/api/products/${editData.id}`, editData
-            , {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }
-        )
-            .then((res) => {
-                alert(res.data.message);
-                getAllProduct({})
-            }).catch((error) => {
-                alert(error.response.data.error);
-            })
-    }
+  // Hàm tạo sản phẩm mới
+  const createProduct = () => {
+    axios.post("http://127.0.0.1:8000/api/products", editData, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).then((res) => {
+      alert(res.data.message);
+      setLstProduct([res.data.data, ...lstProduct]);
+      setOpenModal(false);
+      getAllProduct({ id_category: 0, pageIndex: total.page_index });
+    }).catch((error) => {
+      alert(error.response.data.error);
+    });
+  };
 
-    useEffect(() => {
-        getAllProduct({})
-        getAllCategory()
-        fetchCategory()
-        axios.post("http://127.0.0.1:8000/api/auth/check-auth",
-            {},
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-            .then((res) => {
-                if (!res.data.data) {
-                    router.push('/login')
-                }
-            }).catch((err) => {
-                alert("vui lòng đăng nhập")
-            })
-    }, [])
+  // Hàm cập nhật sản phẩm
+  const updateProduct = () => {
+    axios.put(`http://127.0.0.1:8000/api/products/${editData.id}`, editData, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).then((res) => {
+      alert(res.data.message);
+      setOpenModal(false);
+      getAllProduct({ id_category: 0, pageIndex: total.page_index });
+    }).catch((error) => {
+      alert(error.response.data.error);
+    });
+  };
 
-    const handleEdit = (item: any) => {
+  // Hàm mở modal và chuyển chế độ edit
+  const handleEditData = (id: number) => {
+    axios.get(`http://127.0.0.1:8000/api/products/${id}`)
+      .then((res) => {
+        setEditdata(res.data.data);
         setIsEdit(true);
-        setEditdata(item);
+        setOpenModal(true);
+      });
+  };
+
+  // Hàm đóng modal
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setIsEdit(false);
+    setEditdata({ image: "", name: "", price: 0, quantity: 0, description: "", origin: "", discount: 0, status: false, category_id: 1 });
+  };
+
+  // Hàm reload lại trang
+  const handleReload = () => {
+    window.location.reload(); // Hoặc dùng router.reload() nếu bạn sử dụng Next.js
+  };
+
+  // Hàm thay đổi trang
+  const handlePageChange = (page: number) => {
+    if (page < 1 || page > total.total_page) return;
+    setTotal({ ...total, page_index: page });
+    getAllProduct({ id_category: 0, pageIndex: page, sort_col: "id", sortOder: "desc" });
+  };
+
+  // Phân trang
+  const paginate = () => {
+    const pages = [];
+    for (let i = 1; i <= total.total_page; i++) {
+      pages.push(i);
     }
-   const onNextPage=() => {
-        if (total.page_index < total.total_page) {
-           
-            const newPageIndex = total.page_index + 1;
-           setTotal({ ...total, page_index: newPageIndex });
-            setTimeout(() => {
-                getAllProduct({ id_category: selectCategory ?? undefined, pageIndex: newPageIndex });
-            }, 300);
-        }
-    }
-   const onPrevPage=() => {
-        if (total.page_index  > 1) {
-         
-            const newPageIndex = total.page_index  - 1;
-            setTotal({ ...total, page_index : newPageIndex });
-            setTimeout(() => {
-                getAllProduct({ id_category: selectCategory ?? undefined, pageIndex: newPageIndex });
-            }, 300);
-        }
-    }
-    return (
-        <>
-            <div className="container">
+    return pages;
+  };
 
-                <div className="content">
-                    <div className="content-sub">
-                        <div className="one"><h2><i className="fa-solid fa-house"></i> Trang chủ admin</h2></div>
-                        <div className="two" onClick={() => setOpen(true)}>+ Add</div>
-                    </div>
+  const paginationButtons = paginate().map((page) => (
+    <button
+      key={page}
+      className={`pagination-button ${page === total.page_index ? "active" : ""}`}
+      onClick={() => handlePageChange(page)}
+    >
+      {page}
+    </button>
+  ));
 
-                    {isEdit && editData && (
+  useEffect(() => {
+    getAllProduct({ id_category: 0, pageIndex: total.page_index, sort_col: "id", sortOder: "desc" });
+    getAllCategory();
+  }, [total.page_index]);
 
-                        <div className="content-form-1">
-                            <h2>Edit Product</h2>
-                            <div className="form-sub">
-                                <label>Image Product</label>
-                                <input type="file" onChange={(e) => setEditdata({ ...editData, image: e.target.files[0] })} />
-                            </div>
-                            <div className="form-sub">
-                                <label >Name Product</label>
-                                <input type="text" placeholder="Enter name" onChange={(e) => setEditdata({ ...editData, name: e.target.value })} value={editData.name} />
-                            </div>
-                            <div className="form-sub">
-                                <label >Price</label>
-                                <input type="text" placeholder="Enter price" onChange={(e) => setEditdata({ ...editData, price: Number(e.target.value) })} value={editData.price} />
-                            </div>
-                            <div className="form-sub">
-                                <label >Quantity</label>
-                                <input type="text" placeholder="Enter quantity" onChange={(e) => setEditdata({ ...editData, quantity: Number(e.target.value) })} value={editData.quantity} />
-                            </div>
-                            <div className="form-sub">
-                                <label >Origin</label>
-                                <input type="text" placeholder="Enter quantity" onChange={(e) => setEditdata({ ...editData, origin: e.target.value })} value={editData.origin} />
-                            </div>
-                            <div className="form-1">
-                                <label >Status</label>
-                                <input type="checkbox" name="interests" value="sports" onChange={(e) => setEditdata({ ...editData, status: e.target.checked })} checked={editData.status} />
-                            </div>
-                            <div className="form-sub">
-                                <label >Discount</label>
-                                <input type="text" placeholder="" onChange={(e) => setEditdata({ ...editData, discount: Number(e.target.value) })} value={editData.discount} />
-                            </div>
-                            <div className="form-sub">
-                                <label >Description</label>
-                                <input type="text" placeholder="" onChange={(e) => setEditdata({ ...editData, description: e.target.value })} value={editData.description} />
-                            </div>
-                            <div className="form-1">
-                                <label >Category</label>
-                                <select defaultValue={0} onChange={(e) => setEditdata({ ...editData, category_id: Number(e.target.value) })} value={editData.category_id}>
-                                    <option value={0}>Choose category</option>
-                                    {
-                                        dataCategory.map((item: any) => (
-                                            <option key={item.id} value={item.id}>{item.name}</option>
-                                        ))
-                                    }
-                                </select>
-                            </div>
-                            <div className="update">
-                                <button type="button" className="btn-update" onClick={() => updateProduct()}><i className="fa-regular fa-floppy-disk"></i></button>
-                                <button type="button" className="btn-cancel" onClick={cancelProcess}><i className="fa-solid fa-xmark"></i></button>
-                            </div>
+  return (
+    <div className="container">
+      <div className="content">
+        <div className="content-sub">
+          <div className="one"><h2><i className="fa-solid fa-house"></i> Trang chủ admin</h2></div>
+          <div className="two" onClick={() => { setOpenModal(true); setIsEdit(false); }}>+ Add</div>
+        </div>
+        <div className="reload-button">
+          <button onClick={handleReload} className="btn-reload">
+            <i className="fas fa-sync-alt"></i>
+          </button>
+        </div>
+        {/* Modal Create/Edit Product */}
+        {openModal && (
+          <EditProductForm
+            editData={editData}
+            setEditdata={setEditdata}
+            dataCategory={dataCategory}
+            handleImageUpload={(e, setInsert, dataInsert, alert) => {}}
+            updateProduct={isEdit ? updateProduct : createProduct}
+            cancelProcess={handleCloseModal}
+          />
+        )}
 
-                        </div>
-                    )}
+        <div className="content-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Quantity</th>
+                <th>Origin</th>
+                <th>Discount</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Edit</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {lstProduct.map((product) => (
+                <tr key={product.id}>
+                  <td><img src={product.image} alt={product.name} width={100} /></td>
+                  <td>{product.name}</td>
+                  <td>{product.price}</td>
+                  <td>{product.categories}</td>
+                  <td>{product.quantity}</td>
+                  <td>{product.origin}</td>
+                  <td>{product.discount}</td>
+                  <td>{product.description}</td>
+                  <td>{product.status ? "Open" : "Hide"}</td>
+                  <td>
+                    <button onClick={() => handleEditData(product.id)}>
+                      <i className="fa-solid fa-pen-to-square"></i> Edit
+                    </button>
+                  </td>
+                  <td>
+                    <button onClick={() => lstProduct(product.id)}>
+                      <i className="fa-solid fa-delete-left"></i> Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-                    {
-                        openView && (<div className="content-form">
-                            <h2>Manager Product</h2>
-                            <div className="form-sub">
-                                <label>Image Product</label>
-                                <input type="file" onChange={(e) => setInsert({ ...dataInsert, image: e.target.files[0] })} />
-                            </div>
-                            <div className="form-sub">
-                                <label >Name Product</label>
-                                <input type="text" placeholder="Enter name" onChange={(e) => setInsert({ ...dataInsert, name: e.target.value })} value={dataInsert.name} />
-                            </div>
+        {/* Pagination Controls */}
+        <div className="pagination-controls">
+          <button
+            disabled={total.page_index === 1}
+            onClick={() => handlePageChange(total.page_index - 1)}
+          >
+            Previous
+          </button>
 
-                            <div className="form-sub">
-                                <label >Price</label>
-                                <input type="number" placeholder="Enter price" onChange={(e) => setInsert({ ...dataInsert, price: Number(e.target.value) })} value={dataInsert.price} />
-                            </div>
-                            <div className="form-sub">
-                                <label >Quantity</label>
-                                <input type="text" placeholder="Enter quantity" onChange={(e) => setInsert({ ...dataInsert, quantity: Number(e.target.value) })} value={dataInsert.quantity} />
-                            </div>
-                            <div className="form-sub">
-                                <label >Origin</label>
-                                <input type="text" placeholder="Enter quantity" onChange={(e) => setInsert({ ...dataInsert, origin: e.target.value })} value={dataInsert.origin} />
-                            </div>
-                            <div className="form-sub">
-                                <label >Discount</label>
-                                <input
-                                    type="number"
-                                    placeholder="Enter discount"
-                                    onChange={(e) =>
-                                        setInsert({ ...dataInsert, discount: Number(e.target.value) / 100 })
-                                    }
-                                    value={dataInsert.discount * 100}
-                                />
+          {paginationButtons}
 
-                            </div>
-                            <div className="form-sub">
-                                <label >Description</label>
-                                <input type="text" placeholder="Enter description" onChange={(e) => setInsert({ ...dataInsert, description: e.target.value })} value={dataInsert.description} />
-                            </div>
-                            <div className="form-1">
-                                <label >Status</label>
-                                <input type="checkbox" checked={dataInsert.status} onChange={(e) => setInsert({ ...dataInsert, status: e.target.checked })} />
-                            </div>
-                            <div className="form-1">
-                                <label >Category</label>
-                                <select onChange={(e) => setInsert({ ...dataInsert, category_id: Number(e.target.value) })} value={dataInsert.category_id}>
-                                    {dataCategory && dataCategory.map((item: any) => (
-                                        <option key={item.id} value={item.id}>{item.name}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            <button type="submit" className="btn" onClick={createProduct}><i className="fa-regular fa-floppy-disk"></i></button>
-                            <button type="button" className="btn-2" onClick={() => setOpen(false)}><i className="fa-solid fa-xmark"></i></button>
-                        </div>)
-                    }
-
-                </div>
-                <div className="search-list">
-                    <div className="search-name">
-                        <input type="text" placeholder="Tìm kiếm danh sách theo tên" />
-                        <button className="search-quantity">
-                            <i className="fa-solid fa-magnifying-glass"></i>
-                        </button>
-
-                    </div>
-
-            <div className="pagination">
-                <button onClick={onPrevPage}><i className="pagination-one fa-solid fa-angle-left"></i></button>
-                <span>{total.page_index + '/' + total.total_page }</span>
-                <button onClick={onNextPage}><i className="pagination-one fa-solid fa-angle-right"></i></button>
-            </div>
-
-                </div>
-                <div className="content-table">
-                    <table cellPadding="0" cellSpacing="0">
-                        <thead>
-                            <tr>
-                                <th>Image</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Category</th>
-                                <th>Quantity</th>
-                                <th>Origin</th>
-                                <th>Discount</th>
-                                <th>Description</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {lstProduct.length > 0 && lstProduct?.map((item: any) => (
-                                <tr key={item.id}>
-                                    <td><img src={item.image} alt="" width={120} /></td>
-                                    <td>{item.name}</td>
-                                    <td>{item.price}</td>
-                                    <td>{item.categories}</td>
-                                    <td>{item.quantity}</td>
-                                    <td>{item.origin}</td>
-                                    <td>{item.discount}</td>
-                                    <td>{item.description}</td>
-                                    <td>{item.status ? "Open" : "Hide"}</td>
-                                   
-                                    <td>
-                                        <button type="button" className="btn-update" onClick={() => handleEditData(item.id)}>
-                                            <i className="fa-solid fa-pen-to-square"></i>
-                                        </button>
-                                        
-                                    </td>
-                                    <td>
-                                       <button type="button" className="btn-delete" onClick={() => deleteProduct(item.id)}>
-                                            <i className="fa-solid fa-delete-left"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                            {!lstProduct && (
-                                <tr>
-                                    <td>No product</td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </div>
-             
-            </div>
-        </>
-    )
+          <button
+            disabled={total.page_index === total.total_page}
+            onClick={() => handlePageChange(total.page_index + 1)}
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }

@@ -52,7 +52,7 @@
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 100%; /* Đảm bảo container có thể mở rộng toàn bộ chiều rộng */
   margin: 0 auto;
   padding: 20px;
 }
@@ -76,7 +76,7 @@
 }
 
 .content-sub .two {
-  background-color: #007bff;
+  background-color: #4CAF50;
   color: #fff;
   padding: 8px 16px;
   border-radius: 4px;
@@ -85,7 +85,7 @@
 }
 
 .content-sub .two:hover {
-  background-color: #0056b3;
+  background-color: #329b36;
 }
 
 .content-form,
@@ -221,75 +221,98 @@
   justify-content: center;
 }
 
-.content-table th,
-.content-table td {
-  padding: 8px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  text-align: left;
+.content-table {
+  width: 100%;
+  margin-top: 20px;
+  /* Tắt thanh cuộn ngang */
+  overflow-x: visible; /* Không sử dụng thanh cuộn ngang */
 }
-
-.content-table th {
-  background-color: #007bff;
-  color: #fff;
-}
-
-.content-table td {
-  background-color: #fff;
-}
-
-table {
+.content-table table {
   width: 100%;
   border-collapse: collapse;
+  font-size: 14px; /* Giảm kích thước chữ cho vừa với không gian */
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  table-layout: auto; /* Để bảng tự điều chỉnh chiều rộng các cột */
 }
-
-th,
-td {
-  padding: 10px;
-  text-align: left;
-  border: 1px solid #ddd;
+.content-table table thead {
+  background-color: #4CAF50;
+  color: white;
 }
-
-th {
-  background-color: #f4f4f4;
+.content-table table thead th {
+  padding: 12px;
+  text-align: center;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
-
-.content-table .btn-update,
-.content-table .btn-delete {
-  padding: 5px 10px;
+.content-table table thead th:hover {
+  background-color: #45a049;
+}
+.content-table table tbody tr {
+  transition: background 0.3s ease;
+}
+.content-table table tbody tr:nth-child(even) {
+  background-color: #f8f8f8;
+}
+.content-table table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+.content-table table tbody tr td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  transition: background 0.3s ease;
+  /* Điều chỉnh text không bị tràn */
+  max-width: 150px; /* Giới hạn độ rộng của các ô */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.content-table table tbody tr td img {
+  max-width: 100px; /* Giới hạn kích thước ảnh */
+  border-radius: 5px;
+  object-fit: cover;
+}
+.content-table table tbody tr td button {
+  padding: 8px 12px;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
+  font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.3s;
-  display: inline-flex;
-  justify-content: center;
+  transition: background-color 0.3s ease;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 5px;
 }
-
-.content-table .btn-update {
+.content-table table tbody tr td button.edit {
   background-color: #007bff;
-  color: #fff;
+  color: white;
 }
-
-.content-table .btn-update:hover {
+.content-table table tbody tr td button.edit:hover {
   background-color: #0056b3;
 }
-
-.content-table .btn-delete {
-  background-color: #dc3545;
-  color: #fff;
-  margin-left: 10px;
+.content-table table tbody tr td button.delete {
+  background-color: #e74c3c;
+  color: white;
 }
-
-.content-table .btn-delete:hover {
-  background-color: #c82333;
+.content-table table tbody tr td button.delete:hover {
+  background-color: #c0392b;
 }
-
-.action-icons {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  align-items: center;
+@media (max-width: 768px) {
+  .content-table table {
+    font-size: 12px; /* Giảm kích thước chữ cho màn hình nhỏ */
+  }
+  .content-table th, .content-table td {
+    padding: 8px;
+  }
+  .content-table td {
+    display: block;
+    text-align: left;
+    white-space: normal; /* Cho phép nội dung ô bẻ dòng */
+  }
 }
 
 .search-list {
@@ -371,6 +394,53 @@ th {
   font-size: 16px;
   margin: 0 10px;
   color: #333;
+}
+
+.reload-button {
+  margin-top: 20px;
+  text-align: right; /* Căn chỉnh nút reload sang bên phải */
+}
+
+.btn-reload {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-reload:hover {
+  background-color: #4CAF50;
+}
+
+/* Pagination Controls */
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 10px;
+}
+.pagination-controls button {
+  padding: 8px 16px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+.pagination-controls button:hover {
+  background-color: #e0e0e0;
+  transform: scale(1.05);
+}
+.pagination-controls button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+.pagination-controls button.active {
+  background-color: #4CAF50;
+  color: white;
 }
 
 .container-pro {
@@ -1383,12 +1453,43 @@ h2 {
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 4px;
+  display: flex;
+  justify-content: space-between; /* Đảm bảo chữ và nút được phân chia đều */
+  align-items: center;
+}
+
+.categoryList li span {
+  font-size: 16px; /* Chỉnh sửa font chữ cho dễ nhìn */
 }
 
 .categoryList button {
   margin-left: 10px;
   padding: 5px 10px;
   cursor: pointer;
+  border-radius: 4px;
+  border: none;
+}
+
+.categoryList button:hover {
+  opacity: 0.8;
+}
+
+.cover {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.cover .one button {
+  background-color: #4CAF50; /* Nút sửa */
+  margin-top: 20px;
+  color: white;
+}
+
+.cover .two button {
+  background-color: red; /* Nút xóa */
+  margin-top: 20px;
+  color: white;
 }
 
 .formSection {
@@ -1412,15 +1513,6 @@ h2 {
 
 .formSection button:hover {
   background-color: #45a049;
-}
-
-.cover {
-  display: flex;
-  justify-content: end;
-}
-
-.two button {
-  background-color: red;
 }
 
 .container {

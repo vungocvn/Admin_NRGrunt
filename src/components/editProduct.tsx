@@ -1,5 +1,6 @@
 // editProduct.tsx
-import React from 'react';
+import { Editor } from '@tinymce/tinymce-react';
+import React, { useRef } from 'react';
 
 const EditProductForm: React.FC<any> = ({
   editData,
@@ -74,12 +75,34 @@ const EditProductForm: React.FC<any> = ({
       </div>
       <div className="form-sub">
         <label>Description</label>
-        <input
+        <Editor
+          apiKey='58ch4vcs9zi0g4x0gfk9dw4w3iib5zjkchtmfju9dw7cckip'
+          onChange={(e)=>{
+            var content = e.target.getContent();
+            setEditdata({...editData,description:content})}}
+          init={{
+            plugins: [
+              // Core editing features
+              'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
+              'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown', 'importword', 'exportword', 'exportpdf'
+            ],
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            mergetags_list: [
+              { value: 'First.Name', title: 'First Name' },
+              { value: 'Email', title: 'Email' },
+            ],
+            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
+          }}
+          initialValue={editData.description}
+        />
+        {/* <input
           type="text"
           placeholder=""
           onChange={(e) => setEditdata({ ...editData, description: e.target.value })}
           value={editData.description}
-        />
+        /> */}
       </div>
       <div className="form-1">
         <label>Category</label>

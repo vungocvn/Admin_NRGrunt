@@ -1,11 +1,14 @@
 'use client'
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Cookies from 'js-cookie';
 import EditProductForm from './editProduct';
+import { ToastContainer, toast } from 'react-toastify'; // Import Toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import styles for Toastify
 
 export default function Admin() {
+  const pageIndexRef = useRef(1)
   const [openModal, setOpenModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [editData, setEditdata] = useState<any>({
@@ -21,7 +24,7 @@ export default function Admin() {
   });
   const [lstProduct, setLstProduct] = useState<any>([]);
   const [dataCategory, setDataCategory] = useState<any>([]);
-  const [total, setTotal] = useState({ total_item: 0, total_page: 1, page_size: 5, page_index: 1 });
+  const [total, setTotal] = useState({ total_item: 0, total_page: 1, page_size: 5, page_index: pageIndexRef.current });
 
   const token = Cookies.get('token_cua_Ngoc') || "";
   const router = useRouter();
@@ -29,19 +32,20 @@ export default function Admin() {
   // Lấy danh sách sản phẩm
   const getAllProduct = ({ id_category, sortOder, sort_col, pageIndex, pageSize }: any) => {
     setLstProduct([]);
+    setTotal({ ...total, page_index: pageIndex  });
     axios
       .get("http://127.0.0.1:8000/api/products", {
-        params: { id_category, sort_col, sort_order: sortOder, page_index: pageIndex, page_size: pageSize }
+        params: { id_category, sort_col, sort_order: sortOder, page_index: pageIndex, page_size: pageSize || total.page_size },
       })
       .then((res) => {
         if (res.data.status === 200) {
           setTotal({ ...total, page_index: pageIndex || total.page_index, total_page: res.data.data.total_pages, total_item: res.data.data.total_items });
           setLstProduct(res.data.data.items);
         } else {
-          alert("Error fetching products");
+          toast.error("Error fetching products");
         }
       }).catch((error) => {
-        alert("Error fetching products");
+        toast.error("Error fetching products");
       });
   };
 
@@ -52,10 +56,11 @@ export default function Admin() {
         if (res.data.status === 200) {
           setDataCategory(res.data.data);
         } else {
-          alert("Error fetching categories");
+          toast.error("Error fetching categories");
         }
       }).catch((error) => {
         console.error("Error fetching categories", error);
+        toast.error("Error fetching categories");
       });
   };
 
@@ -64,12 +69,12 @@ export default function Admin() {
     axios.post("http://127.0.0.1:8000/api/products", editData, {
       headers: { Authorization: `Bearer ${token}` }
     }).then((res) => {
-      alert(res.data.message);
+      toast.success("Product created successfully!"); // Thông báo tạo sản phẩm thành công
       setLstProduct([res.data.data, ...lstProduct]);
       setOpenModal(false);
-      getAllProduct({ id_category: 0, pageIndex: total.page_index });
+      getAllProduct({ id_category: 0, pageIndex: total.page_index, sort_col: "id", sortOder: "desc" });
     }).catch((error) => {
-      alert(error.response.data.error);
+      toast.error("Failed to create product. " + error.response.data.error); // Thông báo lỗi khi tạo sản phẩm
     });
   };
 
@@ -78,11 +83,23 @@ export default function Admin() {
     axios.put(`http://127.0.0.1:8000/api/products/${editData.id}`, editData, {
       headers: { Authorization: `Bearer ${token}` }
     }).then((res) => {
-      alert(res.data.message);
+      toast.success("Product updated successfully!"); // Thông báo cập nhật sản phẩm thành công
       setOpenModal(false);
-      getAllProduct({ id_category: 0, pageIndex: total.page_index });
+      getAllProduct({ id_category: 0, pageIndex: total.page_index, sort_col: "id", sortOder: "desc" });
     }).catch((error) => {
-      alert(error.response.data.error);
+      toast.error("Failed to update product. " + error.response.data.error); // Thông báo lỗi khi cập nhật sản phẩm
+    });
+  };
+
+  // Hàm xóa sản phẩm
+  const deleteProduct = (id: number) => {
+    axios.delete(`http://127.0.0.1:8000/api/products/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).then((res) => {
+      toast.success("Product deleted successfully!"); // Thông báo xóa sản phẩm thành công
+      getAllProduct({ id_category: 0, pageIndex: total.page_index, sort_col: "id", sortOder: "desc" });
+    }).catch((error) => {
+      toast.error("Failed to delete product. " + error.response.data.error); // Thông báo lỗi khi xóa sản phẩm
     });
   };
 
@@ -111,8 +128,9 @@ export default function Admin() {
   // Hàm thay đổi trang
   const handlePageChange = (page: number) => {
     if (page < 1 || page > total.total_page) return;
+    pageIndexRef.current = page;
     setTotal({ ...total, page_index: page });
-    getAllProduct({ id_category: 0, pageIndex: page, sort_col: "id", sortOder: "desc" });
+    getAllProduct({ id_category: 0,  sortOder: "desc", sort_col: "id", pageIndex: page});
   };
 
   // Phân trang
@@ -135,7 +153,7 @@ export default function Admin() {
   ));
 
   useEffect(() => {
-    getAllProduct({ id_category: 0, pageIndex: total.page_index, sort_col: "id", sortOder: "desc" });
+    getAllProduct({ id_category: 0, sort_col: "id", sortOder: "desc", pageIndex: total.page_index });
     getAllCategory();
   }, [total.page_index]);
 
@@ -157,7 +175,9 @@ export default function Admin() {
             editData={editData}
             setEditdata={setEditdata}
             dataCategory={dataCategory}
-            handleImageUpload={(e, setInsert, dataInsert, alert) => {}}
+            handleImageUpload={(e: any, setInsert: any, dataInsert: any, alert: any) => {
+              setEditdata({ ...editData, image: e.target.files[0].name });
+            }}
             updateProduct={isEdit ? updateProduct : createProduct}
             cancelProcess={handleCloseModal}
           />
@@ -181,16 +201,16 @@ export default function Admin() {
               </tr>
             </thead>
             <tbody>
-              {lstProduct.map((product) => (
+              {lstProduct.map((product: any) => (
                 <tr key={product.id}>
                   <td><img src={product.image} alt={product.name} width={100} /></td>
                   <td>{product.name}</td>
                   <td>{product.price}</td>
-                  <td>{product.categories}</td>
+                  <td>{dataCategory.find((category: any) => category.id === product.category_id)?.name}</td>
                   <td>{product.quantity}</td>
                   <td>{product.origin}</td>
                   <td>{product.discount}</td>
-                  <td>{product.description}</td>
+                  <td><div className="des" dangerouslySetInnerHTML={{ __html: product.description }}></div></td>
                   <td>{product.status ? "Open" : "Hide"}</td>
                   <td>
                     <button onClick={() => handleEditData(product.id)}>
@@ -198,7 +218,7 @@ export default function Admin() {
                     </button>
                   </td>
                   <td>
-                    <button onClick={() => lstProduct(product.id)}>
+                    <button onClick={() => deleteProduct(product.id)}>
                       <i className="fa-solid fa-delete-left"></i> Delete
                     </button>
                   </td>
@@ -227,6 +247,9 @@ export default function Admin() {
           </button>
         </div>
       </div>
+
+      {/* Toast Container */}
+      <ToastContainer position="top-right" autoClose={5000} />
     </div>
   );
 }

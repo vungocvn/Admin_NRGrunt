@@ -1,52 +1,66 @@
 import axios from "axios";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useState, useEffect } from "react";
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
+import { ToastContainer, toast } from 'react-toastify'; // Import Toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import styles for Toastify
 
 export default function Login() {
     interface dataLogin {
         email: string;
         password: string;
-        role : string
+        role: string;
     }
     const router = useRouter();
     const dfLogin: dataLogin = {
         email: "",
         password: "",
-        role : "Admin"
-    }
-    const [login, setLogin] = useState<dataLogin>(dfLogin)
+        role: "Admin"
+    };
+    const [login, setLogin] = useState<dataLogin>(dfLogin);
+    const [isAuthenticated, setIsAuthenticated] = useState(false); // State to track authentication
+
+    // Hàm login
     const handleLogin = () => {
-       axios.post("http://127.0.0.1:8000/api/auth/login", login)
+        axios.post("http://127.0.0.1:8000/api/auth/login", login)
+        
             .then((res) => {
                 if (res.data.status === 200) {
-                    const access_token: string = res.data.data.access_token
-                    Cookies.set('token_cua_Ngoc', access_token, { expires: 1 })
-                    if(res.data.data.role === "CEO"){
-                        router.push('/manager')
-                        return alert('login success')
-                    }
-                    if(res.data.data.role === "Admin"){
-                        router.push('/admin')
-                        return alert('login success')
-                    } 
-                    return alert('not permission')
-                }
-                else if (res.data.status === 403) {
-                    alert(res.data.message)
+                    const access_token: string = res.data.data.access_token;
+                    Cookies.set('token_cua_Ngoc', access_token, { expires: 1 });
+
+                    // Thông báo đăng nhập thành công
+                    toast.success('Login success!'); // Thêm thông báo thành công
+
+                    // Đặt thời gian nhỏ để đảm bảo thông báo sẽ hiển thị trước khi chuyển trang
+                    setTimeout(() => {
+                        if (res.data.data.role === "CEO") {
+                            router.push('/manager');
+                            setIsAuthenticated(true); // Set user as authenticated
+                            return;
+                        }
+                        if (res.data.data.role === "Admin") {
+                            router.push('/admin');
+                            setIsAuthenticated(true); // Set user as authenticated
+                            return;
+                        }
+                        toast.error('Not permission');
+                    }, 2000); // Delay 2 giây trước khi chuyển hướng
+
+                } else if (res.data.status === 403) {
+                    toast.error(res.data.message);
                 } else {
-                    alert("login thất bại")
+                    toast.error("Login failed");
                 }
             }).catch((error) => {
                 if (error.response.status === 403) {
-                    alert(error.response.data.error)
+                    toast.error(error.response.data.error);
                 } else {
-                    alert("login thất bại")
-
+                    toast.error("Login failed");
                 }
-            })
-    }
+            });
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -56,38 +70,44 @@ export default function Login() {
         });
     };
 
-    useMemo(() => {
+    // Kiểm tra token khi người dùng đã đăng nhập
+    useEffect(() => {
         const token: string = Cookies.get('token_cua_Ngoc') || "";
-        axios.post("http://127.0.0.1:8000/api/auth/check-auth", 
-        {},
-        {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-            .then((res) => {
-                if (res.data.data) {
-                    if(res.data.data.role === "CEO"){
-                        router.push('/manage')
-                        return alert('you are CEO')
-                    }
-                    if(res.data.data.role === "Admin"){
-                        router.push('/admin')
-                        return alert('you are Admin')
-                    } 
-                    return alert("not permission")
-                } else {
-                    alert("vui lòng đăng nhập")
+        if (token && !isAuthenticated) {  // Kiểm tra token và trạng thái xác thực
+            axios.post("http://127.0.0.1:8000/api/auth/check-auth", {}, {
+                headers: {
+                    Authorization: `Bearer ${token}`
                 }
-            }).catch(() => {
-                alert("vui lòng đăng nhập")
             })
-    }, [router])
+                .then((res) => {
+                    if (res.data.data) {
+                        // if (res.data.data.role === "CEO") {
+                        //     router.push('/manager');
+                        //     toast.success('You are CEO');
+                        //     setIsAuthenticated(true);
+                        //     return;
+                        // }
+                        if (res.data.data.role === "Admin") {
+                            router.push('/admin');
+                            toast.success('You are Admin');
+                            setIsAuthenticated(true);
+                            return;
+                        }
+                        toast.error("Not permission");
+                    } else {
+                        toast.error("Please login");
+                    }
+                }).catch(() => {
+                    toast.error("Please login");
+                });
+        }
+    }, [router, isAuthenticated]); // Thêm isAuthenticated làm dependency
+
     return (
-        <> 
-          <div className="login-container">
+        <>
+            <div className="login-container">
                 <div className="login-image"> </div>
-              <div className="login-form">
+                <div className="login-form">
                     <h2>Login</h2>
                     <div className="form-name">
                         <label>Email</label>
@@ -96,17 +116,16 @@ export default function Login() {
                     </div>
                     <div className="form-name">
                         <label>Password</label>
-                        <input type="password" placeholder="Enter passwword" value={login.password}
+                        <input type="password" placeholder="Enter password" value={login.password}
                             onChange={handleChange} name="password" />
                     </div>
-                    <button type="submit" className="button-login" onClick={() => {
-                        handleLogin()
-                    }}>Sign in</button>
+                    <button type="submit" className="button-login" onClick={handleLogin}>Sign in</button>
                     <p>{"Don't have an account?"} <Link href="./register" className="i">Sign up</Link></p>
                 </div>
+            </div>
 
-          </div>
-        
+            {/* Toast Container */}
+            <ToastContainer position="top-right" autoClose={5000} />
         </>
-    )
+    );
 }

@@ -1,24 +1,47 @@
-import { useState } from 'react';
+import axios from 'axios';
+import { use, useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 
 export default function AdminOrders() {
-  // State để lưu danh sách đơn hàng
-  const [orders, setOrders] = useState([
-    { id: 1, customer: 'Nguyễn Văn A', items: 'Sữa Rửa Mặt, Kem Dưỡng', total: '800,000 VND', status: 'Đang xử lý' },
-    { id: 2, customer: 'Trần Thị B', items: 'Son Môi, Dầu Dưỡng Tóc', total: '650,000 VND', status: 'Đã giao hàng' },
-    { id: 3, customer: 'Lê Quang C', items: 'Serum, Kem Dưỡng', total: '1,200,000 VND', status: 'Đang xử lý' },
-  ]);
+  const token = Cookies.get("token_cua_Ngoc");
+  const [users, setUsers] = useState<any>([]);
+  const [orders, setOrders] = useState<any>([]);
+  function getAllCart() {
+    axios.get('http://127.0.0.1:8000/api/carts', {
+      headers: { Authorization: `Bearer ${token}` }
+    }).then((res) => {
+      setOrders(res.data.data);
+    })
+  }
+  function getAllUser() {
+    axios.get('http://127.0.0.1:8000/api/users', {
+      headers: { Authorization: `Bearer ${token}` }
+    }).then((res) => {
+      setUsers(res.data.data);
+    })
+  }
+  function formatCurrency(amount: any, currency = 'VND', locale = 'vi-VN') {
+    return new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: currency
+    }).format(amount);
+  }
 
-  // Cập nhật trạng thái đơn hàng
-  const updateStatus = (id, newStatus) => {
-    setOrders(orders.map(order => 
-      order.id === id ? { ...order, status: newStatus } : order
-    ));
+  const deleteOrder = (id: number) => {
+    axios.delete(`http://127.0.0.1:8000/api/carts/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).then((res) => {
+      getAllCart();
+    })
   };
-
-  // Xoá đơn hàng
-  const deleteOrder = (id) => {
-    setOrders(orders.filter(order => order.id !== id));
-  };
+  useEffect(() => {
+    getAllCart();
+    getAllUser();
+  }, []);
+ function getUserName(id: number) {
+  const user = users.find((user: any) => user.id === id);
+  return user ? user.name : '';
+ }
   return (
     <div className="container">
       <div className="orderList">
@@ -28,31 +51,22 @@ export default function AdminOrders() {
             <tr>
               <th>Khách hàng</th>
               <th>Sản phẩm</th>
+              <th>Số lượng</th>
               <th>Tổng tiền</th>
-              <th>Trạng thái</th>
               <th>Thao tác</th>
             </tr>
           </thead>
           <tbody>
-            {orders.map(order => (
+            {orders?.map((order: any) => (
               <tr key={order.id}>
-                <td>{order.customer}</td>
-                <td>{order.items}</td>
-                <td>{order.total}</td>
-                <td>{order.status}</td>
+                <td>{getUserName(order.user_id)}</td>
+                <td>{order.product_name}</td>
+                <td>{order.quantity}</td>
+                <td>{formatCurrency(order.price * order.quantity)}</td>
                 <td>
-                  {order.status !== 'Đã giao hàng' && (
-                    <button 
-                      onClick={() => updateStatus(order.id, 'Đã giao hàng')} 
-                      className="updateButton"
-                    >
-                      Update
-                    </button>
-                  )}
-                  <button 
-                    onClick={() => deleteOrder(order.id)} 
-                    className="deleteButton"
-                  >
+                  <button
+                    onClick={() => deleteOrder(order.id)}
+                    className="deleteButton">
                     Xoá
                   </button>
                 </td>

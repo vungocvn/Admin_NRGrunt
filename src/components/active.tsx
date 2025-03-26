@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { useMemo, useState } from "react";
 export default function Active() {
     const [ss, setSS] = useState<any>([]);
-    const token = Cookies.get('token_cua_Ngoc') || "";
+    const token = Cookies.get('token_cms') || "";
 
     const activeUser = () => {
         axios.post("http://127.0.0.1:8000/api/users/active/send-mail",

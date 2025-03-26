@@ -28,7 +28,7 @@ export default function Login() {
             .then((res) => {
                 if (res.data.status === 200) {
                     const access_token: string = res.data.data.access_token;
-                    Cookies.set('token_cua_Ngoc', access_token, { expires: 1 });
+                    Cookies.set('token_cms', access_token, { expires: 1 });
 
                     // Thông báo đăng nhập thành công
                     toast.success('Login success!'); // Thêm thông báo thành công
@@ -72,7 +72,7 @@ export default function Login() {
 
     // Kiểm tra token khi người dùng đã đăng nhập
     useEffect(() => {
-        const token: string = Cookies.get('token_cua_Ngoc') || "";
+        const token: string = Cookies.get('token_cms') || "";
         if (token && !isAuthenticated) {  // Kiểm tra token và trạng thái xác thực
             axios.post("http://127.0.0.1:8000/api/auth/check-auth", {}, {
                 headers: {

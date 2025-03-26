@@ -8,7 +8,7 @@ import { ToastContainer, toast } from 'react-toastify'; // Import Toastify
 import 'react-toastify/dist/ReactToastify.css'; // Import styles for Toastify
 
 export default function Admin() {
-  const pageIndexRef = useRef(1)
+  const pageIndexRef = useRef(1);
   const [openModal, setOpenModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [editData, setEditdata] = useState<any>({
@@ -26,13 +26,14 @@ export default function Admin() {
   const [dataCategory, setDataCategory] = useState<any>([]);
   const [total, setTotal] = useState({ total_item: 0, total_page: 1, page_size: 5, page_index: pageIndexRef.current });
 
-  const token = Cookies.get('token_cua_Ngoc') || "";
+  const token = Cookies.get('token_cms') || "";
   const router = useRouter();
+  const [uploadedImg, setUploadedImg] = useState<{ [key: string]: any }>({});
 
   // Lấy danh sách sản phẩm
   const getAllProduct = ({ id_category, sortOder, sort_col, pageIndex, pageSize }: any) => {
     setLstProduct([]);
-    setTotal({ ...total, page_index: pageIndex  });
+    setTotal({ ...total, page_index: pageIndex });
     axios
       .get("http://127.0.0.1:8000/api/products", {
         params: { id_category, sort_col, sort_order: sortOder, page_index: pageIndex, page_size: pageSize || total.page_size },
@@ -69,12 +70,12 @@ export default function Admin() {
     axios.post("http://127.0.0.1:8000/api/products", editData, {
       headers: { Authorization: `Bearer ${token}` }
     }).then((res) => {
-      toast.success("Product created successfully!"); // Thông báo tạo sản phẩm thành công
+      toast.success("Product created successfully!");
       setLstProduct([res.data.data, ...lstProduct]);
       setOpenModal(false);
       getAllProduct({ id_category: 0, pageIndex: total.page_index, sort_col: "id", sortOder: "desc" });
     }).catch((error) => {
-      toast.error("Failed to create product. " + error.response.data.error); // Thông báo lỗi khi tạo sản phẩm
+      toast.error("Failed to create product. " + error.response.data.error);
     });
   };
 
@@ -83,11 +84,11 @@ export default function Admin() {
     axios.put(`http://127.0.0.1:8000/api/products/${editData.id}`, editData, {
       headers: { Authorization: `Bearer ${token}` }
     }).then((res) => {
-      toast.success("Product updated successfully!"); // Thông báo cập nhật sản phẩm thành công
+      toast.success("Product updated successfully!");
       setOpenModal(false);
       getAllProduct({ id_category: 0, pageIndex: total.page_index, sort_col: "id", sortOder: "desc" });
     }).catch((error) => {
-      toast.error("Failed to update product. " + error.response.data.error); // Thông báo lỗi khi cập nhật sản phẩm
+      toast.error("Failed to update product. " + error.response.data.error);
     });
   };
 
@@ -96,10 +97,10 @@ export default function Admin() {
     axios.delete(`http://127.0.0.1:8000/api/products/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
     }).then((res) => {
-      toast.success("Product deleted successfully!"); // Thông báo xóa sản phẩm thành công
+      toast.success("Product deleted successfully!");
       getAllProduct({ id_category: 0, pageIndex: total.page_index, sort_col: "id", sortOder: "desc" });
     }).catch((error) => {
-      toast.error("Failed to delete product. " + error.response.data.error); // Thông báo lỗi khi xóa sản phẩm
+      toast.error("Failed to delete product. " + error.response.data.error);
     });
   };
 
@@ -122,7 +123,7 @@ export default function Admin() {
 
   // Hàm reload lại trang
   const handleReload = () => {
-    window.location.reload(); // Hoặc dùng router.reload() nếu bạn sử dụng Next.js
+    window.location.reload();
   };
 
   // Hàm thay đổi trang
@@ -130,7 +131,7 @@ export default function Admin() {
     if (page < 1 || page > total.total_page) return;
     pageIndexRef.current = page;
     setTotal({ ...total, page_index: page });
-    getAllProduct({ id_category: 0,  sortOder: "desc", sort_col: "id", pageIndex: page});
+    getAllProduct({ id_category: 0, sortOder: "desc", sort_col: "id", pageIndex: page });
   };
 
   // Phân trang
@@ -152,10 +153,45 @@ export default function Admin() {
     </button>
   ));
 
+  // Hàm upload ảnh
+  const handleImageUpload = async (e: any) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/products/upload-image', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data.status === 200) {
+        setUploadedImg({ image: response.data.filePath });
+        // toast.success('Image uploaded successfully!');
+        setEditdata({ ...editData, image: response.data.filePath });
+      } else {
+        toast.error('Image upload failed!');
+      }
+    } catch (error) {
+      toast.error('Error uploading image!');
+    }
+  };
+
   useEffect(() => {
     getAllProduct({ id_category: 0, sort_col: "id", sortOder: "desc", pageIndex: total.page_index });
     getAllCategory();
   }, [total.page_index]);
+
+    function formatCurrency(amount: any, currency = 'VND', locale = 'vi-VN') {
+    return new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: currency
+    }).format(amount);
+  }
 
   return (
     <div className="container">
@@ -169,15 +205,14 @@ export default function Admin() {
             <i className="fas fa-sync-alt"></i>
           </button>
         </div>
+
         {/* Modal Create/Edit Product */}
         {openModal && (
           <EditProductForm
             editData={editData}
             setEditdata={setEditdata}
             dataCategory={dataCategory}
-            handleImageUpload={(e: any, setInsert: any, dataInsert: any, alert: any) => {
-              setEditdata({ ...editData, image: e.target.files[0].name });
-            }}
+            handleImageUpload={handleImageUpload}
             updateProduct={isEdit ? updateProduct : createProduct}
             cancelProcess={handleCloseModal}
           />
@@ -187,39 +222,54 @@ export default function Admin() {
           <table>
             <thead>
               <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Category</th>
-                <th>Quantity</th>
-                <th>Origin</th>
-                <th>Discount</th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>Edit</th>
-                <th>Delete</th>
+                <th style={{ maxWidth: "50px" }}>Image</th>
+                <th style={{ maxWidth: "100px" }}>Name</th>
+                <th style={{ maxWidth: "50px" }}>Price</th>
+                <th style={{ maxWidth: "100px" }}>Category</th>
+                <th style={{ maxWidth: "61px" }}>Quantity</th>
+                <th style={{ maxWidth: "30px" }}>Origin</th>
+                <th style={{ maxWidth: "61px" }}>Discount</th>
+                <th style={{ maxWidth: "350px" }}>Description</th>
+                <th style={{ maxWidth: "35px" }}>Status</th>
+                <th style={{ maxWidth: "20px" }}>Edit</th>
+                <th style={{ maxWidth: "20px" }}>Delete</th>
               </tr>
             </thead>
             <tbody>
               {lstProduct.map((product: any) => (
                 <tr key={product.id}>
-                  <td><img src={product.image} alt={product.name} width={100} /></td>
+                  <td><img src={`http://127.0.0.1:8000${product.image}`} alt={product.name} width={100} /></td>
                   <td>{product.name}</td>
-                  <td>{product.price}</td>
+                  <td>{formatCurrency(product.price)}</td>
                   <td>{dataCategory.find((category: any) => category.id === product.category_id)?.name}</td>
                   <td>{product.quantity}</td>
                   <td>{product.origin}</td>
                   <td>{product.discount}</td>
-                  <td><div className="des" dangerouslySetInnerHTML={{ __html: product.description }}></div></td>
+                  <td style={{ maxHeight: "424px", overflow: "hidden", padding: "0" }}>
+                    <div className="des description"
+                      style={{
+                        width: "400px",
+                        overflow: "auto",
+                        maxHeight: "360px",
+                        whiteSpace: "normal",
+                        wordWrap: "break-word",
+                        display: "block",
+                        height: "100%",
+                        boxSizing: "border-box"
+                      }}
+                      dangerouslySetInnerHTML={{ __html: product.description }}
+                    >
+                    </div>
+                  </td>
                   <td>{product.status ? "Open" : "Hide"}</td>
                   <td>
                     <button onClick={() => handleEditData(product.id)}>
-                      <i className="fa-solid fa-pen-to-square"></i> Edit
+                      <i className="fa-solid fa-pen-to-square"></i>
                     </button>
                   </td>
                   <td>
                     <button onClick={() => deleteProduct(product.id)}>
-                      <i className="fa-solid fa-delete-left"></i> Delete
+                      <i className="fa-solid fa-delete-left"></i>
                     </button>
                   </td>
                 </tr>

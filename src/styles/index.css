@@ -224,8 +224,8 @@
 .content-table {
   width: 100%;
   margin-top: 20px;
+  overflow: auto;
   /* Tắt thanh cuộn ngang */
-  overflow-x: visible; /* Không sử dụng thanh cuộn ngang */
 }
 .content-table table {
   width: 100%;
@@ -264,14 +264,15 @@
   text-align: center;
   border-bottom: 1px solid #ddd;
   transition: background 0.3s ease;
-  /* Điều chỉnh text không bị tràn */
-  max-width: 150px; /* Giới hạn độ rộng của các ô */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.content-table table tbody tr td.description {
+  max-width: 400px !important;
+}
 .content-table table tbody tr td img {
-  max-width: 100px; /* Giới hạn kích thước ảnh */
+  max-width: 100px;
   border-radius: 5px;
   object-fit: cover;
 }
@@ -1184,7 +1185,7 @@ h2 {
   border-radius: 50%;
   object-fit: cover;
   margin-top: 10px;
-  border: 3px solid rgba(235, 245, 39, 0.642);
+  border: 3px solid rgb(6, 136, 67);
 }
 .container-3 button {
   margin-top: 15px;
@@ -1560,7 +1561,7 @@ h2 {
 }
 
 .updateButton {
-  padding: 5px 10px;
+  padding: 15px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -1568,7 +1569,7 @@ h2 {
 }
 
 .deleteButton {
-  padding: 5px 10px;
+  padding: 15px;
   width: 80px;
   border: none;
   border-radius: 4px;

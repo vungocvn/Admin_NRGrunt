@@ -179,6 +179,7 @@
 .content-table {
   width: 100%;
   margin-top: 20px;
+  overflow: auto;
   
   table {
     width: 100%;
@@ -223,15 +224,14 @@
           text-align: center;
           border-bottom: 1px solid #ddd;
           transition: background 0.3s ease;
-
-          /* Điều chỉnh text không bị tràn */
-          max-width: 150px; /* Giới hạn độ rộng của các ô */
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
-
+          &.description{
+            max-width: 400px !important;
+          }
           img {
-            max-width: 100px; /* Giới hạn kích thước ảnh */
+            max-width: 100px; 
             border-radius: 5px;
             object-fit: cover;
           }
@@ -272,7 +272,6 @@
   }
 
   /* Tắt thanh cuộn ngang */
-  overflow-x: visible; /* Không sử dụng thanh cuộn ngang */
   @media (max-width: 768px) {
     table {
       font-size: 12px; /* Giảm kích thước chữ cho màn hình nhỏ */

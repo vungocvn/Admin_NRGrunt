@@ -3,7 +3,7 @@ import { use, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 
 export default function AdminOrders() {
-  const token = Cookies.get("token_cua_Ngoc");
+  const token = Cookies.get("token_cms");
   const [users, setUsers] = useState<any>([]);
   const [orders, setOrders] = useState<any>([]);
   function getAllCart() {

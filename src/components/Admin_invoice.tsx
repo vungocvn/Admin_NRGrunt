@@ -3,11 +3,10 @@ import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 
 export default function AdminInvoices() {
-  const token = Cookies.get("token_cua_Ngoc"); 
+  const token = Cookies.get("token_cms"); 
   const [users, setUsers] = useState<any>([]);
   // State để lưu danh sách hóa đơn
   const [invoices, setInvoices] = useState<any[]>([]);
-
   // Lấy danh sách hóa đơn từ API
   function getAllBill() {
     axios.get('http://127.0.0.1:8000/api/orders', {

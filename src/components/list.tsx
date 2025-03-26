@@ -8,7 +8,7 @@ export default function List() {
   const [editingCategory, setEditingCategory] = useState(null);
   const [refresh, setRefresh] = useState(false); // Trigger re-render
 
-  const token = Cookies.get("token_cua_Ngoc");
+  const token = Cookies.get("token_cms");
 
   function getCategory() {
     axios.get('http://127.0.0.1:8000/api/categories', {

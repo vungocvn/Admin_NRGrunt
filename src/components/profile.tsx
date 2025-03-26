@@ -9,7 +9,7 @@ export default function Profile() {
     const router = useRouter();
 
     const logout = () =>{
-        const token = Cookies.get('token_cua_Ngoc') || "";
+        const token = Cookies.get('token_cms') || "";
 
         axios.post("http://127.0.0.1:8000/api/auth/logout",
             {},
@@ -20,7 +20,7 @@ export default function Profile() {
             }
         )
         .then((res)=>{
-            Cookies.remove('token_cua_Ngoc');
+            Cookies.remove('token_cms');
             alert("logout thành công")
             setTimeout(() => {
                 router.push('/login')
@@ -29,7 +29,7 @@ export default function Profile() {
     }
 
     useEffect(() => {
-        const token = Cookies.get('token_cua_Ngoc') || "";
+        const token = Cookies.get('token_cms') || "";
 
         if (token) {
             axios.get("http://127.0.0.1:8000/api/auth/profile", {

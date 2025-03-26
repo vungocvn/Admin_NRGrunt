@@ -9,7 +9,7 @@ export default function Update(){
     const router = useRouter();
 
     useEffect(() => {
-        const token = Cookies.get('token_cua_Ngoc') || ""; 
+        const token = Cookies.get('token_cms') || ""; 
 
         if (token) {
             axios.get("http://127.0.0.1:8000/api/auth/profile", {
@@ -53,7 +53,7 @@ export default function Update(){
         e.preventDefault();
         setLoading(true);
 
-        const token = Cookies.get("token_cua_Ngoc") || "";
+        const token = Cookies.get("token_cms") || "";
         if(!token) {
             alert("Please login ")
             setLoading(false);

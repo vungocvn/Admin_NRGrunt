@@ -20,7 +20,7 @@ export default function Register() {
             .then((res) => {
                 if (res.data.status === 200 || res.data.status === 201) {
                     const access_token: string = res.data.token;
-                    Cookies.set('token_cua_Ngoc', access_token, { expires: 1 });
+                    Cookies.set('token_cms', access_token, { expires: 1 });
                     alert("Sign up successfully!")
                     setTimeout(() => {
                         router.push('/login');

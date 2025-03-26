@@ -6,7 +6,7 @@ import Cookies from "js-cookie"
 import router from "next/router"
 export default function Menu() {
     const [showMenu, setShowMenu] = useState<boolean>(true);
-    const token = Cookies.get('token_cua_Ngoc');
+    const token = Cookies.get('token_cms');
 
     const checkAuth = () => {
         if (token && token !== "") {
@@ -34,7 +34,7 @@ export default function Menu() {
     }
     const logout = () =>{
         console.log("logout");
-        const token = Cookies.get('token_cua_Ngoc') || "";
+        const token = Cookies.get('token_cms') || "";
 
         axios.post("http://127.0.0.1:8000/api/auth/logout",
             {},
@@ -45,7 +45,7 @@ export default function Menu() {
             }
         )
         .then((res)=>{
-            Cookies.remove('token_cua_Ngoc');
+            Cookies.remove('token_cms');
             alert("logout thành công")
             setTimeout(() => {
                 router.push('/login')

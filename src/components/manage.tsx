@@ -15,7 +15,7 @@ export default function Management() {
     const getUsers = () => {
         axios
             .get(`${api.getUsers}`, {
-                headers: { Authorization: `Bearer ${Cookies.get("token_cua_Ngoc")}` },
+                headers: { Authorization: `Bearer ${Cookies.get("token_cms")}` },
             })
             .then((res) => {
                 setUsers(res.data.data);
@@ -37,7 +37,7 @@ export default function Management() {
                 { role: role },
                 {
                     headers: {
-                        Authorization: `Bearer ${Cookies.get("token_cua_Ngoc")}`,
+                        Authorization: `Bearer ${Cookies.get("token_cms")}`,
                     },
                 }
             )
@@ -61,7 +61,7 @@ export default function Management() {
                 },
                 {
                     headers: {
-                        Authorization: `Bearer ${Cookies.get("token_cua_Ngoc")}`,
+                        Authorization: `Bearer ${Cookies.get("token_cms")}`,
                     },
                 }
             )
@@ -86,12 +86,12 @@ export default function Management() {
                 {},
                 {
                     headers: {
-                        Authorization: `Bearer ${Cookies.get("token_cua_Ngoc")}`,
+                        Authorization: `Bearer ${Cookies.get("token_cms")}`,
                     },
                 }
             )
             .then((res) => {
-                if (res.data.data.role !== "CEO") {
+                if (res.data.data.role !== "Admin") {
                     alert("You cannot access this page.");
                     setTimeout(() => {
                         router.push("/admin");

@@ -4,6 +4,7 @@ export enum api{
          //user
         getUsers = apiHost + "users",
         //manager
-        changeUserRole = apiHost + "users/manager"
+        changeUserRole = apiHost + "users/manager",
+        updateUser = "updateUser"
         
 }

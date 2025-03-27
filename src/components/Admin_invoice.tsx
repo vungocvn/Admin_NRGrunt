@@ -57,10 +57,7 @@ export default function AdminInvoices() {
   }, []); // Lấy dữ liệu khi component load
 
   return (
-    <div className="container">
-      <div className="header">
-        <h1>Quản lý Hóa đơn</h1>
-      </div>
+    <div className="container-pro">
       <div className="invoiceList">
         <h3>Danh sách Hóa đơn</h3>
         <table className="table">

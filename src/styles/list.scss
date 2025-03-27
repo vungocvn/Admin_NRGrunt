@@ -1,92 +1,111 @@
 .container {
-  width: 80%;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.header {
-  text-align: center;
-  margin-bottom: 20px;
+  max-width: 800px;
+  margin: 40px auto;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .header h1 {
-  font-size: 24px;
-}
-
-.categoryList {
+  text-align: center;
+  color: #2c3e50;
+  font-size: 20px;
   margin-bottom: 20px;
 }
 
-.categoryList ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.categoryList li {
-  background-color: #f9f9f9;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 4px;
-  display: flex;
-  justify-content: space-between; /* Đảm bảo chữ và nút được phân chia đều */
-  align-items: center;
-}
-
-.categoryList li span {
-  font-size: 16px; /* Chỉnh sửa font chữ cho dễ nhìn */
-}
-
-.categoryList button {
-  margin-left: 10px;
-  padding: 5px 10px;
-  cursor: pointer;
-  border-radius: 4px;
-  border: none;
-}
-
-.categoryList button:hover {
-  opacity: 0.8;
-}
-
-.cover {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-.cover .one button {
-  background-color: #4CAF50; /* Nút sửa */
-  margin-top: 20px;
-  color: white;
-}
-
-.cover .two button {
-  background-color: red; /* Nút xóa */
-  margin-top: 20px;
-  color: white;
-}
-
 .formSection {
-  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+  input {
+    padding: 10px 14px;
+    font-size: 15px;
+    width: 280px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: border 0.2s;
+
+    &:focus {
+      border-color: #01ab78;
+    }
+  }
+
+  button {
+    padding: 10px 18px;
+    font-size: 14px;
+    border: none;
+    border-radius: 8px;
+    background-color: #01ab78;
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #018b63;
+    }
+  }
 }
 
-.formSection input {
-  padding: 10px;
-  width: 250px;
-  margin-right: 10px;
-}
+.categoryList {
+  h3 {
+    font-size: 20px;
+    color: #444;
+    margin-bottom: 16px;
+    text-align: center;
+  }
 
-.formSection button {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
+  ul {
+    list-style: none;
+    padding: 0;
+  }
 
-.formSection button:hover {
-  background-color: #45a049;
+  li {
+    background-color: #fafafa;
+    padding: 14px 20px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+
+    .cover {
+      display: flex;
+      gap: 10px;
+
+      button {
+        background-color: #01ab78;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        i {
+          font-size: 14px;
+        }
+
+        &:hover {
+          background-color: #018b63;
+        }
+      }
+
+      .two button {
+        background-color: #f44336;
+
+        &:hover {
+          background-color: #d32f2f;
+        }
+      }
+    }
+  }
 }

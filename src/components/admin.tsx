@@ -11,6 +11,7 @@ export default function Admin() {
   const pageIndexRef = useRef(1);
   const [openModal, setOpenModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [expandedDescriptions, setExpandedDescriptions] = useState<{ [id: number]: boolean }>({});
   const [editData, setEditdata] = useState<any>({
     image: "",
     name: "",
@@ -186,7 +187,7 @@ export default function Admin() {
     getAllCategory();
   }, [total.page_index]);
 
-    function formatCurrency(amount: any, currency = 'VND', locale = 'vi-VN') {
+  function formatCurrency(amount: any, currency = 'VND', locale = 'vi-VN') {
     return new Intl.NumberFormat(locale, {
       style: 'currency',
       currency: currency
@@ -197,7 +198,7 @@ export default function Admin() {
     <div className="container">
       <div className="content">
         <div className="content-sub">
-          <div className="one"><h2><i className="fa-solid fa-house"></i> Trang chủ admin</h2></div>
+          <div className="one"><h2>Danh sách sản phẩm</h2></div>
           <div className="two" onClick={() => { setOpenModal(true); setIsEdit(false); }}>+ Add</div>
         </div>
         <div className="reload-button">
@@ -222,17 +223,17 @@ export default function Admin() {
           <table>
             <thead>
               <tr>
-                <th style={{ maxWidth: "50px" }}>Image</th>
+                <th style={{ maxWidth: "80px" }}>Image</th>
                 <th style={{ maxWidth: "100px" }}>Name</th>
-                <th style={{ maxWidth: "50px" }}>Price</th>
-                <th style={{ maxWidth: "100px" }}>Category</th>
-                <th style={{ maxWidth: "61px" }}>Quantity</th>
-                <th style={{ maxWidth: "30px" }}>Origin</th>
-                <th style={{ maxWidth: "61px" }}>Discount</th>
-                <th style={{ maxWidth: "350px" }}>Description</th>
-                <th style={{ maxWidth: "35px" }}>Status</th>
-                <th style={{ maxWidth: "20px" }}>Edit</th>
-                <th style={{ maxWidth: "20px" }}>Delete</th>
+                <th style={{ maxWidth: "60px" }}>Status</th>
+                <th style={{ maxWidth: "90px" }}>Price</th>
+                <th style={{ maxWidth: "80px" }}>Category</th>
+                <th style={{ maxWidth: "80px" }}>Quantity</th>
+                <th style={{ maxWidth: "80px" }}>Origin</th>
+                <th style={{ maxWidth: "80px" }}>Discount</th>
+                <th style={{ maxWidth: "330px" }}>Description</th>
+                <th style={{ maxWidth: "40px" }}>Edit</th>
+                <th style={{ maxWidth: "60px" }}>Delete</th>
               </tr>
             </thead>
             <tbody>
@@ -240,28 +241,41 @@ export default function Admin() {
                 <tr key={product.id}>
                   <td><img src={`http://127.0.0.1:8000${product.image}`} alt={product.name} width={100} /></td>
                   <td>{product.name}</td>
+                  <td>{product.status ? "Open" : "Hide"}</td>
                   <td>{formatCurrency(product.price)}</td>
                   <td>{dataCategory.find((category: any) => category.id === product.category_id)?.name}</td>
                   <td>{product.quantity}</td>
                   <td>{product.origin}</td>
                   <td>{product.discount}</td>
-                  <td style={{ maxHeight: "424px", overflow: "hidden", padding: "0" }}>
-                    <div className="des description"
-                      style={{
-                        width: "400px",
-                        overflow: "auto",
-                        maxHeight: "360px",
-                        whiteSpace: "normal",
-                        wordWrap: "break-word",
-                        display: "block",
-                        height: "100%",
-                        boxSizing: "border-box"
-                      }}
+                  <td
+                    style={{
+                      width: "400px",
+                      overflow: "auto",
+                      maxHeight: "360px",
+                      whiteSpace: "normal",
+                      wordWrap: "break-word",
+                      display: "block",
+                      height: "100%",
+                      boxSizing: "border-box",
+                    }}
+                  >
+                    <div
+                      className={`description ${expandedDescriptions[product.id] ? "expanded" : ""}`}
                       dangerouslySetInnerHTML={{ __html: product.description }}
+                    ></div>
+                    <span
+                      className="desc-toggle"
+                      onClick={() =>
+                        setExpandedDescriptions((prev) => ({
+                          ...prev,
+                          [product.id]: !prev[product.id],
+                        }))
+                      }
                     >
-                    </div>
+                      {expandedDescriptions[product.id] ? "Thu gọn" : "Xem thêm"}
+                    </span>
                   </td>
-                  <td>{product.status ? "Open" : "Hide"}</td>
+
                   <td>
                     <button onClick={() => handleEditData(product.id)}>
                       <i className="fa-solid fa-pen-to-square"></i>

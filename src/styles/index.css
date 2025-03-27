@@ -51,15 +51,27 @@
   transition: 0.5s;
 }
 
+body {
+  font-family: sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f9f9f9;
+  margin: 0;
+  padding: 0;
+}
+
 .container {
-  max-width: 100%; /* Đảm bảo container có thể mở rộng toàn bộ chiều rộng */
-  margin: 0 auto;
-  padding: 20px;
+  max-width: 100%;
+  padding-top: 80px;
+  padding-right: 20px;
+  box-sizing: border-box;
 }
 
 .content {
-  padding: 20px;
-  border-radius: 8px;
+  border-radius: 12px;
+  margin-right: 20px;
+  overflow-x: auto;
 }
 
 .content-sub {
@@ -68,382 +80,184 @@
   align-items: center;
   margin-bottom: 20px;
 }
-
 .content-sub .one h2 {
-  margin: 0;
-  font-size: 20px;
-  color: #333;
+  font-size: 22px;
+  font-weight: 600;
+  color: #222;
 }
-
 .content-sub .two {
-  background-color: #4CAF50;
+  background-color: #01ab78;
   color: #fff;
   padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.content-sub .two:hover {
-  background-color: #329b36;
-}
-
-.content-form,
-.content-form-1 {
-  background-color: #fff;
-  padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-}
-
-.content-form h2,
-.content-form-1 h2 {
-  margin-top: 0;
-  font-size: 18px;
-  color: #333;
-}
-
-.form-sub,
-.form-1 {
-  margin-bottom: 15px;
-}
-
-.form-sub label,
-.form-1 label {
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: #333;
-}
-
-.form-sub input {
-  width: 98%;
-  padding: 8px;
-  outline: none;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.form-1 input {
-  padding: 8px;
-  border: none;
-  outline: none;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.form-1 select {
-  margin-left: 20px;
-  width: 15%;
-}
-
-.update {
-  display: flex;
-  gap: 10px;
-}
-
-.update .btn-update,
-.update .btn-cancel,
-.btn,
-.btn-2 {
-  background-color: #007bff;
-  color: #fff;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: 0.3s;
 }
-
-.btn-2 {
-  margin-left: 20px;
-}
-
-.update .btn-update:hover,
-.btn:hover {
-  background-color: #0056b3;
-}
-
-.update .btn-cancel,
-.btn-2 {
-  background-color: #dc3545;
-}
-
-.update .btn-cancel:hover,
-.btn-2:hover {
-  background-color: #c82333;
-}
-
-.search-list {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.search-name input {
-  padding: 10px;
-  width: 200px;
-  border-radius: 4px;
-  border: 1px solid;
-  outline: none;
-}
-
-.search-quantity {
-  background-color: #007bff;
-  height: 38px;
-  height: 38px;
-  margin-left: 10px;
-}
-
-.quantity-select select {
-  width: 200px;
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid gray;
-  outline: none;
-  margin-right: 10px;
-}
-.quantity-select .search-quantity {
-  background-color: #007bff;
-  color: #fff;
-  width: 30px;
-  align-items: center;
-  display: flex;
-  justify-content: center;
-}
-.quantity-select .load {
-  margin-left: 15px;
-  background-color: orange;
-  color: #fff;
-  width: 30px;
-  align-items: center;
-  display: flex;
-  justify-content: center;
+.content-sub .two:hover {
+  background-color: #01845f;
 }
 
 .content-table {
-  width: 100%;
-  margin-top: 20px;
-  overflow: auto;
-  /* Tắt thanh cuộn ngang */
+  overflow-x: auto;
 }
 .content-table table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px; /* Giảm kích thước chữ cho vừa với không gian */
-  background-color: #fff;
-  border-radius: 8px;
+  background: #fff;
+  border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  table-layout: auto; /* Để bảng tự điều chỉnh chiều rộng các cột */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  font-size: 14px;
+  table-layout: fixed;
 }
 .content-table table thead {
-  background-color: #4CAF50;
-  color: white;
+  background-color: #01ab78;
+  color: #fff;
 }
 .content-table table thead th {
   padding: 12px;
   text-align: center;
   font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-.content-table table thead th:hover {
-  background-color: #45a049;
-}
-.content-table table tbody tr {
-  transition: background 0.3s ease;
-}
-.content-table table tbody tr:nth-child(even) {
-  background-color: #f8f8f8;
-}
-.content-table table tbody tr:hover {
-  background-color: #f1f1f1;
-}
-.content-table table tbody tr td {
-  padding: 12px;
-  text-align: center;
-  border-bottom: 1px solid #ddd;
-  transition: background 0.3s ease;
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
-.content-table table tbody tr td.description {
-  max-width: 400px !important;
+.content-table table thead th:nth-child(1) {
+  width: 80px;
+}
+.content-table table thead th:nth-child(2) {
+  width: 100px;
+}
+.content-table table thead th:nth-child(3) {
+  width: 60px;
+}
+.content-table table thead th:nth-child(4) {
+  width: 90px;
+}
+.content-table table thead th:nth-child(5) {
+  width: 80px;
+}
+.content-table table thead th:nth-child(6) {
+  width: 80px;
+}
+.content-table table thead th:nth-child(7) {
+  width: 80px;
+}
+.content-table table thead th:nth-child(8) {
+  width: 80px;
+}
+.content-table table thead th:nth-child(9) {
+  width: 330px;
+}
+.content-table table thead th:nth-child(10) {
+  width: 40px;
+}
+.content-table table thead th:nth-child(11) {
+  width: 60px;
+}
+.content-table table tbody tr {
+  border-bottom: 1px solid #f0f0f0;
+}
+.content-table table tbody tr:hover {
+  background-color: #f8f8f8;
+}
+.content-table table tbody tr td {
+  padding: 10px;
+  text-align: center;
+  color: #333;
+  vertical-align: middle;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 .content-table table tbody tr td img {
-  max-width: 100px;
-  border-radius: 5px;
-  object-fit: cover;
+  max-width: 70px;
+  height: auto;
+  border-radius: 6px;
+}
+.content-table table tbody tr td .description {
+  max-width: 280px;
+  max-height: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+  text-align: left;
+  margin: auto;
+  transition: max-height 0.3s ease-in-out;
+}
+.content-table table tbody tr td .description.expanded {
+  max-height: none;
+  -webkit-line-clamp: unset;
+}
+.content-table table tbody tr td .desc-toggle {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #01ab78;
+  cursor: pointer;
+}
+.content-table table tbody tr td .desc-toggle:hover {
+  text-decoration: underline;
 }
 .content-table table tbody tr td button {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 5px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-}
-.content-table table tbody tr td button.edit {
-  background-color: #007bff;
-  color: white;
-}
-.content-table table tbody tr td button.edit:hover {
-  background-color: #0056b3;
-}
-.content-table table tbody tr td button.delete {
-  background-color: #e74c3c;
-  color: white;
-}
-.content-table table tbody tr td button.delete:hover {
-  background-color: #c0392b;
-}
-@media (max-width: 768px) {
-  .content-table table {
-    font-size: 12px; /* Giảm kích thước chữ cho màn hình nhỏ */
-  }
-  .content-table th, .content-table td {
-    padding: 8px;
-  }
-  .content-table td {
-    display: block;
-    text-align: left;
-    white-space: normal; /* Cho phép nội dung ô bẻ dòng */
-  }
-}
-
-.search-list {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-.search-list .search-name {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 10px;
-}
-.search-list .search-name input {
-  width: 350px;
-  padding: 0 8px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  outline: none;
-  background-color: #fafafa;
-  height: 40px;
-}
-.search-list .search-name input::placeholder {
-  color: #888;
-  font-size: 14px;
-}
-.search-list .search-name .search-quantity {
-  margin-top: 18px;
-  height: 40px;
-  width: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #007bff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-.search-list .search-name .search-quantity:hover {
-  background-color: rgb(0, 98.4, 204);
-}
-.search-list .search-name .search-quantity i {
-  color: #fff;
-  font-size: 18px;
-}
-.search-list .pagination {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.search-list .pagination button {
-  margin-top: 12px;
-  padding: 8px 12px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  background-color: #f1f1f1;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
-}
-.search-list .pagination button:hover {
-  background-color: #e0e0e0;
-  transform: scale(1.05);
-}
-.search-list .pagination button:focus {
-  outline: none;
-}
-.search-list .pagination button i {
-  color: #333;
-  font-size: 16px;
-}
-.search-list .pagination button.pagination-one {
-  padding: 8px 16px;
-}
-.search-list .pagination span {
-  font-size: 16px;
-  margin: 0 10px;
-  color: #333;
-}
-
-.reload-button {
-  margin-top: 20px;
-  text-align: right; /* Căn chỉnh nút reload sang bên phải */
-}
-
-.btn-reload {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
+  background: none;
   border: none;
   cursor: pointer;
+  color: #01ab78;
+  font-size: 16px;
+}
+.content-table table tbody tr td button:hover {
+  color: #01845f;
 }
 
-.btn-reload:hover {
-  background-color: #4CAF50;
-}
-
-/* Pagination Controls */
 .pagination-controls {
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin-top: 20px;
   gap: 10px;
+  margin-top: 20px;
 }
 .pagination-controls button {
-  padding: 8px 16px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  background-color: #f1f1f1;
-  border-radius: 5px;
+  padding: 6px 14px;
+  background: #eee;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
-}
-.pagination-controls button:hover {
-  background-color: #e0e0e0;
-  transform: scale(1.05);
-}
-.pagination-controls button:disabled {
-  background-color: #ddd;
-  cursor: not-allowed;
 }
 .pagination-controls button.active {
-  background-color: #4CAF50;
+  background: #01ab78;
   color: white;
 }
 
+.reload-button {
+  text-align: right;
+  margin-bottom: 12px;
+}
+.reload-button .btn-reload {
+  padding: 8px 12px;
+  border-radius: 6px;
+  background-color: #01ab78;
+  color: white;
+  font-size: 16px;
+  transition: 0.3s;
+}
+.reload-button .btn-reload:hover {
+  background-color: #01845f;
+}
+
+/* Responsive điều chỉnh padding và font */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .content-table table {
+    font-size: 12px;
+  }
+  .content-table .description {
+    -webkit-line-clamp: 2;
+  }
+}
 .container-pro {
   display: flex;
   justify-content: center;
@@ -682,41 +496,53 @@ button:hover {
 }
 
 .forgot-cover-1 {
-  background-color: #AFEEEE;
-  width: 300px;
-  margin: auto;
-  padding: 10px;
-  border-radius: 5px;
+  max-width: 400px;
+  margin: 80px auto 0;
+  padding: 24px;
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  text-align: center;
 }
 .forgot-cover-1 h2 {
-  margin: 0;
-}
-.forgot-cover-1 label {
-  font-size: 15px;
-  margin-top: 20px;
-}
-.forgot-cover-1 input {
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
-  margin-top: 10px;
-}
-.forgot-cover-1 .btn11 {
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
-  margin-top: 20px;
-  background-color: #40E0D0;
-  color: #fff;
-}
-.forgot-cover-1 .btn11:hover {
-  transition: 0.5s;
-  cursor: pointer;
-  background-color: #2fb5a7;
+  font-size: 22px;
+  margin-bottom: 20px;
+  color: #01ab78;
 }
 .forgot-cover-1 .forgot-cover {
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+}
+.forgot-cover-1 .forgot-cover label {
+  font-size: 16px;
+  color: #333;
+  text-align: left;
+}
+.forgot-cover-1 .forgot-cover input {
+  padding: 10px 14px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+}
+.forgot-cover-1 .forgot-cover input:focus {
+  border-color: #01ab78;
+  box-shadow: 0 0 0 2px rgba(1, 171, 120, 0.2);
+}
+.forgot-cover-1 .forgot-cover .btn11 {
+  padding: 10px 0;
+  background-color: #01ab78;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.forgot-cover-1 .forgot-cover .btn11:hover {
+  background-color: #018b63;
 }
 
 .login-container {
@@ -767,7 +593,7 @@ button:hover {
   margin-bottom: 5px;
 }
 .login-container .login-form .form-name input {
-  width: 95%;
+  width: 100%;
   padding: 12px;
   margin-top: 5px;
   font-size: 16px;
@@ -854,11 +680,11 @@ button:hover {
   }
 }
 .table-container {
+  margin-top: 40px;
   max-width: 100%;
-  margin: 20px auto;
   padding: 20px;
   background-color: #fff;
-  border-radius: 8px;
+  border-radius: 16px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   overflow-x: auto;
 }
@@ -867,12 +693,12 @@ button:hover {
   border-collapse: collapse;
 }
 .table-container table thead {
-  background-color: #f4f4f4;
+  background-color: #01ab78;
 }
 .table-container table thead th {
   padding: 12px;
   text-align: center;
-  color: #333;
+  color: #fff;
   font-weight: bold;
 }
 .table-container table tbody {
@@ -881,36 +707,40 @@ button:hover {
 .table-container table tbody tr {
   border-bottom: 1px solid #eee;
 }
+.table-container table tbody tr:hover {
+  background-color: #f9f9f9;
+}
 .table-container table tbody td {
   padding: 10px;
-  text-align: center;
-  color: #555;
+  color: #333;
 }
 .table-container table tbody td img {
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  border: 2px solid #01ab78;
 }
 
 .edit-btn,
 .delete-btn {
-  padding: 6px 12px;
-  width: 100px;
+  padding: 6px 0;
+  width: 110px;
+  height: 36px;
   font-size: 14px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   margin-left: 10px;
   transition: background-color 0.3s;
 }
 .edit-btn.edit-btn,
 .delete-btn.edit-btn {
-  background-color: #4caf50;
+  background-color: #01ab78;
   color: white;
 }
 .edit-btn.edit-btn:hover,
 .delete-btn.edit-btn:hover {
-  background-color: #45a049;
+  background-color: #018b63;
 }
 .edit-btn.delete-btn,
 .delete-btn.delete-btn {
@@ -919,17 +749,18 @@ button:hover {
 }
 .edit-btn.delete-btn:hover,
 .delete-btn.delete-btn:hover {
-  background-color: #e53935;
+  background-color: #d32f2f;
 }
 
 select {
-  padding: 8px;
+  padding: 6px;
   font-size: 14px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 6px;
   outline: none;
   margin-right: 10px;
-  width: 100px;
+  width: 110px;
+  height: 36px;
 }
 select option {
   padding: 10px;
@@ -956,73 +787,65 @@ h2 {
   margin-bottom: 20px;
 }
 
-/* Container của form chỉnh sửa */
 .edit-form {
   width: 400px;
   padding: 20px;
   margin: 20px auto;
   background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid #01ab78;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
-/* Tiêu đề form */
 .edit-form h3 {
   margin-bottom: 20px;
   font-size: 24px;
-  color: #333;
+  color: #01ab78;
 }
 
-/* Các trường nhập liệu */
 .edit-form form {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-/* Style cho input và select */
 .edit-form input,
 .edit-form select {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
   font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
   box-sizing: border-box;
 }
 
-/* Hover effect cho các input */
 .edit-form input:focus,
 .edit-form select:focus {
-  border-color: #007bff;
+  border-color: #01ab78;
   outline: none;
 }
 
-/* Style cho nút Save và Cancel */
 .edit-form button {
   padding: 10px 20px;
   font-size: 16px;
   margin-top: 10px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
-/* Nút Save */
 .edit-form button[type=submit] {
-  background-color: #28a745;
+  background-color: #01ab78;
   color: white;
 }
 
 .edit-form button[type=submit]:hover {
-  background-color: #218838;
+  background-color: #018b63;
 }
 
-/* Nút Cancel */
 .edit-form button[type=button] {
   background-color: #dc3545;
   color: white;
@@ -1032,7 +855,6 @@ h2 {
   background-color: #c82333;
 }
 
-/* Style cho các trường label */
 .edit-form label {
   font-size: 16px;
   color: #333;
@@ -1046,7 +868,6 @@ h2 {
   gap: 20px;
 }
 
-/* Responsive */
 @media (max-width: 500px) {
   .edit-form {
     width: 90%;
@@ -1423,259 +1244,241 @@ h2 {
 }
 
 .container {
-  width: 80%;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.header {
-  text-align: center;
-  margin-bottom: 20px;
+  max-width: 800px;
+  margin: 40px auto;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .header h1 {
-  font-size: 24px;
-}
-
-.categoryList {
+  text-align: center;
+  color: #2c3e50;
+  font-size: 20px;
   margin-bottom: 20px;
-}
-
-.categoryList ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.categoryList li {
-  background-color: #f9f9f9;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 4px;
-  display: flex;
-  justify-content: space-between; /* Đảm bảo chữ và nút được phân chia đều */
-  align-items: center;
-}
-
-.categoryList li span {
-  font-size: 16px; /* Chỉnh sửa font chữ cho dễ nhìn */
-}
-
-.categoryList button {
-  margin-left: 10px;
-  padding: 5px 10px;
-  cursor: pointer;
-  border-radius: 4px;
-  border: none;
-}
-
-.categoryList button:hover {
-  opacity: 0.8;
-}
-
-.cover {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-.cover .one button {
-  background-color: #4CAF50; /* Nút sửa */
-  margin-top: 20px;
-  color: white;
-}
-
-.cover .two button {
-  background-color: red; /* Nút xóa */
-  margin-top: 20px;
-  color: white;
 }
 
 .formSection {
-  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
 }
-
 .formSection input {
-  padding: 10px;
-  width: 250px;
-  margin-right: 10px;
-}
-
-.formSection button {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.formSection button:hover {
-  background-color: #45a049;
-}
-
-.container {
-  padding: 20px;
-  background-color: #f5f5f5;
-}
-
-.header {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.header h1 {
-  font-size: 24px;
-  color: #333;
-}
-
-.invoiceList {
-  background-color: #fff;
-  padding: 20px;
+  padding: 10px 14px;
+  font-size: 15px;
+  width: 280px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.invoiceList h3 {
-  margin-bottom: 20px;
-  font-size: 20px;
-  color: #333;
-}
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.table th, .table td {
-  padding: 10px;
   border: 1px solid #ccc;
-  text-align: left;
+  outline: none;
+  transition: border 0.2s;
+}
+.formSection input:focus {
+  border-color: #01ab78;
+}
+.formSection button {
+  padding: 10px 18px;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  background-color: #01ab78;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.formSection button:hover {
+  background-color: #018b63;
 }
 
-.nav-btn {
+.categoryList h3 {
+  font-size: 20px;
+  color: #444;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.categoryList ul {
+  list-style: none;
+  padding: 0;
+}
+.categoryList li {
+  background-color: #fafafa;
+  padding: 14px 20px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  color: #333;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+.categoryList li .cover {
   display: flex;
   gap: 10px;
 }
-
-.updateButton {
-  padding: 15px;
+.categoryList li .cover button {
+  background-color: #01ab78;
+  color: white;
   border: none;
-  border-radius: 4px;
+  padding: 8px 12px;
+  border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
+.categoryList li .cover button i {
+  font-size: 14px;
+}
+.categoryList li .cover button:hover {
+  background-color: #018b63;
+}
+.categoryList li .cover .two button {
+  background-color: #f44336;
+}
+.categoryList li .cover .two button:hover {
+  background-color: #d32f2f;
+}
 
-.deleteButton {
-  padding: 15px;
-  width: 80px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.container-pro {
+  margin-top: 0;
+  background-color: #fff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  padding: 32px;
+  display: block;
+}
+
+.invoiceList {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.invoiceList h3 {
+  font-size: 24px;
+  margin-top: 20px;
+  color: #2c3e50;
+  font-weight: 600;
+  margin-bottom: 24px;
+  text-align: center;
+}
+.invoiceList .table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+.invoiceList .table thead {
+  background-color: #01ab78;
+  color: white;
+}
+.invoiceList .table thead th {
+  padding: 16px;
+  font-weight: 600;
+  font-size: 16px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+.invoiceList .table tbody tr {
+  background-color: #f9f9f9;
   transition: background-color 0.3s;
 }
-
-.updateButton {
-  background-color: #007bff;
-  color: #fff;
+.invoiceList .table tbody tr:hover {
+  background-color: #f2fefb;
 }
-
-.updateButton:hover {
-  background-color: #0056b3;
+.invoiceList .table tbody tr td {
+  padding: 16px;
+  font-size: 15px;
+  text-align: center;
+  color: #333;
+  border-bottom: 1px solid #ddd;
 }
-
-.deleteButton {
-  background-color: #dc3545;
-  color: #fff;
+.invoiceList .actionButton, .invoiceList .deleteButton, .invoiceList .updateButton {
+  min-width: 120px;
+  padding: 8px 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  display: inline-block;
 }
-
-.deleteButton:hover {
-  background-color: #c82333;
+.invoiceList .updateButton {
+  background-color: #4a90e2;
+  color: white;
+  margin-right: 8px;
 }
-
-/* styles.css */
-body {
-  font-family: "Arial", sans-serif;
-  margin: 0;
-  padding: 0;
+.invoiceList .updateButton:hover {
+  background-color: #357ab8;
+}
+.invoiceList .deleteButton {
+  background-color: #dc4242;
+  color: white;
+}
+.invoiceList .deleteButton:hover {
+  background-color: #d9534f;
 }
 
 .container {
-  width: 80%;
+  max-width: 1000px;
   margin: 40px auto;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-}
-
-.header {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.header h1 {
-  font-size: 32px;
-  color: #2c3e50;
-  font-weight: bold;
-}
-
-.orderList {
-  margin-bottom: 40px;
+  background-color: #fff;
+  padding: 32px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }
 
 .orderList h3 {
-  font-size: 22px;
-  color: #34495e;
-  margin-bottom: 20px;
   text-align: center;
+  font-size: 24px;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  font-weight: 600;
 }
-
-.table {
+.orderList .table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
 }
-
-.table th, .table td {
-  padding: 15px;
-  text-align: left;
-  border: 1px solid #bdc3c7;
+.orderList .table thead {
+  background-color: #01ab78;
+  color: white;
 }
-
-.table th {
-  background-color: #ecf0f1;
+.orderList .table thead th {
+  padding: 14px 16px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 15px;
 }
-
-.updateButton, .deleteButton {
-  padding: 6px 15px;
-  margin-right: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.orderList .table tbody tr {
+  background-color: #f9f9f9;
+  transition: background-color 0.2s ease;
+}
+.orderList .table tbody tr:hover {
+  background-color: #f2fefb;
+}
+.orderList .table tbody tr td {
+  padding: 14px;
+  text-align: center;
+  color: #333;
   font-size: 14px;
-  transition: background-color 0.3s ease;
 }
-
-.updateButton {
-  background-color: #f39c12;
+.orderList .deleteButton {
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #f44336;
   color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s;
 }
-
-.updateButton:hover {
-  background-color: #e67e22;
-}
-
-.deleteButton {
-  background-color: #e74c3c;
-  color: white;
-  margin-left: 10px;
-}
-
-.deleteButton:hover {
-  background-color: #c0392b;
+.orderList .deleteButton:hover {
+  background-color: #d32f2f;
+  transform: scale(1.05);
 }
 
 /*# sourceMappingURL=index.css.map */

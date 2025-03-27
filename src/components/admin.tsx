@@ -197,15 +197,22 @@ export default function Admin() {
   return (
     <div className="container">
       <div className="content">
-        <div className="content-sub">
-          <div className="one"><h2>Danh sách sản phẩm</h2></div>
-          <div className="two" onClick={() => { setOpenModal(true); setIsEdit(false); }}>+ Add</div>
-        </div>
-        <div className="reload-button">
-          <button onClick={handleReload} className="btn-reload">
-            <i className="fas fa-sync-alt"></i>
-          </button>
-        </div>
+      <div className="content-sub">
+  <div className="one">
+    <h2>Danh sách sản phẩm</h2>
+  </div>
+
+  <div className="action-buttons">
+    <button className="btn-add" onClick={() => { setOpenModal(true); setIsEdit(false); }}>
+      + Add
+    </button>
+    <button className="btn-reload" onClick={handleReload}>
+      <i className="fas fa-sync-alt"></i>
+    </button>
+  </div>
+</div>
+
+      
 
         {/* Modal Create/Edit Product */}
         {openModal && (

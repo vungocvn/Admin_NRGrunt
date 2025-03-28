@@ -90,6 +90,15 @@ export default function Admin() {
   };
 
   const createProduct = () => {
+    if (editData.image.startsWith("blob:")) {
+      toast.error("Vui lòng đợi ảnh được upload thành công trước khi lưu.");
+      return;
+    }
+  
+    if (!editData.name || !editData.price || !editData.category_id) {
+      toast.error("Vui lòng điền đầy đủ thông tin sản phẩm.");
+      return;
+    }
     axios.post("http://127.0.0.1:8000/api/products", editData, {
       headers: { Authorization: `Bearer ${token}` }
     }).then((res) => {

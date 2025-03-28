@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
-
+import { logout } from "@/untils/auth";
 const Sidebar = () => {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -110,7 +110,7 @@ const Sidebar = () => {
                                 <button
                                     className="ml-4 text-white hover:text-red-300 transition"
                                     title="Đăng xuất"
-                                    onClick={() => console.log("Đăng xuất")}
+                                    onClick={() => logout(router)}
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"

@@ -3,12 +3,12 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import Cookies from 'js-cookie';
 import { useRouter } from "next/router";
-
+import { logout } from "@/untils/auth";
 export default function Profile() {
     const [profile, setProfile] = useState<any>(null);
     const router = useRouter();
 
-    const logout = () =>{
+    const logout = (router: unknown) =>{
         const token = Cookies.get('token_cms') || "";
 
         axios.post("http://127.0.0.1:8000/api/auth/logout",
@@ -73,7 +73,7 @@ export default function Profile() {
                         <p>{profile.email}</p>
                         <img src={profile.avatar} alt="avatar" />
                         <button onClick={()=>{
-                            logout()
+                            logout(router)
                         }}> logout  </button>
 
                     </>

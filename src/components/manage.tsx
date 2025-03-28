@@ -177,43 +177,61 @@ export default function Management() {
 
             {/* Form Edit User */}
             {editingUser && (
-                <div className="edit-form">
-                    <h3>Edit User</h3>
-                    <form
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            saveUserChanges(editingUser.id);
-                        }}
-                    >
-                        <label>Name:</label>
-                        <input
-                            type="text"
-                            value={userName}
-                            onChange={(e) => setUserName(e.target.value)}
-                        />
-                        <label>Email:</label>
-                        <input
-                            type="email"
-                            value={userEmail}
-                            onChange={(e) => setUserEmail(e.target.value)}
-                        />
-                        <label>Role:</label>
-                        <select
-                            onChange={(e) => setROLE(e.target.value)}
-                            value={role}
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-lg shadow-lg p-6 w-[400px]">
+                        <h3 className="text-lg font-semibold mb-4">Chỉnh sửa người dùng</h3>
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                saveUserChanges(editingUser.id);
+                            }}
                         >
-                            <option value="Admin">Admin</option>
-                            <option value="Customer">Customer</option>
-                        </select>
-                        <div className="cover-btn">
-                            <button type="submit"><i className="fa-solid fa-bookmark"></i></button>
-                            <button type="button" onClick={cancelEdit}>
-                            <i className="fa-solid fa-xmark"></i>
-                            </button>
-                        </div>
-                    </form>
+                            <label className="block text-sm mb-1">Tên:</label>
+                            <input
+                                type="text"
+                                value={userName}
+                                onChange={(e) => setUserName(e.target.value)}
+                                className="w-full border px-3 py-2 rounded mb-3"
+                            />
+
+                            <label className="block text-sm mb-1">Email:</label>
+                            <input
+                                type="email"
+                                value={userEmail}
+                                onChange={(e) => setUserEmail(e.target.value)}
+                                className="w-full border px-3 py-2 rounded mb-3"
+                            />
+
+                            <label className="block text-sm mb-1">Vai trò:</label>
+                            <select
+                                value={role}
+                                onChange={(e) => setROLE(e.target.value)}
+                                className="w-full border px-3 py-2 rounded mb-4"
+                            >
+                                <option value="Admin">Admin</option>
+                                <option value="Customer">Customer</option>
+                            </select>
+
+                            <div className="flex justify-end gap-3">
+                                <button
+                                    type="button"
+                                    onClick={cancelEdit}
+                                    className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                                >
+                                    Hủy
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                                >
+                                    Lưu
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             )}
+
         </div>
     );
 }

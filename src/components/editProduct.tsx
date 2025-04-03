@@ -201,7 +201,7 @@ const EditProductForm: React.FC<any> = ({
           <Editor
             apiKey="58ch4vcs9zi0g4x0gfk9dw4w3iib5zjkchtmfju9dw7cckip"
             onChange={(e) => {
-              var content = e.target.getContent();
+              const content = e.target.getContent();
               setEditdata({ ...editData, description: content });
             }}
             initialValue={editData.description}
@@ -211,22 +211,33 @@ const EditProductForm: React.FC<any> = ({
                 'image', 'link', 'lists', 'media', 'searchreplace',
                 'table', 'visualblocks', 'wordcount'
               ],
-              toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+              toolbar:
+                'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
               menubar: 'file edit view insert format tools',
               browser_spellcheck: true,
               inputStyle: 'contenteditable',
-              content_style: 'body { font-family: Arial, sans-serif; font-size:14px }',
+              content_style: `
+      body { font-family: Arial, sans-serif; font-size:14px; }
+      img { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+    `,
               forced_root_block: 'p',
               convert_urls: false,
               entity_encoding: 'raw',
-              setup: (editor:any) => {
+              setup: (editor: any) => {
                 editor.on('init', () => {
                   editor.getBody().setAttribute('spellcheck', 'true');
                 });
+
+                editor.on('PastePostProcess', (e) => {
+                  const images = e.node.querySelectorAll('img');
+                  images.forEach((img:any) => {
+                    img.removeAttribute('style');
+                  });
+                });
               }
             }}
-
           />
+
         </div>
 
         <div>

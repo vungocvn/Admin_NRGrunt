@@ -1,10 +1,10 @@
-const apiHost = "http://127.0.0.1:8000/api/"
+const apiHost = "http://127.0.0.1:8000/api/";
 
-export enum api{
-         //user
-        getUsers = apiHost + "users",
-        //manager
-        changeUserRole = apiHost + "users/manager",
-        updateUser = "updateUser"
-        
+export enum api {
+    getUsers = apiHost + "users",
+    createUser = apiHost + "users/register",
+    deleteUser = apiHost + "users",
+    updateUser = apiHost + "users",
+    changeUserRole = apiHost + "users/manager",
 }
+

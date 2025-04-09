@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-
+import { toast } from "react-toastify"; 
 interface Props {
   invoice: any;
   onClose: () => void;
@@ -18,7 +18,7 @@ export default function EditInvoiceModal({ invoice, onClose, onUpdated }: Props)
 
   const handleSave = async () => {
     if (!name || !phone || !address) {
-      alert("Vui lòng nhập đầy đủ thông tin.");
+      toast.error("please input all information!");
       return;
     }
 
@@ -32,10 +32,11 @@ export default function EditInvoiceModal({ invoice, onClose, onUpdated }: Props)
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-
+      toast.success("Customer information updated successfully!");
+      onClose(); 
       onUpdated(); // reload bảng
     } catch (error) {
-      alert('Không thể cập nhật thông tin khách hàng!');
+      toast.error('Unable to update customer information!');
       console.error(error);
     }
 

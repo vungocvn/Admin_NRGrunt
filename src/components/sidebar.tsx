@@ -8,7 +8,7 @@ const Sidebar = () => {
     const menuContainerRef = useRef(null);
 
     const menuItems = [
-        { key: "index", icon: "fa-solid fa-house", label: "Trang chủ", href: "/admin" },
+        { key: "index", icon: "fa-solid fa-house", label: "Trang quản lý ", href: "/admin" },
         { key: "user", icon: "fas fa-user", label: "Tài khoản", href: "/manager" },
         { key: "forgot", icon: "fas fa-key", label: "Đổi mật khẩu", href: "/forgot" },
         { key: "category", icon: "fas fa-list", label: "Danh sách", href: "/list" },

@@ -2,6 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import EditInvoiceModal from './EditInvoiceModal';
+import { toast } from 'react-toastify';
 
 export default function AdminInvoices() {
   const token = Cookies.get("token_cms");
@@ -39,13 +40,13 @@ export default function AdminInvoices() {
   }
 
   const deleteInvoice = (id: number) => {
-    if (window.confirm("Bạn chắc chắn muốn xoá hoá đơn này?")) {
+    if (window.confirm("you want to delete this invoice?")) {
       axios.delete(`http://127.0.0.1:8000/api/orders/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       }).then(() => {
         getAllBill();
       }).catch(() => {
-        alert("Không thể xoá hoá đơn.");
+        toast.error("Error deleting invoice.");
       });
     }
   };

@@ -3,7 +3,8 @@ import { useMemo, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { api } from "../config/apiUrl";
-
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 export default function Management() {
     const router = useRouter();
     const [users, setUsers] = useState([]);
@@ -30,7 +31,7 @@ export default function Management() {
             headers: { Authorization: `Bearer ${Cookies.get("token_cms")}` },
         })
         .then(() => {
-            alert("Change role success");
+            toast.success("Change role success");
             getUsers();
         })
         .catch((error) => alert(error.response.data.error));
@@ -50,10 +51,10 @@ export default function Management() {
             headers: { Authorization: `Bearer ${Cookies.get("token_cms")}` },
         })
         .then(() => {
-            alert("User updated successfully!");
+            toast.success("User updated successfully!");
             getUsers();
             setEditingUser(null);
-            setUserPassword(""); // clear password
+            setUserPassword(""); 
         })
         .catch((error) => alert(error.response.data.error));
     };
@@ -68,7 +69,7 @@ export default function Management() {
             headers: { Authorization: `Bearer ${Cookies.get("token_cms")}` },
         })
         .then(() => {
-            alert("User created!");
+            toast.success("User created!");
             setShowCreateModal(false);
             setUserName("");
             setUserEmail("");
@@ -84,7 +85,7 @@ export default function Management() {
             headers: { Authorization: `Bearer ${Cookies.get("token_cms")}` },
         })
         .then(() => {
-            alert("User deleted!");
+            toast.success("User deleted!");
             setShowDeleteModal(false);
             setUserToDelete(null);
             getUsers();
@@ -98,12 +99,12 @@ export default function Management() {
         })
         .then((res) => {
             if (res.data.data.role !== "Admin") {
-                alert("You cannot access this page.");
+                toast.error("You cannot access this page.");
                 setTimeout(() => router.push("/admin"), 1000);
             } else getUsers();
         })
         .catch((err) => {
-            alert(err.response.data.error);
+            toast.error(err.response.data.error);
             router.push("/admin");
         });
     }, [router]);

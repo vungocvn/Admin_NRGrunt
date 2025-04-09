@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
-
+import { toast } from "react-toastify"; 
 export default function AdminOrders() {
   const token = Cookies.get("token_cms");
   const [users, setUsers] = useState<any[]>([]);
@@ -19,7 +19,7 @@ export default function AdminOrders() {
     }).then((res) => {
       setOrders(res.data.data);
     }).catch((err) => {
-      console.error("Lỗi khi lấy danh sách đơn hàng:", err);
+      console.error("error get order:", err);
     });
   };
 
@@ -44,7 +44,7 @@ export default function AdminOrders() {
     }).then(() => {
       getAllOrders(filterStatus);
     }).catch(() => {
-      alert("Không thể xoá đơn hàng.");
+      toast.error("error delete order!");
     });
   };
 
@@ -58,8 +58,8 @@ export default function AdminOrders() {
     }).then(() => {
       getAllOrders(filterStatus);
     }).catch((err) => {
-      console.error("Lỗi cập nhật trạng thái:", err);
-      alert("Không thể cập nhật trạng thái đơn hàng.");
+      console.error("error status:", err);
+      alert("error update status.");
     });
   };
 
@@ -117,7 +117,7 @@ export default function AdminOrders() {
                 </td>
                 <td>
                   <button onClick={() => {
-                      const confirmDelete = window.confirm("Bạn có chắc chắn muốn xoá đơn hàng này không?");
+                      const confirmDelete = window.confirm("you want to delete this order?");
                       if (confirmDelete) {
                         deleteOrder(order.id);
                       }

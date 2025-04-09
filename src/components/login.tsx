@@ -29,35 +29,27 @@ export default function Login() {
                 if (res.data.status === 200) {
                     const access_token: string = res.data.data.access_token;
                     Cookies.set('token_cms', access_token, { expires: 1 });
-
                     // Thông báo đăng nhập thành công
-                    toast.success('Login success!'); // Thêm thông báo thành công
-
+                    toast.success('login success fully!'); 
                     // Đặt thời gian nhỏ để đảm bảo thông báo sẽ hiển thị trước khi chuyển trang
                     setTimeout(() => {
-                        if (res.data.data.role === "CEO") {
-                            router.push('/manager');
-                            setIsAuthenticated(true); // Set user as authenticated
-                            return;
-                        }
                         if (res.data.data.role === "Admin") {
                             router.push('/admin');
-                            setIsAuthenticated(true); // Set user as authenticated
+                            setIsAuthenticated(true);
                             return;
                         }
                         toast.error('Not permission');
-                    }, 2000); // Delay 2 giây trước khi chuyển hướng
-
+                    }, 2000);
                 } else if (res.data.status === 403) {
                     toast.error(res.data.message);
                 } else {
-                    toast.error("Login failed");
+                    toast.error("Incorrect login information, please log in again.");
                 }
             }).catch((error) => {
                 if (error.response.status === 403) {
                     toast.error(error.response.data.error);
                 } else {
-                    toast.error("Login failed");
+                    toast.error("Incorrect login information, please log in again.");
                 }
             });
     };
@@ -101,7 +93,7 @@ export default function Login() {
                     toast.error("Please login");
                 });
         }
-    }, [router, isAuthenticated]); // Thêm isAuthenticated làm dependency
+    }, [router, isAuthenticated]); 
 
     return (
         <>

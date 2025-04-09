@@ -3,6 +3,9 @@ import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 
 export const logout = async (router: any) => {
+    const confirmLogout = window.confirm("do you want to log out?");
+    if (!confirmLogout) return;
+
     const token = Cookies.get('token_cms') || "";
 
     try {
@@ -12,11 +15,11 @@ export const logout = async (router: any) => {
             }
         });
     } catch (err) {
-        console.error("Lỗi khi gọi logout", err);
+        console.error("failed logout", err);
     }
 
     Cookies.remove('token_cms');
-    toast.success("Loggout successfully!");
+    toast.success("logout successfully!");
     setTimeout(() => {
         router.push('/login');
     }, 1000);

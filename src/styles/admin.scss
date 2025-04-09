@@ -224,28 +224,6 @@ input:checked + .slider {
 input:checked + .slider:before {
   transform: translateX(26px);
 }
-
-/* Add ON/OFF text */
-.slider:after {
-  content: "OFF";
-  position: absolute;
-  top: 50%;
-  left: 6px;
-  transform: translateY(-50%);
-  font-size: 14px;
-  color: white;
-}
-
-input:checked + .slider:after {
-  content: "ON";
-  left: 30px;
-  color: white;
-}
-
-
-/* ======================== */
-/* PAGINATION CONTROLS      */
-/* ======================== */
 .pagination-controls {
   display: flex;
   justify-content: center;

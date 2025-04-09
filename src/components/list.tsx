@@ -37,9 +37,10 @@ export default function List() {
 
   const addCategory = async () => {
     if (!newCategory.trim()) return;
-
+  
     try {
-      const res = await axios.post('http://127.0.0.1:8000/api/categories',
+      const res = await axios.post(
+        'http://127.0.0.1:8000/api/categories',
         { name: newCategory },
         {
           headers: {
@@ -50,21 +51,18 @@ export default function List() {
           },
         }
       );
-
+  
+      toast.success("add category successfully");
+      setNewCategory('');
+      setEditingCategory(null);
       getCategory();
-
-      if (res.data.status === 200) {
-        toast.success("Thêm danh mục thành công");
-        setNewCategory('');
-        setEditingCategory(null);
-        
-      } else {
-        toast.error('Thêm danh mục thất bại');
-      }
+  
     } catch (err) {
-      toast.error('Lỗi khi thêm danh mục');
+      toast.error("error when adding category");
+      console.error("error:", err);
     }
   };
+  
 
   const editCategory = (id:any) => {
     const category = categories.find(cat => cat.id === id);
@@ -80,13 +78,13 @@ export default function List() {
       { headers: { Authorization: `Bearer ${token}` } }
     ).then((res) => {
       if (res.data.status === 200) {
-        toast.success("Cập nhật danh mục thành công");
+        toast.success("update category successfully");
         setNewCategory('');
         setEditingCategory(null);
         getCategory();
       }
     }).catch(() => {
-      toast.error("Lỗi khi cập nhật danh mục");
+      toast.error("error when updating category");
     });
   };
 
@@ -95,11 +93,11 @@ export default function List() {
       headers: { Authorization: `Bearer ${token}` }
     }).then((res) => {
       if (res.data.status === 200) {
-        toast.success("Đã xoá danh mục");
+        toast.success("Delete category successfully");
         getCategory();
       }
     }).catch(() => {
-      toast.error("Lỗi khi xoá danh mục");
+      toast.error("error when deleting category");
     });
   };
 

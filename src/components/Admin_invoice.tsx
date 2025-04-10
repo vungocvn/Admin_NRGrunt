@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import EditInvoiceModal from './EditInvoiceModal';
 import { toast } from 'react-toastify';
+import router from 'next/router';
 
 export default function AdminInvoices() {
   const token = Cookies.get("token_cms");
@@ -10,6 +11,13 @@ export default function AdminInvoices() {
   const [invoices, setInvoices] = useState<any[]>([]);
   const [editingInvoice, setEditingInvoice] = useState<any | null>(null);
 
+
+  useEffect(() => {
+    if (!token) {
+      toast.warning("You must log in to access this page.");
+      router.push("/login"); 
+    }
+  }, []);
   function getAllBill() {
     axios.get('http://127.0.0.1:8000/api/orders', {
       headers: { Authorization: `Bearer ${token}` }

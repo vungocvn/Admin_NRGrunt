@@ -29,7 +29,13 @@ export default function Admin() {
 
   const token = Cookies.get('token_cms') || "";
   const router = useRouter();
-
+  
+  useEffect(() => {
+    if (!token) {
+      toast.warning("You must log in to access this page.");
+      router.push("/login");
+    }
+  }, []);
   const getAllProduct = ({ id_category, sortOder, sort_col, pageIndex, pageSize }: any) => {
     setLstProduct([]);
     axios
@@ -197,6 +203,7 @@ export default function Admin() {
   };
 
 
+  
   const handleCategoryChange = (e: any) => {
     const catId = parseInt(e.target.value);
     setSelectedCategory(catId);

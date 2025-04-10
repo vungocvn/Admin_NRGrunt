@@ -3,15 +3,22 @@ import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { logout } from "@/untils/auth";
 import { toast } from 'react-toastify';
-
+import { useRouter } from 'next/router';
 export default function List() {
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState('');
   const [editingCategory, setEditingCategory] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const token = Cookies.get("token_cms");
-
+  const token = Cookies.get("token_cms");;
+  const router = useRouter();
+  
+  useEffect(() => {
+    if (!token) {
+      toast.warning("You must log in to access this page.");
+      router.push("/login"); 
+    }
+  }, []);
   const getCategory = () => {
     setLoading(true);
     axios.get('http://127.0.0.1:8000/api/categories', {

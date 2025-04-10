@@ -1,7 +1,17 @@
 import axios from "axios";
-import { useState } from "react";
+import Cookies from "js-cookie";
+import router from "next/router";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function Forgot() {
+    const token = Cookies.get("token_cms");
+    useEffect(() => {
+      if (!token) {
+        toast.warning("You must log in to access this page.");
+        router.push("/login"); 
+      }
+    }, []);
     const [email, sEtEmail] = useState("")
     const requestForgotPassword = () => {
         axios.post("http://127.0.0.1:8000/api/auth/request-forgot-password", {email: email})

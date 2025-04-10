@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { api } from "../config/apiUrl";
@@ -16,7 +16,14 @@ export default function Management() {
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [userToDelete, setUserToDelete] = useState(null);
-
+    
+    const token = Cookies.get("token_cms");
+      useEffect(() => {
+        if (!token) {
+          toast.warning("You must log in to access this page.");
+          router.push("/login"); 
+        }
+      }, []);
     const getUsers = () => {
         axios.get(`${api.getUsers}`, {
             headers: { Authorization: `Bearer ${Cookies.get("token_cms")}` },

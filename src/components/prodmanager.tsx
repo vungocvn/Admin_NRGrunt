@@ -2,12 +2,21 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { toast } from "react-toastify"; 
+import { useRouter } from 'next/router';
 export default function AdminOrders() {
   const token = Cookies.get("token_cms");
   const [users, setUsers] = useState<any[]>([]);
   const [orders, setOrders] = useState<any[]>([]);
   const [filterStatus, setFilterStatus] = useState<string>('all');
 
+
+  const router = useRouter();
+  useEffect(() => {
+    if (!token) {
+      toast.warning("You must log in to access this page.");
+      router.push("/login"); 
+    }
+  }, []);
   const getAllOrders = (status: string = 'all') => {
     const params: any = {};
     if (status === 'done') params.is_paid = 1;

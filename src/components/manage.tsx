@@ -16,7 +16,7 @@ export default function Management() {
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [userToDelete, setUserToDelete] = useState(null);
-    
+
     const token = Cookies.get("token_cms");
       useEffect(() => {
         if (!token) {

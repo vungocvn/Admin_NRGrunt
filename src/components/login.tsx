@@ -30,7 +30,7 @@ export default function Login() {
                     const access_token: string = res.data.data.access_token;
                     Cookies.set('token_cms', access_token, { expires: 1 });
                     // Thông báo đăng nhập thành công
-                    toast.success('login success fully!'); 
+                    toast.success('login successfully!'); 
                     // Đặt thời gian nhỏ để đảm bảo thông báo sẽ hiển thị trước khi chuyển trang
                     setTimeout(() => {
                         if (res.data.data.role === "Admin") {

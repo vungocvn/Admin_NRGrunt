@@ -25,17 +25,19 @@ export default function Admin() {
   const [lstProduct, setLstProduct] = useState<any>([]);
   const [dataCategory, setDataCategory] = useState<any>([]);
   const [selectedCategory, setSelectedCategory] = useState<number>(0);
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [total, setTotal] = useState({ total_item: 0, total_page: 1, page_size: 5, page_index: 1 });
 
   const token = Cookies.get('token_cms') || "";
   const router = useRouter();
-  
+
   useEffect(() => {
     if (!token) {
       toast.warning("You must log in to access this page.");
       router.push("/login");
     }
   }, []);
+
   const getAllProduct = ({ id_category, sortOder, sort_col, pageIndex, pageSize }: any) => {
     setLstProduct([]);
     axios
@@ -46,6 +48,7 @@ export default function Admin() {
           sort_order: sortOder,
           page_index: pageIndex,
           page_size: pageSize || total.page_size,
+          keyword: searchTerm
         },
       })
       .then((res) => {
@@ -100,7 +103,7 @@ export default function Admin() {
       toast.error("Vui lòng đợi ảnh được upload thành công trước khi lưu.");
       return;
     }
-  
+
     if (!editData.name || !editData.price || !editData.category_id) {
       toast.error("Vui lòng điền đầy đủ thông tin sản phẩm.");
       return;
@@ -189,10 +192,9 @@ export default function Admin() {
       });
 
       if (response.data.status === 200 && response.data.filePath) {
-        // Gán ảnh thực sự từ server vào editData.image
         setEditdata((prev: any) => ({
           ...prev,
-          image: response.data.filePath, // ← Đây là ảnh server hiểu được
+          image: response.data.filePath,
         }));
       } else {
         toast.error('Image upload failed!');
@@ -202,14 +204,25 @@ export default function Admin() {
     }
   };
 
-
-  
   const handleCategoryChange = (e: any) => {
     const catId = parseInt(e.target.value);
     setSelectedCategory(catId);
     setTotal({ ...total, page_index: 1 });
     getAllProduct({ id_category: catId, sort_col: "id", sortOder: "desc", pageIndex: 1 });
   };
+
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      getAllProduct({
+        id_category: selectedCategory,
+        sort_col: "id",
+        sortOder: "desc",
+        pageIndex: total.page_index
+      });
+    }, 500);
+
+    return () => clearTimeout(delayDebounce);
+  }, [searchTerm]);
 
   useEffect(() => {
     getAllProduct({ id_category: selectedCategory, sort_col: "id", sortOder: "desc", pageIndex: total.page_index });
@@ -224,6 +237,13 @@ export default function Admin() {
             <h2>Danh sách sản phẩm</h2>
           </div>
           <div className="action-buttons">
+            <input
+              type="text"
+              placeholder="Tìm kiếm sản phẩm..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{ padding: "8px 12px", borderRadius: "6px", border: "1px solid #ccc", marginRight: "12px" }}
+            />
             <button className="btn-add" onClick={handleOpenCreateModal}>+ Add</button>
           </div>
         </div>
@@ -238,7 +258,6 @@ export default function Admin() {
             cancelProcess={handleCloseModal}
           />
         )}
-
         <div className="content-table" style={{ overflowX: 'auto' }}>
           <table>
             <thead>

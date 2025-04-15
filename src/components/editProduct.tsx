@@ -75,7 +75,13 @@ const EditProductForm: React.FC<any> = ({
         <h2 className="text-lg font-semibold text-[#01ab78]">
           {editData.id ? 'Edit Product' : 'Create Product'}
         </h2>
-        <button onClick={cancelProcess} className="text-gray-500 hover:text-red-500 text-2xl">&times;</button>
+        <button
+  onClick={cancelProcess}
+  className="text-gray-500 text-2xl hover:text-red-500 hover:bg-transparent focus:outline-none transition-colors duration-300 ease-in-out"
+>
+  &times;
+</button>
+
       </div>
 
       <div className="p-4 space-y-4">

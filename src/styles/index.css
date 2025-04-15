@@ -64,7 +64,6 @@ body {
 .container {
   max-width: 100%;
   padding-top: 80px;
-  padding-right: 20px;
   box-sizing: border-box;
 }
 
@@ -74,9 +73,6 @@ body {
   overflow-x: auto;
 }
 
-/* =============================== */
-/* HEADER: Title + Add + Reload   */
-/* =============================== */
 .content-sub {
   display: flex;
   justify-content: space-between;
@@ -1391,21 +1387,105 @@ button:hover {
   background-color: #d32f2f;
 }
 
+/* Modal CSS */
+.modal-bg {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-box {
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-box h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.modal-box input {
+  width: 100%;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  outline: none;
+}
+
+.modal-box .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-box button {
+  padding: 8px 14px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.modal-box .cancel-btn {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.modal-box .save-btn {
+  background-color: #01ab78;
+  color: #fff;
+}
+
+.modal-box .cancel-btn:hover {
+  background-color: #ccc;
+}
+
+.modal-box .save-btn:hover {
+  background-color: #018b63;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 .container-pro {
-  margin-top: 0;
+  margin-top: 38px;
+  border-radius: 20px;
   background-color: #fff;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   padding: 32px;
   display: block;
   height: auto;
+  width: 100%;
+  overflow-x: auto;
 }
 
 .invoiceList {
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
 }
 .invoiceList h3 {
-  font-size: 24px;
+  font-size: 26px;
   margin-top: 20px;
   color: #2c3e50;
   font-weight: 600;
@@ -1414,6 +1494,7 @@ button:hover {
 }
 .invoiceList .table {
   width: 100%;
+  min-width: 1300px; /* 👈 bảng rộng hơn */
   border-collapse: collapse;
   background-color: #fff;
   border-radius: 12px;
@@ -1447,17 +1528,17 @@ button:hover {
   vertical-align: middle;
 }
 .invoiceList .table tbody tr .customer-cell {
-  max-width: 120px;
+  max-width: 160px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .invoiceList .table tbody tr .code-cell {
-  max-width: 140px;
+  max-width: 180px;
   word-break: break-word;
 }
 .invoiceList .table tbody tr .product-cell {
-  max-width: 180px;
+  max-width: 240px;
   white-space: normal;
   word-break: break-word;
 }
@@ -1465,11 +1546,11 @@ button:hover {
   width: 60px;
 }
 .invoiceList .table tbody tr .price-cell {
-  min-width: 100px;
+  min-width: 120px;
 }
 .invoiceList .table tbody tr .address-cell,
 .invoiceList .table tbody tr .phone-cell {
-  max-width: 140px;
+  max-width: 160px;
   white-space: normal;
   word-break: break-word;
 }

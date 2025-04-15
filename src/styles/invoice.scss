@@ -1,18 +1,21 @@
 .container-pro {
-  margin-top: 0;
+  margin-top: 38px;
+  border-radius: 20px;
   background-color: #fff;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   padding: 32px;
   display: block;
   height: auto;
+  width: 100%;
+  overflow-x: auto;
 }
 
 .invoiceList {
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
 
   h3 {
-    font-size: 24px;
+    font-size: 26px;
     margin-top: 20px;
     color: #2c3e50;
     font-weight: 600;
@@ -22,6 +25,7 @@
 
   .table {
     width: 100%;
+    min-width: 1300px; /* 👈 bảng rộng hơn */
     border-collapse: collapse;
     background-color: #fff;
     border-radius: 12px;
@@ -60,19 +64,19 @@
         }
 
         .customer-cell {
-          max-width: 120px;
+          max-width: 160px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
         }
 
         .code-cell {
-          max-width: 140px;
+          max-width: 180px;
           word-break: break-word;
         }
 
         .product-cell {
-          max-width: 180px;
+          max-width: 240px;
           white-space: normal;
           word-break: break-word;
         }
@@ -82,12 +86,12 @@
         }
 
         .price-cell {
-          min-width: 100px;
+          min-width: 120px;
         }
 
         .address-cell,
         .phone-cell {
-          max-width: 140px;
+          max-width: 160px;
           white-space: normal;
           word-break: break-word;
         }

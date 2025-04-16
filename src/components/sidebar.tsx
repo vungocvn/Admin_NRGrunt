@@ -82,13 +82,14 @@ const Sidebar = () => {
       )}
 
       {/* Sidebar và nội dung */}
-      <div className="flex pt-14">
+      <div className="flex">
         {/* Sidebar trượt theo cuộn trang */}
         <div
-          className={`bg-[#01ab78] text-white transition-all duration-300 min-h-screen
-            ${isCollapsed ? "w-20" : "w-64"} 
-            rounded-tr-3xl shadow-lg flex flex-col relative`}
+          className={`bg-[#01ab78] text-white fixed top-14 left-0 h-[calc(100vh-56px)] z-40
+    ${isCollapsed ? "w-20" : "w-64"} 
+    rounded-tr-3xl shadow-lg flex flex-col pt-4 transition-all duration-300`}
         >
+
           {/* Avatar + Info */}
           <div className="flex items-center mb-4 px-3 pt-4">
             <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shrink-0">

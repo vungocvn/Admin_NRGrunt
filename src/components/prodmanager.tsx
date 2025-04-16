@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import { useRouter } from 'next/router';
 
 interface User {
@@ -141,7 +141,7 @@ export default function AdminOrders() {
   };
 
   return (
-    <div className="container">
+    <div className="container"  style={{ marginTop: "56px" }}>
       <div className="orderList">
         <h3>Danh sách Đơn hàng</h3>
 
@@ -203,6 +203,8 @@ export default function AdminOrders() {
           </tbody>
         </table>
       </div>
+       <ToastContainer position="top-right" autoClose={2500} />
     </div>
+    
   );
 }

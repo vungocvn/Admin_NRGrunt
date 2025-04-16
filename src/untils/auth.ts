@@ -1,7 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
-
 export const logout = async (router: any) => {
     const confirmLogout = window.confirm("do you want to log out?");
     if (!confirmLogout) return;
@@ -17,7 +16,7 @@ export const logout = async (router: any) => {
     } catch (err) {
         console.error("failed logout", err);
     }
-
+   
     Cookies.remove('token_cms');
     toast.success("logout successfully!");
     setTimeout(() => {

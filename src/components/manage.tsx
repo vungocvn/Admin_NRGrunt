@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { api } from "../config/apiUrl";
-import { toast } from "react-toastify";
+import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 export default function Management() {
     const router = useRouter();
@@ -117,7 +117,7 @@ export default function Management() {
     }, [router]);
 
     return (
-        <div className="management-container">
+        <div className="management-container"  style={{ marginTop: "56px" }}>
             <div className="header">
                 <h2>Quản lý người dùng</h2>
                 <button className="primary-btn" onClick={() => setShowCreateModal(true)}>+ Thêm người dùng</button>
@@ -237,6 +237,7 @@ export default function Management() {
                     </div>
                 </div>
             )}
+             <ToastContainer position="top-right" autoClose={2500} />
         </div>
     );
 }

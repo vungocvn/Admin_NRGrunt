@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Sidebar from '@/components/sidebar';
+import { ToastContainer } from 'react-toastify';
 
 export default function Layout({ children }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -13,12 +14,19 @@ export default function Layout({ children }) {
   }, []);
 
   return (
-    <div className="flex min-h-screen">
-    <Sidebar /> {/* Sidebar tự chiếm w-20 hoặc w-64 */}
-    <div className="flex-1 px-4 py-6 transition-all duration-300">
-      {children}
-    </div>
-  </div>
-  
+    <>
+      <div className="flex min-h-screen gap-x-4">
+        <div className={`${isCollapsed ? 'w-[70px]' : 'w-[240px]'} transition-all duration-300`}>
+          <Sidebar />
+        </div>
+
+        <main className="flex-1 p-4 pt-0">
+          {children}
+        </main>
+      </div>
+
+      <ToastContainer position="top-right" autoClose={2500} />
+    </>
   );
 }
+

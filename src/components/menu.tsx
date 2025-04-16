@@ -4,6 +4,7 @@ import Link from "next/link"
 import {  useEffect, useState } from "react"
 import Cookies from "js-cookie"
 import router from "next/router"
+import { toast } from "react-toastify"
 export default function Menu() {
     const [showMenu, setShowMenu] = useState<boolean>(true);
     const token = Cookies.get('token_cms');
@@ -46,7 +47,7 @@ export default function Menu() {
         )
         .then((res)=>{
             Cookies.remove('token_cms');
-            alert("logout thành công")
+            toast.success("logout thành công")
             setTimeout(() => {
                 router.push('/login')
             }, 2000)

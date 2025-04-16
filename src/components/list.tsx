@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
-import { logout } from "@/untils/auth";
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import { useRouter } from 'next/router';
 
 export default function List() {
@@ -30,9 +29,9 @@ export default function List() {
         'X-Requested-With': 'XMLHttpRequest'
       }
     })
-    .then((res) => setCategories(res.data.data))
-    .catch((err) => console.error("Lỗi khi lấy danh mục:", err))
-    .finally(() => setLoading(false));
+      .then((res) => setCategories(res.data.data))
+      .catch((err) => console.error("Lỗi khi lấy danh mục:", err))
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => {
@@ -102,27 +101,25 @@ export default function List() {
   };
 
   return (
-    <div className="container">
+    <div className="container" style={{ marginTop: "56px" }}>
       <div className="header">
-  <h1>Quản lý Danh mục Sản phẩm</h1>
-  <div style={{ textAlign: 'right', marginBottom: '16px' }}>
-    <button
-      onClick={() => openModal()}
-      style={{
-        padding: "10px 20px",
-        borderRadius: "8px",
-        backgroundColor: "#01ab78",
-        color: "white",
-        border: "none",
-        fontWeight: "500",
-      }}
-    >
-      + Thêm danh mục
-    </button>
-  </div>
-</div>
-
-
+        <h1>Quản lý Danh mục Sản phẩm</h1>
+        <div style={{ textAlign: 'right', marginBottom: '16px' }}>
+          <button
+            onClick={() => openModal()}
+            style={{
+              padding: "10px 20px",
+              borderRadius: "8px",
+              backgroundColor: "#01ab78",
+              color: "white",
+              border: "none",
+              fontWeight: "500",
+            }}
+          >
+            + Thêm danh mục
+          </button>
+        </div>
+      </div>
       <div className="categoryList">
         {loading ? (
           <p className="text-center py-4 text-gray-500">Đang tải danh mục...</p>
@@ -168,6 +165,7 @@ export default function List() {
           </div>
         </div>
       )}
+       <ToastContainer position="top-right" autoClose={2500} />
     </div>
   );
 }

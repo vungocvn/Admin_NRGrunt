@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import EditInvoiceModal from './EditInvoiceModal';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import router from 'next/router';
 
 export default function AdminInvoices() {
@@ -123,7 +123,7 @@ export default function AdminInvoices() {
           }}
         />
       )}
-       <ToastContainer position="top-right" autoClose={2500} />
+  
     </div>
   );
 }

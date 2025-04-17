@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 
 interface User {
@@ -83,6 +83,7 @@ export default function AdminOrders() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
+        toast.success("detete order success!");
         getAllOrders(filterStatus);
       })
       .catch(() => {
@@ -203,7 +204,7 @@ export default function AdminOrders() {
           </tbody>
         </table>
       </div>
-       <ToastContainer position="top-right" autoClose={2500} />
+  
     </div>
     
   );

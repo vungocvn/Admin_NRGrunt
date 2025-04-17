@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Sidebar from '@/components/sidebar';
-import { ToastContainer } from 'react-toastify';
+
 
 export default function Layout({ children }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -25,7 +25,7 @@ export default function Layout({ children }) {
         </main>
       </div>
 
-      <ToastContainer position="top-right" autoClose={2500} />
+     
     </>
   );
 }

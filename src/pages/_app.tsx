@@ -7,9 +7,16 @@ import { ToastContainer } from 'react-toastify';
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-       <ToastContainer position="top-right" autoClose={2500} />
+      <ToastContainer
+ position="top-right"
+        autoClose={2500}
+        limit={3}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="light" />
       <Component {...pageProps} />
-      </>
+    </>
   );
 }
 

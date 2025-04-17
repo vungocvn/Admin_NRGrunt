@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Cookies from 'js-cookie';
 import EditProductForm from './editProduct';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Admin() {
@@ -34,9 +34,12 @@ export default function Admin() {
   useEffect(() => {
     if (!token) {
       toast.warning("You must log in to access this page.");
-      router.push("/login");
+      setTimeout(() => {
+        router.push("/login");
+      }, 1500);
     }
   }, []);
+
 
   const getAllProduct = ({ id_category, sortOder, sort_col, pageIndex, pageSize }: any) => {
     setLstProduct([]);
@@ -237,13 +240,38 @@ export default function Admin() {
             <h2>Danh sách sản phẩm</h2>
           </div>
           <div className="action-buttons">
-            <input
-              type="text"
-              placeholder="Tìm kiếm sản phẩm..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              style={{ padding: "8px 12px", borderRadius: "6px", border: "1px solid #ccc", marginRight: "12px" }}
-            />
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <input
+                type="text"
+                placeholder="Tìm kiếm sản phẩm..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{
+                  padding: "8px 12px",
+                  borderRadius: "6px",
+                  border: "1px solid #ccc",
+                  flex: 1,
+                }}
+              />
+              {searchTerm && (
+                <button
+                  onClick={() => {
+                    setSearchTerm("");
+                    getAllProduct({ pageIndex: 1 });
+                  }}
+                  style={{
+                    padding: "8px 12px",
+                    borderRadius: "6px",
+                    border: "1px solid #ccc",
+                    backgroundColor: "#f2f2f2",
+                    cursor: "pointer",
+                  }}
+                >
+                  ❌
+                </button>
+              )}
+            </div>
+
             <button className="btn-add" onClick={handleOpenCreateModal}>+ Add</button>
           </div>
         </div>
@@ -361,7 +389,7 @@ export default function Admin() {
           }
         `}</style>
       </div>
-      <ToastContainer position="top-right" autoClose={5000} />
+
     </div>
   );
 }

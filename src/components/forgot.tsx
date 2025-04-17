@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { toast} from "react-toastify";
 
 export default function Forgot() {
     const [email, sEtEmail] = useState("")
@@ -27,7 +27,7 @@ export default function Forgot() {
                     requestForgotPassword()
                 }} className="btn11">Send email</button>
             </div>
-            <ToastContainer position="top-right" autoClose={2500} />
+   
         </div>
         </>
     )

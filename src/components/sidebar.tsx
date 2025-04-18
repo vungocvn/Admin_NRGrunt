@@ -13,7 +13,7 @@ const Sidebar = () => {
     { key: "user", icon: "fas fa-user", label: "Tài khoản", href: "/manager" },
     { key: "forgot", icon: "fas fa-key", label: "Đổi mật khẩu", href: "/forgot" },
     { key: "category", icon: "fas fa-list", label: "Danh sách", href: "/list" },
-    { key: "product", icon: "fas fa-cogs", label: "Đơn hàng", href: "/managerprod" },
+    { key: "product", icon: "fa-solid fa-box", label: "Đơn hàng", href: "/managerprod" },
     { key: "invoice", icon: "fas fa-file-invoice", label: "Hóa đơn", href: "/invoice" },
     { key: "report", icon: "fa-solid fa-chart-line", label: "Thống kê báo cáo", href: "/report" },
   ];

@@ -15,7 +15,7 @@ export default function AdminInvoices() {
   useEffect(() => {
     if (!token) {
       toast.warning("You must log in to access this page.");
-      router.push("/login"); 
+      router.push("/login");
     }
   }, []);
   function getAllBill() {
@@ -65,7 +65,7 @@ export default function AdminInvoices() {
   }, []);
 
   return (
-    <div className="container-pro"  style={{ marginTop: "56px" }}>
+    <div className="container-pro" style={{ marginTop: "56px" }}>
       <div className="invoiceList">
         <h3>Danh sách Hóa đơn</h3>
         <div className="table-wrapper">
@@ -87,7 +87,9 @@ export default function AdminInvoices() {
               {invoices.map((invoice) => (
                 <tr key={invoice.id}>
                   <td>{invoice.id}</td>
-                  <td className="customer-cell">{invoice.customer_info?.name || getUserName(invoice.user_id)}</td>
+                  <td className="customer-cell">
+                    {invoice.receiver_name || getUserName(invoice.user_id)}
+                  </td>
                   <td className="code-cell">{invoice.order_code}</td>
                   <td className="product-cell">
                     {Array.isArray(invoice.product_names)
@@ -96,8 +98,12 @@ export default function AdminInvoices() {
                   </td>
                   <td className="quantity-cell">{invoice.total_quantity || 0}</td>
                   <td className="price-cell">{formatCurrency(invoice.final_total)}</td>
-                  <td className="address-cell">{invoice.customer_info?.address ?? '—'}</td>
-                  <td className="phone-cell">{invoice.customer_info?.phone ?? '—'}</td>
+                  <td className="address-cell">
+                    {invoice.receiver_address || users.find(u => u.id === invoice.user_id)?.address || '—'}
+                  </td>
+                  <td className="phone-cell">
+                    {invoice.receiver_phone || users.find(u => u.id === invoice.user_id)?.phone || '—'}
+                  </td>
                   <td>
                     <button className="editButton" onClick={() => setEditingInvoice(invoice)}>
                       Sửa
@@ -109,6 +115,7 @@ export default function AdminInvoices() {
                 </tr>
               ))}
             </tbody>
+
           </table>
         </div>
       </div>
@@ -123,7 +130,7 @@ export default function AdminInvoices() {
           }}
         />
       )}
-  
+
     </div>
   );
 }

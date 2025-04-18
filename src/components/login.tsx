@@ -19,7 +19,7 @@ export default function Login() {
         role: "Admin"
     };
     const [login, setLogin] = useState<dataLogin>(dfLogin);
-    const [isAuthenticated, setIsAuthenticated] = useState(false); // State to track authentication
+    const [isAuthenticated, setIsAuthenticated] = useState(false); 
 
     // Hàm login
     const handleLogin = () => {
@@ -29,9 +29,7 @@ export default function Login() {
                 if (res.data.status === 200) {
                     const access_token: string = res.data.data.access_token;
                     Cookies.set('token_cms', access_token, { expires: 1 });
-                    // Thông báo đăng nhập thành công
                     toast.success('login successfully!'); 
-                    // Đặt thời gian nhỏ để đảm bảo thông báo sẽ hiển thị trước khi chuyển trang
                     setTimeout(() => {
                         if (res.data.data.role === "Admin") {
                             router.push('/admin');

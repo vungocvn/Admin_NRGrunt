@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { toast } from "react-toastify"; 
+import { toast } from "react-toastify";
 interface Props {
   invoice: any;
   onClose: () => void;
@@ -11,37 +11,39 @@ interface Props {
 export default function EditInvoiceModal({ invoice, onClose, onUpdated }: Props) {
   const token = Cookies.get("token_cms");
 
-  const [name, setName] = useState(invoice.customer_info?.name || '');
-  const [phone, setPhone] = useState(invoice.customer_info?.phone || '');
-  const [address, setAddress] = useState(invoice.customer_info?.address || '');
+  const [name, setName] = useState(invoice.receiver_name || invoice.user?.name || '');
+  const [phone, setPhone] = useState(invoice.receiver_phone || invoice.user?.phone || '');
+  const [address, setAddress] = useState(invoice.receiver_address || invoice.user?.address || '');
   const [loading, setLoading] = useState(false);
 
   const handleSave = async () => {
     if (!name || !phone || !address) {
-      toast.error("please input all information!");
+      toast.error("Vui lòng điền đầy đủ thông tin!");
       return;
     }
 
     setLoading(true);
 
     try {
-      await axios.put(`http://127.0.0.1:8000/api/users/${invoice.user_id}`, {
-        name,
-        phone,
-        address
+      await axios.put(`http://127.0.0.1:8000/api/orders/${invoice.id}`, {
+        receiver_name: name,
+        receiver_phone: phone,
+        receiver_address: address,
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      toast.success("Customer information updated successfully!");
-      onClose(); 
-      onUpdated(); // reload bảng
+
+      toast.success("Cập nhật hóa đơn thành công!");
+      onUpdated();
+      onClose();
     } catch (error) {
-      toast.error('Unable to update customer information!');
+      toast.error('Không thể cập nhật hóa đơn!');
       console.error(error);
     }
 
     setLoading(false);
   };
+
 
   return (
     <div className="modal-overlay">

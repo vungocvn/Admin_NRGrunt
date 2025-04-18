@@ -20,29 +20,30 @@ export default function App({ Component, pageProps }: AppProps) {
         if (error.response?.status === 401) {
           const isAdmin = router.pathname.startsWith('/admin');
           Cookies.remove(isAdmin ? 'token_cms' : 'token_portal');
-          router.push(isAdmin ? '/login' : '/shop'); 
+          router.push('/login');
         }
         return Promise.reject(error);
       }
     );
 
     return () => {
-      axios.interceptors.response.eject(interceptor); 
+      axios.interceptors.response.eject(interceptor);
     };
   }, []);
 
   return (
     <>
+      <Component {...pageProps} />
       <ToastContainer
         position="top-right"
         autoClose={2500}
-        limit={3}
+        limit={5}
         closeOnClick
         pauseOnHover
         draggable
         theme="light"
+        newestOnTop
       />
-      <Component {...pageProps} />
     </>
   );
 }

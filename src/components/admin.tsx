@@ -389,7 +389,7 @@ export default function Admin() {
           }
         `}</style>
       </div>
-
+     
     </div>
   );
 }

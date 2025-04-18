@@ -98,7 +98,7 @@ export default function AdminOrders() {
         : statusValue === 'cancel'
         ? { is_paid: 0, is_canceled: 1 }
         : { is_paid: 0, is_canceled: 0 };
-
+  
     axios
       .put(
         `http://127.0.0.1:8000/api/orders/${id}`,
@@ -111,19 +111,22 @@ export default function AdminOrders() {
         }
       )
       .then(() => {
-        toast.success('Đã cập nhật trạng thái!');
-        setOrders((prev) =>
-          prev.map((order) =>
-            order.id === id
-              ? { ...order, is_paid: data.is_paid, is_canceled: data.is_canceled }
-              : order
-          )
-        );
+        toast.success('Status updated successfully!');
+        setTimeout(() => {
+          setOrders((prev) =>
+            prev.map((order) =>
+              order.id === id
+                ? { ...order, is_paid: data.is_paid, is_canceled: data.is_canceled }
+                : order
+            )
+          );
+        }, 300);
       })
       .catch(() => {
-        toast.error('Lỗi cập nhật trạng thái.');
+        toast.error('Error updating status.');
       });
   };
+  
 
   useEffect(() => {
     getAllOrders(filterStatus);

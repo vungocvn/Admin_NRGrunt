@@ -21,9 +21,9 @@ export default function EditInvoiceModal({ invoice, onClose, onUpdated }: Props)
       toast.error("Vui lòng điền đầy đủ thông tin!");
       return;
     }
-
+  
     setLoading(true);
-
+  
     try {
       await axios.put(`http://127.0.0.1:8000/api/orders/${invoice.id}`, {
         receiver_name: name,
@@ -32,18 +32,20 @@ export default function EditInvoiceModal({ invoice, onClose, onUpdated }: Props)
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-
-      toast.success("Cập nhật hóa đơn thành công!");
-      onUpdated();
-      onClose();
+  
+      toast.success("Invoice updated successfully!");
+      setTimeout(() => {
+        onUpdated();  
+        onClose();    
+      }, 300);
     } catch (error) {
-      toast.error('Không thể cập nhật hóa đơn!');
+      toast.error("Error updating invoice!");
       console.error(error);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
-
+  
 
   return (
     <div className="modal-overlay">

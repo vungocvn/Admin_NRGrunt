@@ -233,7 +233,7 @@ export default function Admin() {
   }, [total.page_index]);
 
   return (
-    <div className="container">
+    <div className="container" style={{ marginTop: "58px" }}>
       <div className="content">
         <div className="content-sub">
           <div className="one">

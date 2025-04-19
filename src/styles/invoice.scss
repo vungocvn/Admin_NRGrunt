@@ -8,130 +8,193 @@
   height: auto;
   width: 100%;
   overflow-x: auto;
-}
 
-.invoiceList {
-  max-width: 100%;
-  margin: 0 auto;
+  .invoiceList {
+    max-width: 100%;
+    margin: 0 auto;
 
-  h3 {
-    font-size: 26px;
-    margin-top: 20px;
-    color: #2c3e50;
-    font-weight: 600;
-    margin-bottom: 24px;
-    text-align: center;
-  }
-
-  .table {
-    width: 100%;
-    min-width: 1300px; /* 👈 bảng rộng hơn */
-    border-collapse: collapse;
-    background-color: #fff;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-
-    thead {
-      background-color: #01ab78;
-      color: white;
-
-      th {
-        padding: 14px;
-        font-weight: 600;
-        font-size: 15px;
-        text-align: center;
-        border-bottom: 1px solid #ddd;
-      }
+    h3 {
+      font-size: 26px;
+      margin-top: 20px;
+      color: #2c3e50;
+      font-weight: 600;
+      margin-bottom: 24px;
+      text-align: center;
     }
 
-    tbody {
-      tr {
-        background-color: #f9f9f9;
-        transition: background-color 0.3s;
+    .table {
+      width: 100%;
+      min-width: 1300px;
+      border-collapse: collapse;
+      background-color: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 
-        &:hover {
-          background-color: #f2fefb;
-        }
+      thead {
+        background-color: #01ab78;
+        color: white;
 
-        td {
-          padding: 12px;
-          font-size: 14px;
+        th {
+          padding: 14px;
+          font-weight: 600;
+          font-size: 15px;
           text-align: center;
-          color: #333;
           border-bottom: 1px solid #ddd;
-          vertical-align: middle;
         }
+      }
 
-        .customer-cell {
-          max-width: 160px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
+      tbody {
+        tr {
+          background-color: #f9f9f9;
+          transition: background-color 0.3s;
 
-        .code-cell {
-          max-width: 180px;
-          word-break: break-word;
-        }
+          &:hover {
+            background-color: #f2fefb;
+          }
 
-        .product-cell {
-          max-width: 240px;
-          white-space: normal;
-          word-break: break-word;
-        }
+          td {
+            padding: 12px;
+            font-size: 14px;
+            text-align: center;
+            color: #333;
+            border-bottom: 1px solid #ddd;
+            vertical-align: middle;
+          }
 
-        .quantity-cell {
-          width: 60px;
-        }
+          .customer-cell {
+            max-width: 160px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
 
-        .price-cell {
-          min-width: 120px;
-        }
+          .code-cell {
+            max-width: 180px;
+            word-break: break-word;
+          }
 
-        .address-cell,
-        .phone-cell {
-          max-width: 160px;
-          white-space: normal;
-          word-break: break-word;
+          .product-cell {
+            max-width: 240px;
+            white-space: normal;
+            word-break: break-word;
+          }
+
+          .quantity-cell {
+            width: 60px;
+          }
+
+          .price-cell {
+            min-width: 120px;
+          }
+
+          .address-cell,
+          .phone-cell {
+            max-width: 160px;
+            white-space: normal;
+            word-break: break-word;
+          }
         }
+      }
+    }
+
+    .editButton,
+    .deleteButton {
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      min-width: 60px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      letter-spacing: 0.3px;
+      margin-right: 8px;
+    }
+
+    .editButton {
+      background: linear-gradient(135deg, #01ab78, #00c896);
+      color: #fff;
+
+      &:hover {
+        background: linear-gradient(135deg, #00c896, #019a6c);
+        transform: scale(1.05);
+      }
+    }
+
+    .deleteButton {
+      background: linear-gradient(135deg, #e74c3c, #ff5e57);
+      color: #fff;
+      margin-right: 0;
+
+      &:hover {
+        background: linear-gradient(135deg, #d7392e, #ff3b3b);
+        transform: scale(1.05);
       }
     }
   }
 
-  .editButton,
-  .deleteButton {
-    padding: 6px 12px;
-    font-size: 13px;
-    font-weight: 600;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    min-width: 60px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    letter-spacing: 0.3px;
-    margin-right: 8px;
-  }
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
 
-  .editButton {
-    background: linear-gradient(135deg, #01ab78, #00c896);
-    color: #fff;
+    .modal {
+      background: #fff;
+      padding: 24px;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      text-align: center;
 
-    &:hover {
-      background: linear-gradient(135deg, #00c896, #019a6c);
-      transform: scale(1.05);
-    }
-  }
+      p {
+        font-size: 16px;
+        margin-bottom: 20px;
+        color: #333;
+      }
 
-  .deleteButton {
-    background: linear-gradient(135deg, #e74c3c, #ff5e57);
-    color: #fff;
-    margin-right: 0;
+      .modal-actions {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
 
-    &:hover {
-      background: linear-gradient(135deg, #d7392e, #ff3b3b);
-      transform: scale(1.05);
+        button {
+          padding: 8px 20px;
+          font-size: 14px;
+          border-radius: 6px;
+          cursor: pointer;
+          border: none;
+          font-weight: 600;
+          transition: all 0.3s ease;
+
+          &.cancel {
+            background-color: #e0e0e0;
+            color: #333;
+
+            &:hover {
+              background-color: #c7c7c7;
+            }
+          }
+
+          &.confirm {
+            background-color: #f44336;
+            color: white;
+
+            &:hover {
+              background-color: #d32f2f;
+            }
+          }
+        }
+      }
     }
   }
 }

@@ -1,13 +1,22 @@
-@charset "UTF-8";
+body {
+  font-family: sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f9f9f9;
+  margin: 0;
+  padding: 0;
+}
+
 .container {
-  max-width: 100%; /* Đảm bảo container có thể mở rộng toàn bộ chiều rộng */
-  margin: 0 auto;
-  padding: 20px;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .content {
-  padding: 20px;
-  border-radius: 8px;
+  border-radius: 12px;
+  margin-right: 20px;
+  overflow-x: auto;
 }
 
 .content-sub {
@@ -16,380 +25,254 @@
   align-items: center;
   margin-bottom: 20px;
 }
-
 .content-sub .one h2 {
-  margin: 0;
-  font-size: 20px;
-  color: #333;
+  font-size: 22px;
+  font-weight: 600;
+  color: #222;
 }
-
-.content-sub .two {
-  background-color: #4CAF50;
-  color: #fff;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.content-sub .action-buttons {
+  display: flex;
+  gap: 12px;
 }
-
-.content-sub .two:hover {
-  background-color: #329b36;
-}
-
-.content-form,
-.content-form-1 {
-  background-color: #fff;
-  padding: 20px;
+.content-sub .action-buttons button {
+  border: none;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-}
-
-.content-form h2,
-.content-form-1 h2 {
-  margin-top: 0;
-  font-size: 18px;
-  color: #333;
-}
-
-.form-sub,
-.form-1 {
-  margin-bottom: 15px;
-}
-
-.form-sub label,
-.form-1 label {
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: #333;
-}
-
-.form-sub input {
-  width: 98%;
-  padding: 8px;
-  outline: none;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.form-1 input {
-  padding: 8px;
-  border: none;
-  outline: none;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.form-1 select {
-  margin-left: 20px;
-  width: 15%;
-}
-
-.update {
-  display: flex;
-  gap: 10px;
-}
-
-.update .btn-update,
-.update .btn-cancel,
-.btn,
-.btn-2 {
-  background-color: #007bff;
+  font-size: 14px;
+  font-weight: 500;
   color: #fff;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
+  background-color: #01ab78;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
+}
+.content-sub .action-buttons button:hover {
+  background-color: #01845f;
+}
+.content-sub .action-buttons .btn-add {
+  padding: 8px 16px;
+}
+.content-sub .action-buttons .btn-reload {
+  padding: 8px 12px;
+}
+.content-sub .action-buttons .btn-reload i {
+  font-size: 16px;
 }
 
-.btn-2 {
-  margin-left: 20px;
-}
-
-.update .btn-update:hover,
-.btn:hover {
-  background-color: #0056b3;
-}
-
-.update .btn-cancel,
-.btn-2 {
-  background-color: #dc3545;
-}
-
-.update .btn-cancel:hover,
-.btn-2:hover {
-  background-color: #c82333;
-}
-
-.search-list {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.search-name input {
-  padding: 10px;
-  width: 200px;
-  border-radius: 4px;
-  border: 1px solid;
-  outline: none;
-}
-
-.search-quantity {
-  background-color: #007bff;
-  height: 38px;
-  height: 38px;
-  margin-left: 10px;
-}
-
-.quantity-select select {
-  width: 200px;
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid gray;
-  outline: none;
-  margin-right: 10px;
-}
-.quantity-select .search-quantity {
-  background-color: #007bff;
-  color: #fff;
-  width: 30px;
-  align-items: center;
-  display: flex;
-  justify-content: center;
-}
-.quantity-select .load {
-  margin-left: 15px;
-  background-color: orange;
-  color: #fff;
-  width: 30px;
-  align-items: center;
-  display: flex;
-  justify-content: center;
-}
-
+/* ====================== */
+/* TABLE                  */
+/* ====================== */
 .content-table {
-  width: 100%;
-  margin-top: 20px;
-  overflow: auto;
-  /* Tắt thanh cuộn ngang */
+  overflow-x: auto;
 }
 .content-table table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px; /* Giảm kích thước chữ cho vừa với không gian */
-  background-color: #fff;
-  border-radius: 8px;
+  background: #fff;
+  border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  table-layout: auto; /* Để bảng tự điều chỉnh chiều rộng các cột */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  font-size: 14px;
+  table-layout: fixed;
 }
 .content-table table thead {
-  background-color: #4CAF50;
-  color: white;
+  background-color: #01ab78;
+  color: #fff;
 }
 .content-table table thead th {
   padding: 12px;
   text-align: center;
   font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-.content-table table thead th:hover {
-  background-color: #45a049;
-}
-.content-table table tbody tr {
-  transition: background 0.3s ease;
-}
-.content-table table tbody tr:nth-child(even) {
-  background-color: #f8f8f8;
-}
-.content-table table tbody tr:hover {
-  background-color: #f1f1f1;
-}
-.content-table table tbody tr td {
-  padding: 12px;
-  text-align: center;
-  border-bottom: 1px solid #ddd;
-  transition: background 0.3s ease;
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
-.content-table table tbody tr td.description {
-  max-width: 400px !important;
+.content-table table thead th:nth-child(1) {
+  width: 80px;
+}
+.content-table table thead th:nth-child(2) {
+  width: 100px;
+}
+.content-table table thead th:nth-child(3) {
+  width: 60px;
+}
+.content-table table thead th:nth-child(4) {
+  width: 90px;
+}
+.content-table table thead th:nth-child(5) {
+  width: 80px;
+}
+.content-table table thead th:nth-child(6) {
+  width: 80px;
+}
+.content-table table thead th:nth-child(7) {
+  width: 80px;
+}
+.content-table table thead th:nth-child(8) {
+  width: 80px;
+}
+.content-table table thead th:nth-child(9) {
+  width: 330px;
+}
+.content-table table thead th:nth-child(10) {
+  width: 40px;
+}
+.content-table table thead th:nth-child(11) {
+  width: 60px;
+}
+.content-table table tbody tr {
+  border-bottom: 1px solid #f0f0f0;
+}
+.content-table table tbody tr:hover {
+  background-color: #f8f8f8;
+}
+.content-table table tbody tr td {
+  padding: 10px;
+  text-align: center;
+  color: #333;
+  vertical-align: middle;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 .content-table table tbody tr td img {
-  max-width: 100px;
-  border-radius: 5px;
-  object-fit: cover;
+  max-width: 70px;
+  height: auto;
+  border-radius: 6px;
+}
+.content-table table tbody tr td .description {
+  max-width: 280px;
+  max-height: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+  text-align: left;
+  margin: auto;
+  transition: max-height 0.3s ease-in-out;
+}
+.content-table table tbody tr td .description.expanded {
+  max-height: none;
+  -webkit-line-clamp: unset;
+}
+.content-table table tbody tr td .desc-toggle {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #01ab78;
+  cursor: pointer;
+}
+.content-table table tbody tr td .desc-toggle:hover {
+  text-decoration: underline;
 }
 .content-table table tbody tr td button {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 5px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-}
-.content-table table tbody tr td button.edit {
-  background-color: #007bff;
-  color: white;
-}
-.content-table table tbody tr td button.edit:hover {
-  background-color: #0056b3;
-}
-.content-table table tbody tr td button.delete {
-  background-color: #e74c3c;
-  color: white;
-}
-.content-table table tbody tr td button.delete:hover {
-  background-color: #c0392b;
-}
-@media (max-width: 768px) {
-  .content-table table {
-    font-size: 12px; /* Giảm kích thước chữ cho màn hình nhỏ */
-  }
-  .content-table th, .content-table td {
-    padding: 8px;
-  }
-  .content-table td {
-    display: block;
-    text-align: left;
-    white-space: normal; /* Cho phép nội dung ô bẻ dòng */
-  }
-}
-
-.search-list {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-.search-list .search-name {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 10px;
-}
-.search-list .search-name input {
-  width: 350px;
-  padding: 0 8px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  outline: none;
-  background-color: #fafafa;
-  height: 40px;
-}
-.search-list .search-name input::placeholder {
-  color: #888;
-  font-size: 14px;
-}
-.search-list .search-name .search-quantity {
-  margin-top: 18px;
-  height: 40px;
-  width: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #007bff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-.search-list .search-name .search-quantity:hover {
-  background-color: rgb(0, 98.4, 204);
-}
-.search-list .search-name .search-quantity i {
-  color: #fff;
-  font-size: 18px;
-}
-.search-list .pagination {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.search-list .pagination button {
-  margin-top: 12px;
-  padding: 8px 12px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  background-color: #f1f1f1;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
-}
-.search-list .pagination button:hover {
-  background-color: #e0e0e0;
-  transform: scale(1.05);
-}
-.search-list .pagination button:focus {
-  outline: none;
-}
-.search-list .pagination button i {
-  color: #333;
-  font-size: 16px;
-}
-.search-list .pagination button.pagination-one {
-  padding: 8px 16px;
-}
-.search-list .pagination span {
-  font-size: 16px;
-  margin: 0 10px;
-  color: #333;
-}
-
-.reload-button {
-  margin-top: 20px;
-  text-align: right; /* Căn chỉnh nút reload sang bên phải */
-}
-
-.btn-reload {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
+  background: none;
   border: none;
   cursor: pointer;
+  color: #01ab78;
+  font-size: 16px;
+}
+.content-table table tbody tr td button:hover {
+  color: #01845f;
 }
 
-.btn-reload:hover {
+/* CSS for the switch */
+/* CSS for the switch toggle */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  border-radius: 50%;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
   background-color: #4CAF50;
 }
 
-/* Pagination Controls */
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
 .pagination-controls {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
   gap: 10px;
+  margin: 24px auto;
 }
 .pagination-controls button {
-  padding: 8px 16px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  background-color: #f1f1f1;
-  border-radius: 5px;
+  padding: 6px 14px;
+  min-width: 36px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
+  color: #333;
+  font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
+  transition: all 0.3s ease;
 }
 .pagination-controls button:hover {
-  background-color: #e0e0e0;
-  transform: scale(1.05);
-}
-.pagination-controls button:disabled {
-  background-color: #ddd;
-  cursor: not-allowed;
+  background-color: #f0f0f0;
 }
 .pagination-controls button.active {
-  background-color: #4CAF50;
+  background-color: #01ab78;
   color: white;
+  border-color: #01ab78;
+}
+.pagination-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ======================== */
+/* RESPONSIVE STYLES       */
+/* ======================== */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .content-sub {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .content-sub .action-buttons {
+    align-self: flex-end;
+  }
+  .content-table table {
+    font-size: 12px;
+  }
+  .content-table .description {
+    -webkit-line-clamp: 2;
+  }
 }
 
 /*# sourceMappingURL=admin.css.map */

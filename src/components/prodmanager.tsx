@@ -24,6 +24,8 @@ export default function AdminOrders() {
   const [users, setUsers] = useState<User[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [filterStatus, setFilterStatus] = useState<string>('all');
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [orderToDelete, setOrderToDelete] = useState<Order | null>(null);
 
   const router = useRouter();
 
@@ -36,7 +38,6 @@ export default function AdminOrders() {
 
   const getAllOrders = (status: string = 'all') => {
     const params: any = {};
-
     if (status === 'done') {
       params.is_paid = 1;
       params.is_canceled = 0;
@@ -46,7 +47,6 @@ export default function AdminOrders() {
     } else if (status === 'cancel') {
       params.is_canceled = 1;
     }
-
     axios
       .get('http://127.0.0.1:8000/api/orders', {
         headers: { Authorization: `Bearer ${token}` },
@@ -55,8 +55,8 @@ export default function AdminOrders() {
       .then((res) => {
         setOrders(res.data.data);
       })
-      .catch((err) => {
-        console.error('error get order:', err);
+      .catch(() => {
+        console.error('error get order');
       });
   };
 
@@ -83,11 +83,11 @@ export default function AdminOrders() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
-        toast.success("detete order success!");
+        toast.success('Xoá đơn hàng thành công!');
         getAllOrders(filterStatus);
       })
       .catch(() => {
-        toast.error('error delete order!');
+        toast.error('Lỗi khi xoá đơn hàng!');
       });
   };
 
@@ -98,35 +98,25 @@ export default function AdminOrders() {
         : statusValue === 'cancel'
         ? { is_paid: 0, is_canceled: 1 }
         : { is_paid: 0, is_canceled: 0 };
-  
+
     axios
-      .put(
-        `http://127.0.0.1:8000/api/orders/${id}`,
-        {
-          ...data,
-          role: 'Admin',
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
+      .put(`http://127.0.0.1:8000/api/orders/${id}`, { ...data, role: 'Admin' }, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then(() => {
-        toast.success('Status updated successfully!');
+        toast.success('Cập nhật trạng thái thành công!');
         setTimeout(() => {
           setOrders((prev) =>
             prev.map((order) =>
-              order.id === id
-                ? { ...order, is_paid: data.is_paid, is_canceled: data.is_canceled }
-                : order
+              order.id === id ? { ...order, is_paid: data.is_paid, is_canceled: data.is_canceled } : order
             )
           );
         }, 300);
       })
       .catch(() => {
-        toast.error('Error updating status.');
+        toast.error('Lỗi khi cập nhật trạng thái.');
       });
   };
-  
 
   useEffect(() => {
     getAllOrders(filterStatus);
@@ -139,13 +129,30 @@ export default function AdminOrders() {
   };
 
   const getStatusBadge = (order: Order) => {
-    if (order.is_canceled) return <span style={{ color: '#c0392b', fontWeight: 'bold' }}> Đã huỷ</span>;
-    if (order.is_paid) return <span style={{ color: '#01ab78', fontWeight: 'bold' }}> Hoàn thành</span>;
-    return <span style={{ color: '#f39c12', fontWeight: 'bold' }}> Xác nhận</span>;
+    if (order.is_canceled) return <span className="status canceled">Đã huỷ</span>;
+    if (order.is_paid) return <span className="status done">Hoàn thành</span>;
+    return <span className="status confirm">Xác nhận</span>;
+  };
+
+  const handleOpenConfirmModal = (order: Order) => {
+    setOrderToDelete(order);
+    setShowConfirmModal(true);
+  };
+
+  const handleCloseConfirmModal = () => {
+    setOrderToDelete(null);
+    setShowConfirmModal(false);
+  };
+
+  const handleConfirmDelete = () => {
+    if (orderToDelete) {
+      deleteOrder(orderToDelete.id);
+      handleCloseConfirmModal();
+    }
   };
 
   return (
-    <div className="container"  style={{ marginTop: "56px" }}>
+    <div className="container">
       <div className="orderList">
         <h3>Danh sách Đơn hàng</h3>
 
@@ -189,26 +196,25 @@ export default function AdminOrders() {
                     <option value="done">Đã hoàn thành</option>
                     <option value="cancel">Đã huỷ</option>
                   </select>
-                  <button
-                    onClick={() => {
-                      const confirmDelete = window.confirm('you want to delete this order?');
-                      if (confirmDelete) {
-                        deleteOrder(order.id);
-                      }
-                    }}
-                    className="deleteButton"
-                    style={{ marginLeft: 8 }}
-                  >
-                    Xoá
-                  </button>
+                  <button onClick={() => handleOpenConfirmModal(order)} className="deleteButton">Xoá</button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-  
+
+      {showConfirmModal && orderToDelete && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <p>Bạn có chắc chắn muốn xoá đơn hàng <strong>{orderToDelete.order_code}</strong> không?</p>
+            <div className="modal-actions">
+              <button onClick={handleCloseConfirmModal} className="cancel">Huỷ</button>
+              <button onClick={handleConfirmDelete} className="confirm">Xoá</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
-    
   );
 }

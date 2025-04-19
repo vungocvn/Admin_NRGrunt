@@ -1478,12 +1478,11 @@ button:hover {
   width: 100%;
   overflow-x: auto;
 }
-
-.invoiceList {
+.container-pro .invoiceList {
   max-width: 100%;
   margin: 0 auto;
 }
-.invoiceList h3 {
+.container-pro .invoiceList h3 {
   font-size: 26px;
   margin-top: 20px;
   color: #2c3e50;
@@ -1491,34 +1490,34 @@ button:hover {
   margin-bottom: 24px;
   text-align: center;
 }
-.invoiceList .table {
+.container-pro .invoiceList .table {
   width: 100%;
-  min-width: 1300px; /* 👈 bảng rộng hơn */
+  min-width: 1300px;
   border-collapse: collapse;
   background-color: #fff;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
-.invoiceList .table thead {
+.container-pro .invoiceList .table thead {
   background-color: #01ab78;
   color: white;
 }
-.invoiceList .table thead th {
+.container-pro .invoiceList .table thead th {
   padding: 14px;
   font-weight: 600;
   font-size: 15px;
   text-align: center;
   border-bottom: 1px solid #ddd;
 }
-.invoiceList .table tbody tr {
+.container-pro .invoiceList .table tbody tr {
   background-color: #f9f9f9;
   transition: background-color 0.3s;
 }
-.invoiceList .table tbody tr:hover {
+.container-pro .invoiceList .table tbody tr:hover {
   background-color: #f2fefb;
 }
-.invoiceList .table tbody tr td {
+.container-pro .invoiceList .table tbody tr td {
   padding: 12px;
   font-size: 14px;
   text-align: center;
@@ -1526,35 +1525,35 @@ button:hover {
   border-bottom: 1px solid #ddd;
   vertical-align: middle;
 }
-.invoiceList .table tbody tr .customer-cell {
+.container-pro .invoiceList .table tbody tr .customer-cell {
   max-width: 160px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.invoiceList .table tbody tr .code-cell {
+.container-pro .invoiceList .table tbody tr .code-cell {
   max-width: 180px;
   word-break: break-word;
 }
-.invoiceList .table tbody tr .product-cell {
+.container-pro .invoiceList .table tbody tr .product-cell {
   max-width: 240px;
   white-space: normal;
   word-break: break-word;
 }
-.invoiceList .table tbody tr .quantity-cell {
+.container-pro .invoiceList .table tbody tr .quantity-cell {
   width: 60px;
 }
-.invoiceList .table tbody tr .price-cell {
+.container-pro .invoiceList .table tbody tr .price-cell {
   min-width: 120px;
 }
-.invoiceList .table tbody tr .address-cell,
-.invoiceList .table tbody tr .phone-cell {
+.container-pro .invoiceList .table tbody tr .address-cell,
+.container-pro .invoiceList .table tbody tr .phone-cell {
   max-width: 160px;
   white-space: normal;
   word-break: break-word;
 }
-.invoiceList .editButton,
-.invoiceList .deleteButton {
+.container-pro .invoiceList .editButton,
+.container-pro .invoiceList .deleteButton {
   padding: 6px 12px;
   font-size: 13px;
   font-weight: 600;
@@ -1567,22 +1566,76 @@ button:hover {
   letter-spacing: 0.3px;
   margin-right: 8px;
 }
-.invoiceList .editButton {
+.container-pro .invoiceList .editButton {
   background: linear-gradient(135deg, #01ab78, #00c896);
   color: #fff;
 }
-.invoiceList .editButton:hover {
+.container-pro .invoiceList .editButton:hover {
   background: linear-gradient(135deg, #00c896, #019a6c);
   transform: scale(1.05);
 }
-.invoiceList .deleteButton {
+.container-pro .invoiceList .deleteButton {
   background: linear-gradient(135deg, #e74c3c, #ff5e57);
   color: #fff;
   margin-right: 0;
 }
-.invoiceList .deleteButton:hover {
+.container-pro .invoiceList .deleteButton:hover {
   background: linear-gradient(135deg, #d7392e, #ff3b3b);
   transform: scale(1.05);
+}
+.container-pro .modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.container-pro .modal-overlay .modal {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+.container-pro .modal-overlay .modal p {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #333;
+}
+.container-pro .modal-overlay .modal .modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+.container-pro .modal-overlay .modal .modal-actions button {
+  padding: 8px 20px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+.container-pro .modal-overlay .modal .modal-actions button.cancel {
+  background-color: #e0e0e0;
+  color: #333;
+}
+.container-pro .modal-overlay .modal .modal-actions button.cancel:hover {
+  background-color: #c7c7c7;
+}
+.container-pro .modal-overlay .modal .modal-actions button.confirm {
+  background-color: #f44336;
+  color: white;
+}
+.container-pro .modal-overlay .modal .modal-actions button.confirm:hover {
+  background-color: #d32f2f;
 }
 
 .container {
@@ -1593,49 +1646,48 @@ button:hover {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
   border-radius: 16px;
 }
-
-.orderList h3 {
+.container .orderList h3 {
   text-align: center;
   font-size: 24px;
   color: #2c3e50;
   margin-bottom: 30px;
   font-weight: 600;
 }
-.orderList .table {
+.container .orderList .table {
   width: 100%;
   border-collapse: collapse;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
-.orderList .table thead {
+.container .orderList .table thead {
   background-color: #01ab78;
   color: white;
 }
-.orderList .table thead th {
+.container .orderList .table thead th {
   padding: 14px 16px;
   text-align: center;
   font-weight: 600;
   font-size: 15px;
 }
-.orderList .table tbody tr {
+.container .orderList .table tbody tr {
   background-color: #f9f9f9;
   transition: background-color 0.2s ease;
 }
-.orderList .table tbody tr:hover {
+.container .orderList .table tbody tr:hover {
   background-color: #f2fefb;
 }
-.orderList .table tbody tr td {
+.container .orderList .table tbody tr td {
   padding: 14px;
   text-align: center;
   color: #333;
   font-size: 14px;
   border-bottom: 1px solid #e0e0e0;
 }
-.orderList .table tbody tr:last-child td {
+.container .orderList .table tbody tr:last-child td {
   border-bottom: none;
 }
-.orderList select {
+.container .orderList select {
   padding: 8px 12px;
   font-size: 14px;
   border: 1px solid #ccc;
@@ -1644,7 +1696,7 @@ button:hover {
   cursor: pointer;
   transition: border-color 0.3s ease;
 }
-.orderList .deleteButton {
+.container .orderList .deleteButton {
   padding: 8px 14px;
   font-size: 12px;
   background-color: #f44336;
@@ -1655,9 +1707,59 @@ button:hover {
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s;
 }
-.orderList .deleteButton:hover {
+.container .orderList .deleteButton:hover {
   background-color: #d32f2f;
   transform: scale(1.05);
+}
+.container .modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.container .modal-overlay .modal {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+.container .modal-overlay .modal p {
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+.container .modal-overlay .modal .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.container .modal-overlay .modal .modal-actions button {
+  padding: 8px 14px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+}
+.container .modal-overlay .modal .modal-actions button.cancel {
+  background-color: #e0e0e0;
+  color: #333;
+}
+.container .modal-overlay .modal .modal-actions button.cancel:hover {
+  background-color: #c7c7c7;
+}
+.container .modal-overlay .modal .modal-actions button.confirm {
+  background-color: #f44336;
+  color: white;
+}
+.container .modal-overlay .modal .modal-actions button.confirm:hover {
+  background-color: #d32f2f;
 }
 
 .modal-overlay {

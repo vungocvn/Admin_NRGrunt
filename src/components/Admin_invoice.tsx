@@ -10,7 +10,8 @@ export default function AdminInvoices() {
   const [users, setUsers] = useState<any[]>([]);
   const [invoices, setInvoices] = useState<any[]>([]);
   const [editingInvoice, setEditingInvoice] = useState<any | null>(null);
-
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [invoiceToDelete, setInvoiceToDelete] = useState<any | null>(null);
 
   useEffect(() => {
     if (!token) {
@@ -18,11 +19,11 @@ export default function AdminInvoices() {
       router.push("/login");
     }
   }, []);
+
   function getAllBill() {
     axios.get('http://127.0.0.1:8000/api/orders', {
       headers: { Authorization: `Bearer ${token}` }
     }).then((res) => {
-      console.log("Invoice data:", res.data.data);
       setInvoices(res.data.data);
     });
   }
@@ -47,12 +48,24 @@ export default function AdminInvoices() {
     return user ? user.name : '';
   }
 
-  const deleteInvoice = (id: number) => {
-    if (window.confirm("you want to delete this invoice?")) {
-      axios.delete(`http://127.0.0.1:8000/api/orders/${id}`, {
+  const handleOpenConfirmModal = (invoice: any) => {
+    setInvoiceToDelete(invoice);
+    setShowConfirmModal(true);
+  };
+
+  const handleCloseConfirmModal = () => {
+    setInvoiceToDelete(null);
+    setShowConfirmModal(false);
+  };
+
+  const handleConfirmDelete = () => {
+    if (invoiceToDelete) {
+      axios.delete(`http://127.0.0.1:8000/api/orders/${invoiceToDelete.id}`, {
         headers: { Authorization: `Bearer ${token}` }
       }).then(() => {
+        toast.success("Xoá hoá đơn thành công!");
         getAllBill();
+        handleCloseConfirmModal();
       }).catch(() => {
         toast.error("Error deleting invoice.");
       });
@@ -105,17 +118,12 @@ export default function AdminInvoices() {
                     {invoice.receiver_phone || users.find(u => u.id === invoice.user_id)?.phone || '—'}
                   </td>
                   <td>
-                    <button className="editButton" onClick={() => setEditingInvoice(invoice)}>
-                      Sửa
-                    </button>
-                    <button className="deleteButton" onClick={() => deleteInvoice(invoice.id)}>
-                      Xoá
-                    </button>
+                    <button className="editButton" onClick={() => setEditingInvoice(invoice)}>Sửa</button>
+                    <button className="deleteButton" onClick={() => handleOpenConfirmModal(invoice)}>Xoá</button>
                   </td>
                 </tr>
               ))}
             </tbody>
-
           </table>
         </div>
       </div>
@@ -131,6 +139,17 @@ export default function AdminInvoices() {
         />
       )}
 
+      {showConfirmModal && invoiceToDelete && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <p>Bạn có chắc chắn muốn xoá hoá đơn <strong>{invoiceToDelete.order_code}</strong> không?</p>
+            <div className="modal-actions">
+              <button onClick={handleCloseConfirmModal} className="cancel">Huỷ</button>
+              <button onClick={handleConfirmDelete} className="confirm">Xoá</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

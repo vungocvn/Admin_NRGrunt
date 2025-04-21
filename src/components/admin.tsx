@@ -106,21 +106,30 @@ export default function Admin() {
       toast.error("Vui lòng đợi ảnh được upload thành công trước khi lưu.");
       return;
     }
-
+  
     if (!editData.name || !editData.price || !editData.category_id) {
       toast.error("Vui lòng điền đầy đủ thông tin sản phẩm.");
       return;
     }
+  
     axios.post("http://127.0.0.1:8000/api/products", editData, {
       headers: { Authorization: `Bearer ${token}` }
     }).then((res) => {
       toast.success("Product created successfully!");
-      handleCloseModal();
-      getAllProduct({ id_category: selectedCategory, pageIndex: 1, sort_col: "id", sortOder: "desc" });
+      setTimeout(() => {
+        handleCloseModal();
+        getAllProduct({
+          id_category: selectedCategory,
+          pageIndex: 1,
+          sort_col: "id",
+          sortOder: "desc"
+        });
+      }, 500);
     }).catch((error) => {
-      toast.error("Failed to create product. " + error.response.data.error);
+      toast.error("Failed to create product. " + error.response?.data?.error || "");
     });
   };
+  
 
   const handleOpenCreateModal = () => {
     resetFormData();
@@ -133,23 +142,38 @@ export default function Admin() {
       headers: { Authorization: `Bearer ${token}` }
     }).then((res) => {
       toast.success("Product updated successfully!");
-      setOpenModal(false);
-      getAllProduct({ id_category: selectedCategory, pageIndex: total.page_index, sort_col: "id", sortOder: "desc" });
+      setTimeout(() => {
+        setOpenModal(false);
+        getAllProduct({
+          id_category: selectedCategory,
+          pageIndex: total.page_index,
+          sort_col: "id",
+          sortOder: "desc"
+        });
+      }, 500); 
     }).catch((error) => {
-      toast.error("Failed to update product. " + error.response.data.error);
+      toast.error("Failed to update product. " + error.response?.data?.error || "");
     });
   };
-
+  
   const deleteProduct = (id: number) => {
     axios.delete(`http://127.0.0.1:8000/api/products/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
     }).then((res) => {
       toast.success("Product deleted successfully!");
-      getAllProduct({ id_category: selectedCategory, pageIndex: total.page_index, sort_col: "id", sortOder: "desc" });
+      setTimeout(() => {
+        getAllProduct({
+          id_category: selectedCategory,
+          pageIndex: total.page_index,
+          sort_col: "id",
+          sortOder: "desc"
+        });
+      }, 500);
     }).catch((error) => {
-      toast.error("Failed to delete product. " + error.response.data.error);
+      toast.error("Failed to delete product. " + error.response?.data?.error || "");
     });
   };
+  
 
   const handleEditData = (id: number) => {
     axios.get(`http://127.0.0.1:8000/api/products/${id}`)

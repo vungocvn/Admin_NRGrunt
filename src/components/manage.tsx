@@ -3,8 +3,9 @@ import { useEffect, useMemo, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { api } from "../config/apiUrl";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+
 export default function Management() {
     const router = useRouter();
     const [users, setUsers] = useState([]);
@@ -18,18 +19,20 @@ export default function Management() {
     const [userToDelete, setUserToDelete] = useState(null);
 
     const token = Cookies.get("token_cms");
-      useEffect(() => {
+
+    useEffect(() => {
         if (!token) {
-          toast.warning("You must log in to access this page.");
-          router.push("/login"); 
+            toast.warning("You must log in to access this page.");
+            router.push("/login");
         }
-      }, []);
+    }, []);
+
     const getUsers = () => {
         axios.get(`${api.getUsers}`, {
             headers: { Authorization: `Bearer ${Cookies.get("token_cms")}` },
         })
-        .then(res => setUsers(res.data.data))
-        .catch(() => router.push("/admin"));
+            .then(res => setUsers(res.data.data))
+            .catch(() => router.push("/admin"));
     };
 
     const changeRole = (id: number) => {
@@ -37,11 +40,13 @@ export default function Management() {
         axios.put(`${api.changeUserRole}/${id}/role`, { role }, {
             headers: { Authorization: `Bearer ${Cookies.get("token_cms")}` },
         })
-        .then(() => {
-            toast.success("Change role success");
-            getUsers();
-        })
-        .catch((error) => alert(error.response.data.error));
+            .then(() => {
+                toast.success("Change role success");
+                setTimeout(() => {
+                    getUsers();
+                }, 500);
+            })
+            .catch((error) => alert(error.response.data.error));
     };
 
     const saveUserChanges = (id: number) => {
@@ -57,15 +62,17 @@ export default function Management() {
         axios.put(`${api.updateUser}/${id}`, body, {
             headers: { Authorization: `Bearer ${Cookies.get("token_cms")}` },
         })
-        .then(() => {
-            toast.success("User updated successfully!", {
-                toastId: `update-${id}-${Date.now()}` 
-              });
-            getUsers();
-            setEditingUser(null);
-            setUserPassword(""); 
-        })
-        .catch((error) => alert(error.response.data.error));
+            .then(() => {
+                toast.success("User updated successfully!", {
+                    toastId: `update-${id}-${Date.now()}`
+                });
+                setTimeout(() => {
+                    getUsers();
+                    setEditingUser(null);
+                    setUserPassword("");
+                }, 500);
+            })
+            .catch((error) => alert(error.response.data.error));
     };
 
     const createUser = () => {
@@ -77,49 +84,53 @@ export default function Management() {
         }, {
             headers: { Authorization: `Bearer ${Cookies.get("token_cms")}` },
         })
-        .then(() => {
-            toast.success("User created!");
-            setShowCreateModal(false);
-            setUserName("");
-            setUserEmail("");
-            setUserPassword("");
-            setROLE("");
-            getUsers();
-        })
-        .catch((error) => alert(error.response.data.error));
+            .then(() => {
+                toast.success("User created!");
+                setTimeout(() => {
+                    setShowCreateModal(false);
+                    setUserName("");
+                    setUserEmail("");
+                    setUserPassword("");
+                    setROLE("");
+                    getUsers();
+                }, 500);
+            })
+            .catch((error) => alert(error.response.data.error));
     };
 
     const deleteUser = (id: number) => {
         axios.delete(`${api.deleteUser}/${id}`, {
             headers: { Authorization: `Bearer ${Cookies.get("token_cms")}` },
         })
-        .then(() => {
-            toast.success("User deleted!");
-            setShowDeleteModal(false);
-            setUserToDelete(null);
-            getUsers();
-        })
-        .catch((error) => alert(error.response.data.error));
+            .then(() => {
+                toast.success("User deleted!");
+                setTimeout(() => {
+                    setShowDeleteModal(false);
+                    setUserToDelete(null);
+                    getUsers();
+                }, 500);
+            })
+            .catch((error) => alert(error.response.data.error));
     };
 
     useMemo(() => {
         axios.post(`http://127.0.0.1:8000/api/auth/check-auth`, {}, {
             headers: { Authorization: `Bearer ${Cookies.get("token_cms")}` },
         })
-        .then((res) => {
-            if (res.data.data.role !== "Admin") {
-                toast.error("You cannot access this page.");
-                setTimeout(() => router.push("/admin"), 1000);
-            } else getUsers();
-        })
-        .catch((err) => {
-            toast.error(err.response.data.error);
-            router.push("/admin");
-        });
+            .then((res) => {
+                if (res.data.data.role !== "Admin") {
+                    toast.error("You cannot access this page.");
+                    setTimeout(() => router.push("/admin"), 1000);
+                } else getUsers();
+            })
+            .catch((err) => {
+                toast.error(err.response.data.error);
+                router.push("/admin");
+            });
     }, [router]);
 
     return (
-        <div className="management-container"  style={{ marginTop: "56px" }}>
+        <div className="management-container" style={{ marginTop: "56px" }}>
             <div className="header">
                 <h2>Quản lý người dùng</h2>
                 <button className="primary-btn" onClick={() => setShowCreateModal(true)}>+ Thêm người dùng</button>
@@ -239,7 +250,6 @@ export default function Management() {
                     </div>
                 </div>
             )}
-            
         </div>
     );
 }

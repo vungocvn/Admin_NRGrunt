@@ -11,6 +11,9 @@ export default function List() {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteCategoryId, setDeleteCategoryId] = useState<number | null>(null);
+
   const token = Cookies.get("token_cms");
   const router = useRouter();
 
@@ -69,15 +72,27 @@ export default function List() {
     }).catch(() => toast.error("Error when updating category"));
   };
 
-  const deleteCategory = (id) => {
-    axios.delete(`http://127.0.0.1:8000/api/categories/${id}`, {
+  // Gọi mở modal xác nhận xoá
+  const confirmDeleteCategory = (id: number) => {
+    setDeleteCategoryId(id);
+    setShowDeleteModal(true);
+  };
+
+  const deleteCategory = () => {
+    if (!deleteCategoryId) return;
+
+    axios.delete(`http://127.0.0.1:8000/api/categories/${deleteCategoryId}`, {
       headers: { Authorization: `Bearer ${token}` }
     }).then((res) => {
       if (res.data.status === 200) {
         toast.success("Delete category successfully");
         getCategory();
       }
-    }).catch(() => toast.error("Error when deleting category"));
+    }).catch(() => toast.error("Error when deleting category"))
+      .finally(() => {
+        setShowDeleteModal(false);
+        setDeleteCategoryId(null);
+      });
   };
 
   const openModal = (id = null) => {
@@ -135,7 +150,7 @@ export default function List() {
                     </button>
                   </div>
                   <div className="two">
-                    <button onClick={() => deleteCategory(category.id)}>
+                    <button onClick={() => confirmDeleteCategory(category.id)}>
                       <i className="fa-solid fa-trash"></i>
                     </button>
                   </div>
@@ -165,7 +180,21 @@ export default function List() {
           </div>
         </div>
       )}
-       <ToastContainer position="top-right" autoClose={2500} />
+
+      {/* Modal xác nhận xoá */}
+      {showDeleteModal && (
+        <div className="modal-bg">
+          <div className="modal-box">
+            <h3>Bạn có chắc chắn muốn xoá danh mục này không?</h3>
+            <div className="modal-actions">
+              <button className="cancel-btn" onClick={() => setShowDeleteModal(false)}>Huỷ</button>
+              <button className="save-btn" onClick={deleteCategory}>Xoá</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <ToastContainer position="top-right" autoClose={2500} />
     </div>
   );
 }

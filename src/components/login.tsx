@@ -94,27 +94,56 @@ export default function Login() {
 
     return (
         <>
-            <div className="login-container">
-                <div className="login-image"> </div>
-                <div className="login-form">
-                    <h2>Login</h2>
-                    <div className="form-name">
-                        <label>Email</label>
-                        <input type="email" placeholder="Enter email" value={login.email}
-                            onChange={handleChange} name="email" />
-                    </div>
-                    <div className="form-name">
-                        <label>Password</label>
-                        <input type="password" placeholder="Enter password" value={login.password}
-                            onChange={handleChange} name="password" />
-                    </div>
-                    <button type="submit" className="button-login" onClick={handleLogin}>Sign in</button>
-                    <p>{"Don't have an account?"} <Link href="./register" className="i">Sign up</Link></p>
+          <div className="login-container">
+            <div className="login-image"> </div>
+            <div className="login-form">
+              <h2>Login</h2>
+      
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleLogin(); 
+                }}
+              >
+                <div className="form-name">
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    placeholder="Enter email"
+                    value={login.email}
+                    onChange={handleChange}
+                    name="email"
+                    required
+                  />
                 </div>
+      
+                <div className="form-name">
+                  <label>Password</label>
+                  <input
+                    type="password"
+                    placeholder="Enter password"
+                    value={login.password}
+                    onChange={handleChange}
+                    name="password"
+                    required
+                  />
+                </div>
+      
+                <button type="submit" className="button-login">
+                  Sign in
+                </button>
+              </form>
+      
+              <p>
+                {"Don't have an account?"}{" "}
+                <Link href="./register" className="i">
+                  Sign up
+                </Link>
+              </p>
             </div>
-
-            {/* Toast Container */}
-            <ToastContainer position="top-right" autoClose={5000} />
+          </div>
+          <ToastContainer position="top-right" autoClose={5000} />
         </>
-    );
+      );
+      
 }

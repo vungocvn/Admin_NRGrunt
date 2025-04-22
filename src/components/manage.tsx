@@ -7,18 +7,27 @@ import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Management() {
-    const router = useRouter();
-    const [users, setUsers] = useState([]);
-    const [role, setROLE] = useState("");
-    const [userRoles, setUserRoles] = useState<{ [id: number]: string }>({});
-    const [editingUser, setEditingUser] = useState(null);
-    const [userName, setUserName] = useState("");
-    const [userEmail, setUserEmail] = useState("");
-    const [userPassword, setUserPassword] = useState("");
-    const [showCreateModal, setShowCreateModal] = useState(false);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [userToDelete, setUserToDelete] = useState(null);
-
+    type User = {
+        id: number;
+        name: string;
+        email: string;
+        avatar?: string;
+        role: string;
+        created_at: string;
+        updated_at: string;
+      };
+      
+      const router = useRouter();
+      const [users, setUsers] = useState<User[]>([]);
+      const [role, setROLE] = useState<string>("");
+      const [userRoles, setUserRoles] = useState<{ [id: number]: string }>({});
+      const [editingUser, setEditingUser] = useState<User | null>(null);
+      const [userName, setUserName] = useState<string>("");
+      const [userEmail, setUserEmail] = useState<string>("");
+      const [userPassword, setUserPassword] = useState<string>("");
+      const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
+      const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+      const [userToDelete, setUserToDelete] = useState<User | null>(null);
     const token = Cookies.get("token_cms");
 
     useEffect(() => {

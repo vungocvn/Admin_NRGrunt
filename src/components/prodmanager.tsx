@@ -17,6 +17,7 @@ interface Order {
   final_total: number;
   is_paid: number;
   is_canceled: number;
+  is_confirmed: number;
 }
 
 export default function AdminOrders() {
@@ -38,15 +39,22 @@ export default function AdminOrders() {
 
   const getAllOrders = (status: string = 'all') => {
     const params: any = {};
-    if (status === 'done') {
-      params.is_paid = 1;
+    if (status === 'pending') {
+      params.is_confirmed = 0;
+      params.is_paid = 0;     
       params.is_canceled = 0;
     } else if (status === 'confirm') {
+      params.is_confirmed = 1;
       params.is_paid = 0;
+      params.is_canceled = 0;
+    } else if (status === 'done') {
+      params.is_paid = 1;
+      params.is_confirmed = 1;  
       params.is_canceled = 0;
     } else if (status === 'cancel') {
       params.is_canceled = 1;
     }
+  
     axios
       .get('http://127.0.0.1:8000/api/orders', {
         headers: { Authorization: `Bearer ${token}` },
@@ -94,10 +102,10 @@ export default function AdminOrders() {
   const updateStatus = (id: number, statusValue: string) => {
     const data =
       statusValue === 'done'
-        ? { is_paid: 1, is_canceled: 0 }
+        ? { is_paid: 1, is_canceled: 0, is_confirmed: 1 }
         : statusValue === 'cancel'
-        ? { is_paid: 0, is_canceled: 1 }
-        : { is_paid: 0, is_canceled: 0 };
+        ? { is_paid: 0, is_canceled: 1, is_confirmed: 0 }
+        : { is_paid: 0, is_canceled: 0, is_confirmed: 1 }; // xác nhận
 
     axios
       .put(`http://127.0.0.1:8000/api/orders/${id}`, { ...data, role: 'Admin' }, {
@@ -108,7 +116,14 @@ export default function AdminOrders() {
         setTimeout(() => {
           setOrders((prev) =>
             prev.map((order) =>
-              order.id === id ? { ...order, is_paid: data.is_paid, is_canceled: data.is_canceled } : order
+              order.id === id
+                ? {
+                    ...order,
+                    is_paid: data.is_paid,
+                    is_canceled: data.is_canceled,
+                    is_confirmed: data.is_confirmed,
+                  }
+                : order
             )
           );
         }, 300);
@@ -131,7 +146,8 @@ export default function AdminOrders() {
   const getStatusBadge = (order: Order) => {
     if (order.is_canceled) return <span className="status canceled">Đã huỷ</span>;
     if (order.is_paid) return <span className="status done">Hoàn thành</span>;
-    return <span className="status confirm">Xác nhận</span>;
+    if (order.is_confirmed) return <span className="status confirm">Đã xác nhận</span>;
+    return <span className="status pending">Chờ xác nhận</span>;
   };
 
   const handleOpenConfirmModal = (order: Order) => {
@@ -160,7 +176,8 @@ export default function AdminOrders() {
           <label style={{ marginRight: 8 }}>Lọc theo trạng thái:</label>
           <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
             <option value="all">Tất cả</option>
-            <option value="confirm">Xác nhận đơn</option>
+            <option value="pending">Chờ xác nhận</option>
+            <option value="confirm">Đã xác nhận</option>
             <option value="done">Đã hoàn thành</option>
             <option value="cancel">Đã huỷ</option>
           </select>
@@ -189,14 +206,25 @@ export default function AdminOrders() {
                 <td>{getStatusBadge(order)}</td>
                 <td>
                   <select
-                    value={order.is_canceled ? 'cancel' : order.is_paid ? 'done' : 'confirm'}
+                    value={
+                      order.is_canceled
+                        ? 'cancel'
+                        : order.is_paid
+                        ? 'done'
+                        : order.is_confirmed
+                        ? 'confirm'
+                        : 'pending'
+                    }
                     onChange={(e) => updateStatus(order.id, e.target.value)}
                   >
-                    <option value="confirm">Xác nhận đơn</option>
+                    <option value="pending">Chờ xác nhận</option>
+                    <option value="confirm">Đã xác nhận</option>
                     <option value="done">Đã hoàn thành</option>
                     <option value="cancel">Đã huỷ</option>
                   </select>
-                  <button onClick={() => handleOpenConfirmModal(order)} className="deleteButton">Xoá</button>
+                  <button onClick={() => handleOpenConfirmModal(order)} className="deleteButton">
+                    Xoá
+                  </button>
                 </td>
               </tr>
             ))}
@@ -207,10 +235,17 @@ export default function AdminOrders() {
       {showConfirmModal && orderToDelete && (
         <div className="modal-overlay">
           <div className="modal">
-            <p>Bạn có chắc chắn muốn xoá đơn hàng <strong>{orderToDelete.order_code}</strong> không?</p>
+            <p>
+              Bạn có chắc chắn muốn xoá đơn hàng{' '}
+              <strong>{orderToDelete.order_code}</strong> không?
+            </p>
             <div className="modal-actions">
-              <button onClick={handleCloseConfirmModal} className="cancel">Huỷ</button>
-              <button onClick={handleConfirmDelete} className="confirm">Xoá</button>
+              <button onClick={handleCloseConfirmModal} className="cancel">
+                Huỷ
+              </button>
+              <button onClick={handleConfirmDelete} className="confirm">
+                Xoá
+              </button>
             </div>
           </div>
         </div>

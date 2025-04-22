@@ -37,7 +37,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <ToastContainer
         position="top-right"
         autoClose={2500}
-        limit={10}
+        limit={5}
         closeOnClick
         pauseOnHover
         draggable

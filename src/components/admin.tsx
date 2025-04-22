@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function Admin() {
   const [openModal, setOpenModal] = useState(false);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
   const [isEdit, setIsEdit] = useState(false);
   const [expandedDescriptions, setExpandedDescriptions] = useState<{ [id: number]: boolean }>({});
   const [editData, setEditdata] = useState<any>({
@@ -250,7 +251,126 @@ export default function Admin() {
 
     return () => clearTimeout(delayDebounce);
   }, [searchTerm]);
-
+  // const ConfirmDeleteModal = () => (
+  //   <div className="modal-backdrop">
+  //     <div className="modal-content">
+  //       <h3>Bạn có chắc chắn muốn xoá sản phẩm này không?</h3>
+  //       <div className="modal-actions">
+  //         <button className="btn-confirm" onClick={() => {
+  //           if (confirmDeleteId !== null) deleteProduct(confirmDeleteId);
+  //           setConfirmDeleteId(null);
+  //         }}>Xác nhận</button>
+  //         <button className="btn-cancel" onClick={() => setConfirmDeleteId(null)}>Huỷ</button>
+  //       </div>
+  //     </div>
+  //     <style jsx>{`
+  //       .modal-backdrop {
+  //         position: fixed;
+  //         top: 0; left: 0;
+  //         width: 100vw; height: 100vh;
+  //         background-color: rgba(0,0,0,0.5);
+  //         display: flex; align-items: center; justify-content: center;
+  //         z-index: 9999;
+  //       }
+  //       .modal-content {
+  //         background: white;
+  //         padding: 24px;
+  //         border-radius: 8px;
+  //         width: 90%;
+  //         max-width: 400px;
+  //         text-align: center;
+  //       }
+  //       .modal-actions {
+  //         margin-top: 16px;
+  //         display: flex;
+  //         justify-content: center;
+  //         gap: 12px;
+  //       }
+  //       .btn-confirm {
+  //         padding: 8px 16px;
+  //         background: #e74c3c;
+  //         color: white;
+  //         border: none;
+  //         border-radius: 4px;
+  //         cursor: pointer;
+  //       }
+  //       .btn-cancel {
+  //         padding: 8px 16px;
+  //         background: #ccc;
+  //         color: #333;
+  //         border: none;
+  //         border-radius: 4px;
+  //         cursor: pointer;
+  //       }
+  //     `}</style>
+  //   </div>
+  // );
+  const ConfirmDeleteModal = () => (
+    <div className="modal-backdrop">
+      <div className="modal-content">
+        <h3>Bạn có chắc muốn xoá sản phẩm này?</h3>
+        <div className="modal-actions">
+          <button
+            className="btn-confirm"
+            onClick={() => {
+              if (confirmDeleteId !== null) deleteProduct(confirmDeleteId);
+              setConfirmDeleteId(null);
+            }}
+          >
+            Xác nhận
+          </button>
+          <button className="btn-cancel" onClick={() => setConfirmDeleteId(null)}>
+            Huỷ
+          </button>
+        </div>
+      </div>
+      <style jsx>{`
+        .modal-backdrop {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background-color: rgba(0, 0, 0, 0.5);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 9999;
+        }
+        .modal-content {
+          background: white;
+          padding: 24px;
+          border-radius: 8px;
+          max-width: 400px;
+          width: 90%;
+          text-align: center;
+        }
+        .modal-actions {
+          margin-top: 16px;
+          display: flex;
+          justify-content: center;
+          gap: 12px;
+        }
+        .btn-confirm {
+          padding: 8px 16px;
+          background: #e74c3c;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        .btn-cancel {
+          padding: 8px 16px;
+          background: #ccc;
+          color: #333;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+      `}</style>
+    </div>
+  );
+  
   useEffect(() => {
     getAllProduct({ id_category: selectedCategory, sort_col: "id", sortOder: "desc", pageIndex: total.page_index });
     getAllCategory();
@@ -345,7 +465,7 @@ export default function Admin() {
                     </span>
                   </td>
                   <td><button onClick={() => handleEditData(product.id)}><i className="fa-solid fa-pen-to-square"></i></button></td>
-                  <td><button onClick={() => deleteProduct(product.id)}><i className="fa-solid fa-delete-left"></i></button></td>
+                  <td><button onClick={() => setConfirmDeleteId(product.id)}><i className="fa-solid fa-delete-left"></i></button></td>
                 </tr>
               ))}
             </tbody>
@@ -413,7 +533,7 @@ export default function Admin() {
           }
         `}</style>
       </div>
-     
+      {confirmDeleteId !== null && <ConfirmDeleteModal />}
     </div>
   );
 }

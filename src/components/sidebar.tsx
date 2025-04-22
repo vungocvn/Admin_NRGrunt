@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
 import { logout } from "@/untils/auth";
-
+import LogoutModal from "./LogoutModal";
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [openLogoutModal, setOpenLogoutModal] = useState(false);
   const router = useRouter();
   const menuContainerRef = useRef(null);
 
@@ -49,7 +50,6 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* Topbar cố định */}
       <div className="w-full bg-[#f7f7f7] h-14 flex items-center justify-between px-4 shadow-sm fixed top-0 left-0 z-50">
         <div className="flex items-center gap-3">
           <button
@@ -74,23 +74,18 @@ const Sidebar = () => {
         </div>
       </div>
 
-      {/* Hiện loading khi chuyển trang */}
       {loading && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[9999]">
           <div className="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
         </div>
       )}
 
-      {/* Sidebar và nội dung */}
       <div className="flex">
-        {/* Sidebar trượt theo cuộn trang */}
         <div
           className={`bg-[#01ab78] text-white fixed top-14 left-0 h-[calc(100vh-56px)] z-40
-    ${isCollapsed ? "w-20" : "w-64"} 
-    rounded-tr-3xl shadow-lg flex flex-col pt-4 transition-all duration-300`}
+          ${isCollapsed ? "w-20" : "w-64"} 
+          rounded-tr-3xl shadow-lg flex flex-col pt-4 transition-all duration-300`}
         >
-
-          {/* Avatar + Info */}
           <div className="flex items-center mb-4 px-3 pt-4">
             <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shrink-0">
               <img
@@ -108,7 +103,7 @@ const Sidebar = () => {
                 <button
                   className="ml-4 text-white hover:text-red-300 transition"
                   title="Đăng xuất"
-                  onClick={() => logout(router)}
+                  onClick={() => setOpenLogoutModal(true)}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -123,7 +118,6 @@ const Sidebar = () => {
             )}
           </div>
 
-          {/* Menu */}
           <div className="relative flex-1 px-2" ref={menuContainerRef}>
             {!isCollapsed && (
               <div
@@ -174,6 +168,15 @@ const Sidebar = () => {
           )}
         </div>
       </div>
+
+      <LogoutModal
+        open={openLogoutModal}
+        onClose={() => setOpenLogoutModal(false)}
+        onConfirm={() => {
+          setOpenLogoutModal(false);
+          logout(router);
+        }}
+      />
     </>
   );
 };

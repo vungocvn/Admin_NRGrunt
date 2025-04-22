@@ -10,6 +10,7 @@ export default function Management() {
     const router = useRouter();
     const [users, setUsers] = useState([]);
     const [role, setROLE] = useState("");
+    const [userRoles, setUserRoles] = useState<{ [id: number]: string }>({});
     const [editingUser, setEditingUser] = useState(null);
     const [userName, setUserName] = useState("");
     const [userEmail, setUserEmail] = useState("");
@@ -29,38 +30,48 @@ export default function Management() {
 
     const getUsers = () => {
         axios.get(`${api.getUsers}`, {
-            headers: { Authorization: `Bearer ${Cookies.get("token_cms")}` },
+            headers: { Authorization: `Bearer ${token}` },
         })
-            .then(res => setUsers(res.data.data))
+            .then(res => {
+                setUsers(res.data.data);
+                setUserRoles({});
+            })
             .catch(() => router.push("/admin"));
     };
 
     const changeRole = (id: number) => {
-        if (!role) return alert("Please select a role.");
-        axios.put(`${api.changeUserRole}/${id}/role`, { role }, {
-            headers: { Authorization: `Bearer ${Cookies.get("token_cms")}` },
+        const selectedRole = userRoles[id];
+        if (!selectedRole) return alert("Please select a role.");
+        axios.put(`${api.changeUserRole}/${id}/role`, { role: selectedRole }, {
+            headers: { Authorization: `Bearer ${token}` },
         })
             .then(() => {
                 toast.success("Change role success");
+                setUserRoles((prev) => {
+                    const updated = { ...prev };
+                    delete updated[id];
+                    return updated;
+                });
                 setTimeout(() => {
                     getUsers();
                 }, 500);
             })
-            .catch((error) => alert(error.response.data.error));
+            .catch((error) => alert(error.response?.data?.error || "Lỗi phân quyền"));
     };
+    
 
     const saveUserChanges = (id: number) => {
         const body: any = {
             name: userName,
             email: userEmail,
-            role,
+            role: userRoles[id],
         };
         if (userPassword.trim()) {
             body.password = userPassword;
         }
 
         axios.put(`${api.updateUser}/${id}`, body, {
-            headers: { Authorization: `Bearer ${Cookies.get("token_cms")}` },
+            headers: { Authorization: `Bearer ${token}` },
         })
             .then(() => {
                 toast.success("User updated successfully!", {
@@ -72,7 +83,7 @@ export default function Management() {
                     setUserPassword("");
                 }, 500);
             })
-            .catch((error) => alert(error.response.data.error));
+            .catch((error) => alert(error.response?.data?.error || "Lỗi cập nhật"));
     };
 
     const createUser = () => {
@@ -82,7 +93,7 @@ export default function Management() {
             password: userPassword,
             role,
         }, {
-            headers: { Authorization: `Bearer ${Cookies.get("token_cms")}` },
+            headers: { Authorization: `Bearer ${token}` },
         })
             .then(() => {
                 toast.success("User created!");
@@ -95,12 +106,12 @@ export default function Management() {
                     getUsers();
                 }, 500);
             })
-            .catch((error) => alert(error.response.data.error));
+            .catch((error) => alert(error.response?.data?.error || "Lỗi tạo người dùng"));
     };
 
     const deleteUser = (id: number) => {
         axios.delete(`${api.deleteUser}/${id}`, {
-            headers: { Authorization: `Bearer ${Cookies.get("token_cms")}` },
+            headers: { Authorization: `Bearer ${token}` },
         })
             .then(() => {
                 toast.success("User deleted!");
@@ -110,7 +121,7 @@ export default function Management() {
                     getUsers();
                 }, 500);
             })
-            .catch((error) => alert(error.response.data.error));
+            .catch((error) => alert(error.response?.data?.error || "Lỗi xoá người dùng"));
     };
 
     useMemo(() => {
@@ -128,7 +139,6 @@ export default function Management() {
                 router.push("/admin");
             });
     }, [router]);
-
     return (
         <div className="management-container" style={{ marginTop: "56px" }}>
             <div className="header">
@@ -156,8 +166,15 @@ export default function Management() {
                                 <td>{user.name}</td>
                                 <td>******</td>
                                 <td>
-                                    <select onChange={(e) => setROLE(e.target.value)} defaultValue={user.role}>
-                                        <option value={user.role} disabled>{user.role}</option>
+                                    <select
+                                        value={userRoles[user.id] || user.role}
+                                        onChange={(e) =>
+                                            setUserRoles((prev) => ({
+                                                ...prev,
+                                                [user.id]: e.target.value,
+                                            }))
+                                        }
+                                    >
                                         <option value="Admin">Admin</option>
                                         <option value="Customer">Customer</option>
                                     </select>
@@ -171,6 +188,10 @@ export default function Management() {
                                             setUserEmail(user.email);
                                             setUserPassword("");
                                             setROLE(user.role);
+                                            setUserRoles(prev => ({
+                                                ...prev,
+                                                [user.id]: user.role
+                                            }));
                                         }}>Sửa</button>
                                         <button className="danger-btn" onClick={() => {
                                             setUserToDelete(user);
@@ -200,7 +221,15 @@ export default function Management() {
                             <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)} placeholder="Tên" />
                             <input type="email" value={userEmail} onChange={(e) => setUserEmail(e.target.value)} placeholder="Email" />
                             <input type="password" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} placeholder="Mật khẩu (bỏ trống nếu không đổi)" />
-                            <select value={role} onChange={(e) => setROLE(e.target.value)}>
+                            <select
+                                value={userRoles[editingUser.id] || editingUser.role}
+                                onChange={(e) =>
+                                    setUserRoles(prev => ({
+                                        ...prev,
+                                        [editingUser.id]: e.target.value
+                                    }))
+                                }
+                            >
                                 <option value="Admin">Admin</option>
                                 <option value="Customer">Customer</option>
                             </select>

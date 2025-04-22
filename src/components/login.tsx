@@ -24,7 +24,6 @@ export default function Login() {
     // Hàm login
     const handleLogin = () => {
         axios.post("http://127.0.0.1:8000/api/auth/login", login)
-        
             .then((res) => {
                 if (res.data.status === 200) {
                     const access_token: string = res.data.data.access_token;
